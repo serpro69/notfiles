@@ -1,0 +1,471 @@
+
+" The next three lines ensure that the ~/.vim/bundle/ system works.
+filetype off
+set rtp+=~/.vim/bundle/vundle
+call vundle#rc()
+
+" Add an UnBundle command.
+function! UnBundle(arg, ...)
+  let bundle = vundle#config#init_bundle(a:arg, a:000)
+  call filter(g:bundles, 'v:val["name_spec"] != "' . a:arg . '"')
+endfunction
+
+com! -nargs=+         UnBundle
+\ call UnBundle(<args>)
+
+" ----------------------------------------
+
+Bundle "scrooloose/nerdtree"
+Bundle 'jistr/vim-nerdtree-tabs'
+
+let NERDTreeShowHidden=1
+
+" Open a NERDTree automatically when vim starts up if no files were specified.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" Close vim and NERDTree if no file is open and we try to close vim.
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+" Toggle the NERDTree e.g. with ",-".
+nnoremap <leader>- :NERDTreeToggle<CR>
+
+" ----------------------------------------
+
+Bundle 'sjl/gundo.vim'
+
+" Toggle the history-menu with "<F5>".
+nnoremap <F5> :GundoToggle<CR>
+
+if has('python3')
+  let g:gundo_prefer_python3 = 1
+endif
+
+" ----------------------------------------
+
+"Bundle 'tpope/vim-surround'
+
+" usage
+" - e.g.: cs'" -> for ' -> "
+" - e.g.: cs"' -> for " -> '
+
+" ----------------------------------------
+
+Bundle 'ervandew/supertab'
+
+" ----------------------------------------
+
+"Bundle 'tpope/vim-repeat'
+
+" ----------------------------------------
+
+Bundle 'kien/ctrlp.vim'
+
+let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --ignore ''*vagrant'' --ignore ''.git'' --ignore ''.DS_Store'' --ignore ''node_modules'' --hidden -g ""'
+let g:ctrlp_switch_buffer = 'Et'
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:20,results:20'
+let g:ctrlp_extensions = ['funky']
+let g:ctrlp_open_multiple_files = '1ijr'
+let g:ctrlp_use_caching = 1
+let g:ctrlp_lazy_update = 350
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_max_files = 0
+" If ag is available use it as filename list generator instead of 'find'.
+if executable("ag")
+  set grepprg=ag\ --nogroup\ --nocolor
+  let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --ignore ''*vagrant'' --ignore ''.git'' --ignore ''.DS_Store'' --ignore ''node_modules'' --hidden -g ""'
+endif
+
+" ----------------------------------------
+
+"Bundle 'tacahiroy/ctrlp-funky'
+
+" ----------------------------------------
+
+"Bundle 'FelikZ/ctrlp-py-matcher'
+
+"if has('python')
+"  let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+"endif
+"nnoremap <silent> <leader>b :CtrlPBuffer<cr>
+"nnoremap <silent> <leader>t :CtrlPTag<cr>
+"nnoremap <silent> <leader>q :CtrlPQuickfix<cr>
+"nnoremap <silent> <leader>f :CtrlPFunky<cr>
+
+" ----------------------------------------
+
+Bundle 'terryma/vim-multiple-cursors'
+
+" ----------------------------------------
+
+"Bundle 'valloric/MatchTagAlways'
+
+" ----------------------------------------
+
+"Bundle 'coderifous/textobj-word-column.vim'
+
+" ----------------------------------------
+
+"Bundle 'vim-scripts/sessionman.vim'
+
+" ----------------------------------------
+
+Bundle 'matchit.zip'
+
+" ----------------------------------------
+
+Bundle 'bling/vim-bufferline'
+
+let g:bufferline_echo = 0
+
+" ----------------------------------------
+
+"Bundle 'gregsexton/gitv'
+
+" usage: ":Gitv"
+
+" ----------------------------------------
+
+Bundle 'airblade/vim-gitgutter'
+
+" ----------------------------------------
+
+"Bundle 'Lokaltog/vim-easymotion'
+
+" ----------------------------------------
+
+Bundle 'flazz/vim-colorschemes'
+
+" ----------------------------------------
+
+"Bundle 'mbbill/undotree'
+
+" ----------------------------------------
+
+"Bundle 'nathanaelkane/vim-indent-guides'
+
+" ----------------------------------------
+
+"Bundle 'vim-scripts/restore_view.vim'
+
+" ----------------------------------------
+
+"Bundle 'mhinz/vim-signify'
+
+" ----------------------------------------
+
+"Bundle 'tpope/vim-abolish.git'
+
+" ----------------------------------------
+
+"Bundle 'osyo-manga/vim-over'
+
+" ----------------------------------------
+
+"Bundle 'kana/vim-textobj-user'
+
+" ----------------------------------------
+
+"Bundle 'kana/vim-textobj-indent'
+
+" ----------------------------------------
+
+"Bundle 'gcmt/wildfire.vim'
+
+" ----------------------------------------
+
+Bundle 'scrooloose/syntastic'
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" ----------------------------------------
+
+Bundle 'tpope/vim-fugitive'
+
+" ----------------------------------------
+
+"Bundle 'mattn/webapi-vim'
+
+" ----------------------------------------
+
+"Bundle 'mattn/gist-vim'
+
+" ----------------------------------------
+
+"Bundle 'scrooloose/nerdcommenter'
+
+" ----------------------------------------
+
+"Bundle 'tpope/vim-commentary'
+
+" ----------------------------------------
+
+"Bundle 'godlygeek/tabular'
+
+" ----------------------------------------
+
+"Bundle 'majutsushi/tagbar'
+
+"nnoremap <silent> <leader>= :TagbarToggle<cr>
+"let g:tagbar_autofocus = 1
+"let g:tagbar_left = 1
+"let g:tagbar_compact = 1
+"let g:tagbar_indent = 1
+
+" ----------------------------------------
+if exists('*clearmatches')
+  Bundle 'Shougo/neocomplcache'
+endif
+
+" ----------------------------------------
+
+"Bundle 'Shougo/neosnippet'
+
+" ----------------------------------------
+
+"Bundle 'Shougo/neosnippet-snippets'
+
+" ----------------------------------------
+
+"Bundle 'honza/vim-snippets'
+
+" ----------------------------------------
+
+"Bundle 'arnaud-lb/vim-php-namespace'
+
+"inoremap <Leader>ns <c-o>:call PhpInsertUse()<cr>
+"noremap <Leader>ns :call PhpInsertUse()<cr>
+"inoremap <Leader>ex <c-o>:call PhpExpandClass()<cr>
+"noremap <Leader>ex :call PhpExpandClass()<cr>
+
+" ----------------------------------------
+
+"Bundle 'shawncplus/phpcomplete.vim'
+
+"let g:phpcomplete_parse_docblock_comments = 1
+
+" ----------------------------------------
+
+"Bundle 'beberlei/vim-php-refactor'
+
+" info: better use a real IDE like PHPStorm for refactoring!!!
+
+"let g:php_refactor_command='php /path/to/refactor.phar'
+
+" ----------------------------------------
+
+"Bundle 'docteurklein/vim-symfony'
+
+" ----------------------------------------
+
+Bundle 'beyondwords/vim-twig'
+
+" ----------------------------------------
+
+"Bundle 'klen/python-mode'
+
+" ----------------------------------------
+
+"Bundle 'yssource/python.vim'
+
+" ----------------------------------------
+
+"Bundle 'benmills/vimux'
+
+" ----------------------------------------
+
+"Bundle 'python_match.vim'
+
+" ----------------------------------------
+
+"Bundle 'pythoncomplete'
+
+" ----------------------------------------
+
+Bundle 'elzr/vim-json'
+
+" ----------------------------------------
+
+Bundle 'pangloss/vim-javascript'
+
+" ----------------------------------------
+
+"Bundle 'briancollins/vim-jst'
+
+" ----------------------------------------
+
+"Bundle 'kchmck/vim-coffee-script'
+
+" ----------------------------------------
+
+"Bundle 'derekwyatt/vim-scala'
+
+" ----------------------------------------
+
+"Bundle 'derekwyatt/vim-sbt'
+
+" ----------------------------------------
+
+"Bundle 'xptemplate'
+
+" ----------------------------------------
+
+"Bundle 'travitch/hasksyn'
+
+" ----------------------------------------
+
+"Bundle 'dag/vim2hs'
+
+" ----------------------------------------
+
+"Bundle 'Twinside/vim-haskellConceal'
+
+" ----------------------------------------
+
+"Bundle 'Twinside/vim-haskellFold'
+
+" ----------------------------------------
+
+"Bundle 'lukerandall/haskellmode-vim'
+
+" ----------------------------------------
+
+"Bundle 'eagletmt/neco-ghc'
+
+" ----------------------------------------
+
+"Bundle 'eagletmt/ghcmod-vim'
+
+" ----------------------------------------
+
+"Bundle 'Shougo/vimproc'
+
+" ----------------------------------------
+
+"Bundle 'adinapoli/cumino'
+
+" ----------------------------------------
+
+"Bundle 'bitc/vim-hdevtools'
+
+" ----------------------------------------
+
+"Bundle 'mattn/emmet-vim'
+
+" ----------------------------------------
+
+"Bundle 'amirh/HTML-AutoCloseTag'
+
+" ----------------------------------------
+
+Bundle 'groenewege/vim-less'
+
+" ----------------------------------------
+
+Bundle 'cakebaker/scss-syntax.vim'
+
+" ----------------------------------------
+
+Bundle 'hail2u/vim-css3-syntax'
+
+" ----------------------------------------
+
+"Bundle 'stephpy/vim-yaml'
+
+" ----------------------------------------
+
+if exists('*clearmatches')
+  Bundle 'gorodinskiy/vim-coloresque'
+endif
+
+" ----------------------------------------
+
+Bundle 'vim-airline/vim-airline'
+Bundle 'vim-airline/vim-airline-themes'
+
+"let g:airline_theme = 'molokai'
+
+let g:airline_powerline_fonts = 0
+let g:airline#extensions#tmuxline#enabled = 0
+let g:airline#extensions#bufferline#enabled = 1
+let g:airline#extensions#syntastic#enabled    = 1
+let g:airline#extensions#hunks#non_zero_only = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#buffer_min_count = 1
+
+" ----------------------------------------
+
+"Bundle 'christoomey/vim-tmux-navigator'
+
+" ----------------------------------------
+
+"Bundle 'edkolev/tmuxline.vim'
+
+" ----------------------------------------
+
+"Bundle 'tpope/vim-haml'
+
+" ----------------------------------------
+
+"Bundle 'wting/rust.vim'
+
+" ----------------------------------------
+
+Bundle 'tpope/vim-markdown'
+
+" ----------------------------------------
+
+"Bundle 'spf13/vim-preview'
+
+" ----------------------------------------
+
+"Bundle 'tpope/vim-cucumber'
+
+" ----------------------------------------
+
+"Bundle 'cespare/vim-toml'
+
+" ----------------------------------------
+
+"Bundle 'quentindecock/vim-cucumber-align-pipes'
+
+" ----------------------------------------
+
+"Bundle 'Puppet-Syntax-Highlighting'
+
+" ----------------------------------------
+
+"Bundle 'saltstack/salt-vim'
+
+" ----------------------------------------
+
+Bundle 'xolox/vim-misc'
+
+" ----------------------------------------
+
+" Custom bundles
+Bundle 'hashivim/vim-terraform'
+
+let g:terraform_align=1
+let g:terraform_fmt_on_save=1
+
+" ----------------------------------------
+
+Bundle 'pearofducks/ansible-vim'
+
+let g:ansible_unindent_after_newline = 1
+let g:ansible_attribute_highlight = "ob"
+let g:ansible_name_highlight = 'd'
+let g:ansible_extra_keywords_highlight = 1
+
+" ----------------------------------------

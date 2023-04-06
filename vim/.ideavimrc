@@ -1,0 +1,27 @@
+set surround
+set multiple-cursors
+set clipboard+=ideaput
+
+nmap gi :action GotoImplementation<CR>
+nmap gs :action GotoSuperMethod<CR>
+set ideajoin
+
+source ~/.vimrc
+
+iunmap <CR>
+
+call ToggleNumber()
+call ToggleNumber()
+call ToggleNumber()
+
+" IDEA
+nnoremap <leader>ga :action GotoAction<cr>
+nnoremap <leader>gs :action GotoSymbol<cr>
+nnoremap <leader>gf :action GotoFile<cr>
+nnoremap <leader>gc :action GotoClass<cr>
+nnoremap <leader>gd :action GotoDeclaration<cr>
+nnoremap <leader>gi :action GotoImplementation<cr>
+
+nnoremap <leader>ff :action FindInPath<cr>
+nnoremap <leader>fu :action FindUsages<cr>
+nnoremap <leader>re :action RenameElement<cr>
