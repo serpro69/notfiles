@@ -1,5 +1,5 @@
 [submodule "tmux/.tmux"]
-	path = tmux/.tmux
+	path = tmux
 	url = git@github.com:gpakosz/.tmux.git
 [submodule "redpill/omz"]
 	path = ohmyzsh
