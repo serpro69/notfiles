@@ -1,0 +1,33 @@
+{
+  "aliases": [
+    {
+      "trigger": "draft",
+      "toolset": "arc",
+      "command": [
+        "!arc",
+        "diff",
+        "--draft",
+        "--nounit"
+      ]
+    },
+    {
+      "trigger": "nudiff",
+      "toolset": "arc",
+      "command": [
+        "!arc",
+        "diff",
+        "--nounit"
+      ]
+    },
+    {
+      "trigger": "nuldiff",
+      "toolset": "arc",
+      "command": [
+        "!arc",
+        "diff",
+        "--nounit",
+        "--nolint"
+      ]
+    }
+  ]
+}
