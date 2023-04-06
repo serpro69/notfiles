@@ -488,9 +488,9 @@
   protocol = https
 
 [init]
-  templatedir = ~/.git-templates
+  templatedir = ~/.config/git/templates
 
 [include]
-  path = .gitconfig.extra # extra git configuration
-  path = .gitconfig.delta # configuration for delta
+  path = ~/.config/git/config.extra # extra git configuration
+  path = ~/.config/git/config.delta # configuration for delta
 
