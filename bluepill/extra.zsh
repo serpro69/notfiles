@@ -1,17 +1,20 @@
-#! /bin/sh
+#!/usr/bin/env bash
 
 export DOTFILESSRCDIR="/home/sergio/dotfiles/"
 
 GIT_AUTHOR_NAME="Serhii Prodan"
+# shellcheck disable=SC2034
 GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
-git config --file=$HOME/.gitconfig.extra user.name "$GIT_AUTHOR_NAME"
+#git config --file="$HOME/.gitconfig.extra" user.name "$GIT_AUTHOR_NAME"
 
 GIT_AUTHOR_EMAIL="serpro@disroot.org"
+# shellcheck disable=SC2034
 GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
-git config --file=$HOME/.gitconfig.extra user.email "$GIT_AUTHOR_EMAIL"
+#git config --file="$HOME/.gitconfig.extra" user.email "$GIT_AUTHOR_EMAIL"
 
-git config --file=$HOME/.gitconfig.extra push.default simple
+#git config --file="$HOME/.gitconfig.extra" push.default simple
 
+# shellcheck disable=SC2034
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#767676,underline"
 
 #alias idea="intellij-idea-community"
@@ -116,6 +119,7 @@ alias nvim="$HOME/bin/nvim.appimage"
 
 # similar to 'lzd' alias, but uses a docker context to run against a remote host
 # used only against elhub contexts for now
+# shellcheck disable=SC2112
 function lzdc() {
   if [[ -z "$1" ]]; then
     echo "\e[01;31mError: missing docker context name. Run with --help for usage details\e[0m" >&2
@@ -144,7 +148,7 @@ then
 fi
 
 . /home/sergio/.local/bin/virtualenvwrapper.sh
-source ~/.autoenv/activate.sh
+source "$HOME/.autoenv/activate.sh"
 
 # run gitwatch for todoer
 if [ -f "/home/sergio/todoer/startup.sh" ]; then
@@ -152,9 +156,11 @@ if [ -f "/home/sergio/todoer/startup.sh" ]; then
 fi
 
 # FuzzyFinder
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.fzf.zsh ] && source "$HOME/.fzf.zsh"
 
 fh() {
+  # shellcheck disable=SC2046
+  # shellcheck disable=SC2015
   print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -r 's/ *[0-9]*\*? *//' | sed -r 's/\\/\\\\/g')
 }
 
