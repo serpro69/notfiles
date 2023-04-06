@@ -1,0 +1,88 @@
+[alias]
+  co = checkout
+  br = branch
+  ci = commit
+  st = status
+  unstage = reset HEAD --
+  last = log -1 HEAD
+  lg = !"git lg1"
+  lg1 = !"git lg1-specific --all"
+  lg2 = !"git lg2-specific --all"
+  lg3 = !"git lg3-specific --all"
+  lg1-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
+  lg2-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+  lg3-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)'
+  wip = rebase -i @{u}
+  unpushed = log @{u}..
+  roots = log --all --oneline --decorate --max-parents=0
+  adf = rebase -i --exec 'arc diff --create HEAD HEAD^' origin/master
+  #sshow = "!f() { git stash show stash^{/$*} -p; }; f"
+  #sapply = "!f() { git stash apply stash^{/$*}; }; f"
+  sshow = !sh -c 'git stash show stash^{/$*} -p' -
+  sapply = !sh -c 'git stash apply stash^{/$*}' -
+  ssave = !sh -c 'git stash save "${1}"' -
+  remove-all-refs = for-each-ref --format="%(refname)" refs/original/ | xargs -n 1 git update-ref -d
+  fixup-head = commit --fixup=HEAD
+  pull-and-rebase-master = !sh -c 'git pull && git rebase origin/master master'
+  #pull-all = "!_f() { find . -type d -mindepth 1 -maxdepth 1 -exec git --git-dir={}/.git --work-tree=$PWD/{} pull-and-rebase-master \; }; _f"
+  run-all = "!f() { ls | xargs -I{} git -C {} $1; }; f"
+  atag = "!f() { git tag -a $1 $2 -m \"Release $1\"; }; f"
+  clone-tmp = "!_f() { _dir="$(mktemp -u)"; git clone "$1" "$_dir"; echo "$_dir" | xclip -r -selection clipboard; unset -f _f; }; _f"
+[core]
+  # Use custom `.gitignore`
+  excludesfile = ~/.gitignore
+  # Treat spaces before tabs, lines that are indented with
+  # 8 or more spaces, and all kinds of trailing whitespace
+  #   as an error
+  whitespace = space-before-tab,indent-with-non-tab,trailing-space
+  autocrlf = false
+
+  # Force EOL as LF
+  eol = lf
+  filemode = false
+
+  # Clear the contents of the screen after quitting pager
+  pager = less -+X
+[color]
+  # Use colors in
+  # Git commands
+  # that are
+  # capable of
+  # colored output
+  # when
+  # outputting to
+  # the terminal
+  ui = auto
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+[interactive]
+  diffFilter = diff-highlight
+#[pager]
+  #color = true
+  #diff = diff-highlight | less -+X
+  #log = diff-highlight | less -+X
+  #show = diff-highlight | less -+X
+  #status = false
+  #stash = false
+  #last = false
+  #br = false
+[user]
+	name = Serhii Prodan
+	email = serpro@disroot.org
+  signingkey = 395A35D15482A7CE
+[push]
+	default = simple
+[pull]
+  rebase = true
+

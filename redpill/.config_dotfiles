@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+CONFIG_DEFAULT_USER="sergio"
+CONFIG_CHARSET_UTF8=true
+CONFIG_LANG="en_US"
+CONFIG_ZSH_PLUGINS="(git zsh-completions zsh-syntax-highlighting ssh-agent vi-mode history-substring-search zsh-z zsh-autosuggestions)"
+CONFIG_BASH_PLUGINS="(git)"
+CONFIG_ZSH_THEME="voku"
+CONFIG_BASH_THEME="voku"
+CONFIG_TERM_LOCAL="tmux" # terms: screen byobu tmux
+CONFIG_TERM_SSH=""

@@ -1,0 +1,425 @@
+#!/usr/bin/env bash
+
+export DIR_DOTFILES=$(pwd);
+
+# make vim the default editor
+export PAGER=${PAGER:-"less"}
+
+# use sublime text for local changes
+if [[ -n $SSH_CONNECTION ]]; then
+  EDITOR=${EDITOR:-"vim"}
+else
+  if which subl >/dev/null 2>&1; then
+    EDITOR="subl"
+  else
+    EDITOR=${EDITOR:-"vim"}
+  fi
+fi
+export EDITOR
+export VISUAL=$EDITOR
+
+PREVIEW="less"
+[ -s /usr/bin/gloobus-preview ] && PREVIEW="gloobus-preview"
+[ -s /Applications/Preview.app ] && PREVIEW="/Applications/Preview.app"
+export PREVIEW
+
+# detect your os
+case "$OSTYPE" in
+  solaris*) SYSTEM_TYPE="SOLARIS" ;;
+  darwin*)  SYSTEM_TYPE="OSX" ;;
+  linux*)   SYSTEM_TYPE="LINUX" ;;
+  bsd*)     SYSTEM_TYPE="BSD" ;;
+  msys*)    SYSTEM_TYPE="MINGW" ;;
+  cygwin*)  SYSTEM_TYPE="CYGWIN" ;;
+esac
+
+if [[ "$(uname)" == "Darwin" ]]; then
+  SYSTEM_TYPE="OSX"
+elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
+  SYSTEM_TYPE="LINUX"
+elif [[ "$(expr substr $(uname -s) 1 7)" == "FreeBSD" ]]; then
+  SYSTEM_TYPE="FREE_BSD"
+elif [[ "$(expr substr $(uname -s) 1 6)" == "NetBSD" ]]; then
+  SYSTEM_TYPE="NET_BSD"
+elif [[ "$(expr substr $(uname -s) 1 7)" == "OpenBSD" ]]; then
+  SYSTEM_TYPE="OPEN_BSD"
+elif [[ "$(expr substr $(uname -s) 1 7)" == "MSYS_NT" ]]; then
+  SYSTEM_TYPE="MINGW"
+elif [[ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]]; then
+  SYSTEM_TYPE="MINGW"
+elif [[ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]]; then
+  SYSTEM_TYPE="MINGW"
+elif [[ "$(expr substr $(uname -s) 1 9)" == "CYGWIN_NT" ]]; then
+  SYSTEM_TYPE="CYGWIN"
+fi
+
+if [[ -n "$(cat /proc/version | grep '(Microsoft@Microsoft.com)')" ]]; then
+  SYSTEM_TYPE="Win10_Linux"
+fi
+
+export SYSTEM_TYPE
+
+if which brew >/dev/null 2>&1; then
+  INSTALL_TYPE="BREW"
+fi
+
+if which apt-get >/dev/null 2>&1; then
+  INSTALL_TYPE="APT"
+fi
+
+if which yum >/dev/null 2>&1; then
+  INSTALL_TYPE="YUM"
+fi
+
+export INSTALL_TYPE
+
+# don't check mail when opening terminal.
+#unset MAILCHECK
+
+# prompt (bash)
+GIT_PROMPT_ONLY_IN_REPO=${GIT_PROMPT_ONLY_IN_REPO:-1}
+GIT_PROMPT_FETCH_REMOTE_STATUS=${GIT_PROMPT_FETCH_REMOTE_STATUS:-0} # uncomment to avoid fetching remote status
+GIT_PROMPT_SHOW_UNTRACKED_FILES=${GIT_PROMPT_SHOW_UNTRACKED_FILES:-"all"} # can be no, normal or all; determines counting of untracked files
+# GIT_PROMPT_SHOW_UPSTREAM=1 # uncomment to show upstream tracking branch
+# GIT_PROMPT_STATUS_COMMAND="gitstatus_pre-1.7.10.sh" # uncomment to support Git older than 1.7.10
+# GIT_PROMPT_START="..."    # uncomment for custom prompt start sequence
+# GIT_PROMPT_END="..."      # uncomment for custom prompt end sequence
+# GIT_PROMPT_THEME="Custom" # use custom .git-prompt-colors.sh
+GIT_PROMPT_THEME=${GIT_PROMPT_THEME:-"voku"} # use theme
+
+# make the "sudo" prompt more useful, without requiring access to "visudo"
+export SUDO_PROMPT=${SUDO_PROMPT:-"[sudo] password for %u on %h: "}
+
+# PATH addons
+if [ -d "$HOME/bin" ]; then
+  PATH="$HOME/bin:$PATH"
+fi
+
+if which ruby >/dev/null 2>&1 && which gem >/dev/null 2>&1; then
+  PATH="$PATH:$(ruby -rrubygems -e 'puts Gem.user_dir')/bin"
+fi
+
+export PATH="/usr/local/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
+
+if [ -d "/usr/local/man" ]; then
+  MANPATH="/usr/local/man:$MANPATH"
+fi
+
+if [ -d "/usr/local/mysql/man" ]; then
+  MANPATH="/usr/local/man:$MANPATH"
+fi
+
+if [ -d "/usr/local/git/man" ]; then
+  MANPATH="/usr/local/git/man:$MANPATH"
+fi
+
+export MANPATH
+
+# larger bash history (allow 32³ entries; default is 500)
+export HISTSIZE=${HISTSIZE:-32768} # resize history size
+export HISTFILESIZE=$HISTSIZE
+
+# ignore duplicates commands in the historylog
+export HISTCONTROL=$HISTCONTROL${HISTCONTROL+:}ignoredups
+
+# make some commands not show up in history
+export HISTIGNORE=${HISTIGNORE:-"shutdown*:halt*:poweroff*:hibernate*:rm -rf*"}
+
+# ignorespace	| don't save lines which begin with a <space> character
+# ignoredups	| don't save lines matching the previous history entry
+# ignoreboth	| use both 'ignorespace' and 'ignoredups'
+# erasedups	  | eliminate duplicates across the whole history
+
+# add the date to the historylog
+#
+# Keep track of the time the commands were executed.
+# The xterm colour escapes require special care when piping; e.g. "| less -R".
+#export HISTTIMEFORMAT=$(echo -e "${COLOR_LIGHT_BLUE}%Y-%m-%d %H:%M:%S${COLOR_NO_COLOUR} ")
+export HISTTIMEFORMAT=${HISTTIMEFORMAT:-"%Y-%m-%d %H:%M:%S"}
+
+# Cucumber / Autotest inte  gration
+export AUTOFEATURE=${AUTOFEATURE:-"true autotest"}
+
+# use UTF-8
+setLocale()
+{
+  if [[ "$CONFIG_CHARSET_UTF8" == "true" ]]; then
+    local i pattern localeOutput localeOutputArray line
+
+    localeOutput=$(locale -a 2>/dev/null)
+    localeOutputArray=()
+    while read -r line; do
+      localeOutputArray+=("$line")
+    done <<< "$localeOutput"
+
+    # check if $CONFIG_LANG isset and available
+    if [ "$CONFIG_LANG" != "" ] && [ -n "$(echo $localeOutput | grep $CONFIG_LANG)" ] ; then
+      pattern="${CONFIG_LANG}\.(UTF-8|UTF8|utf-8|utf8)$"
+    else
+      pattern=".{2,2}_.{2,2}\.(UTF-8|UTF8|utf-8|utf8)$"
+    fi
+
+    for i in "${localeOutputArray[@]}"; do
+      if [[ "$i" =~ $pattern ]]; then
+        export LC_ALL=${i};
+        export LANG=${i};
+        export LANGUAGE=${i};
+        return 0;
+      fi
+    done
+  fi
+
+  return 1
+}
+setLocale
+
+if [ $? -eq 1 ]; then
+  export UTF8_LANG="0"
+else
+  export UTF8_LANG="1"
+fi
+
+unset -f setLocale
+
+#tty detection
+if [[ "$(tty | grep -o '/dev/tty')" == "/dev/tty" ]]; then
+  export IS_TTY=1
+else
+  export IS_TTY=0
+fi
+
+# make less the default pager, and specify some useful defaults
+less_options=(
+  # If the entire text fits on one screen, just show it and quit. (Be more
+  # like "cat" and less like "more".)
+  --quit-if-one-screen
+
+  # Do not clear the screen first.
+  --no-init
+
+  # Like "smartcase" in Vim: ignore case unless the search pattern is mixed.
+  --ignore-case
+
+  # Do not automatically wrap long lines.
+  # This is a problem for --quit-if-one-screen if there are chopped lines
+  #--chop-long-lines
+
+  # Allow ANSI colour escapes, but no other escapes.
+  --RAW-CONTROL-CHARS
+
+  # Do not ring the bell when trying to scroll past the end of the buffer.
+  --quiet
+
+  # Do not complain when we are on a dumb terminal.
+  --dumb
+);
+export LESS="-iMX --shift 5 ${less_options[*]}"
+unset less_options
+
+# highlight section titles in manual pages
+export LESSHISTFILE="-"     # no less history file
+if [ "$UID" != 0 ]; then
+    export LESSCHARSET=${LESSCHARSET:-"utf-8"}
+
+    [ -x "`which lesspipe 2>/dev/null`" ] && eval "$(lesspipe)"
+
+    # yep, 'less' can colorize manpages
+    export LESS_TERMCAP_mb=$'\E[01;31m'
+    export LESS_TERMCAP_md=$'\E[01;31m'
+    export LESS_TERMCAP_me=$'\E[0m'
+    export LESS_TERMCAP_se=$'\E[0m'
+    export LESS_TERMCAP_so=$'\E[01;44;33m'
+    export LESS_TERMCAP_ue=$'\E[0m'
+    export LESS_TERMCAP_us=$'\E[01;32m'
+fi
+
+# don’t clear the screen after quitting a manual page
+export MANPAGER=${MANPAGER:-"less -X"}
+
+# try to enable colored output
+if [ -x /usr/bin/dircolors ]; then
+  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+fi
+
+# colorscheme for OS X `ls` environment variable:
+export CLICOLOR=1
+export LSCOLORS=${LSCOLORS:-"Gxfxcxdxbxegedabagacad"}
+
+# "ls" default options
+export LS_OPTIONS=${LS_OPTIONS:-"-hFN --color=auto"}
+
+export GREP_COLOR=${GREP_COLOR:-"1;32"}
+
+# colored GCC (>= v4.9) warnings and errors
+export GCC_COLORS=${GCC_COLORS:-"error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01"}
+
+# lazy add local bin
+LOCAL_BIN="$HOME/.local/bin"
+if [ -d $LOCAL_BIN ]; then
+  export PATH="$PATH:$LOCAL_BIN"
+fi
+
+# lazy add chromium
+if [ -f "/usr/bin/chromium" ]; then
+  export CHROME_BIN="/usr/bin/chromium"
+fi
+if [ -f "/usr/bin/google-chrome" ]; then
+  export CHROME_BIN="/usr/bin/google-chrome"
+fi
+if [ -f "/usr/bin/chromium-browser" ]; then
+  export CHROME_BIN="/usr/bin/chromium-browser"
+fi
+
+# lazy add firefox
+if [ -f "/usr/bin/firefox" ]; then
+  export FIREFOX_BIN="/usr/bin/firefox"
+fi
+
+# lazy add JAVA_HOME
+if [ -d "/usr/lib/jvm/java-7-openjdk" ]; then
+  export JAVA_HOME="/usr/lib/jvm/java-7-openjdk"
+fi
+if [ -d "/usr/lib/jvm/java-7-oracle/jre" ]; then
+  export JAVA_HOME="/usr/lib/jvm/java-7-oracle/jre"
+fi
+if [ -d "/usr/lib/jvm/java-7-oracle" ]; then
+  export JAVA_HOME="/usr/lib/jvm/java-7-oracle"
+fi
+if [ -d "/usr/lib/jvm/java-8-oracle" ]; then
+  export JAVA_HOME="/usr/lib/jvm/java-8-oracle"
+fi
+if [ -d "/usr/lib/jvm/oraclejdk8-64" ]; then
+  export JAVA_HOME="/usr/lib/jvm/oraclejdk8-64"
+fi
+if [ -n "$JAVA_HOME" ]; then
+  export JDK_HOME=$JAVA_HOME
+  export JRE_HOME=$JAVA_HOME
+  export PATH="$JAVA_HOME/bin:$PATH"
+fi
+
+# lazy add M2_HOME
+if [ -d "/opt/maven" ]; then
+  export M2_HOME="/opt/maven"
+fi
+if [ -d "/usr/share/maven" ]; then
+  export M2_HOME="/usr/share/maven"
+fi
+if [ -n "$M2_HOME" ]; then
+  export PATH="$M2_HOME/bin:$PATH"
+fi
+
+# lazy add ANDROID_SDK_ROOT
+if [ -d "/opt/android-sdk-linux/" ]; then
+  export ANDROID_SDK_ROOT="/opt/android-sdk-linux/"
+fi
+if [ -d "/android-sdk-linux/" ]; then
+  export ANDROID_SDK_ROOT="/android-sdk-linux/"
+fi
+if [ -n "$ANDROID_SDK_ROOT" ]; then
+  export ANDROID_NDK=/opt/android-ndk/
+  export ANDROID_HOME=$ANDROID_SDK_ROOT
+  export PATH="$ANDROID_SDK_ROOT/tools/:$ANDROID_SDK_ROOT/platform-tools/:$PATH"
+fi
+if [ -d "$HOME/Android/Sdk" ]; then
+  export ANDROID_SDK=$HOME/Android/Sdk
+fi
+if [ -d "$HOME/Android/Sdk/platform-tools" ]; then
+  export PATH="$HOME/Android/Sdk/platform-tools:$PATH"
+fi
+if [ -d "$HOME/Android/Sdk/tools" ]; then
+  export PATH="$HOME/Android/Sdk/tools:$PATH"
+fi
+
+# ruby settings
+#
+# ruby version management with rbenv
+if [ -d "$HOME/.rbenv" ]; then
+  export RBENV_ROOT="$HOME/.rbenv"
+  export PATH="$RBENV_ROOT/bin:$PATH"
+  eval "$(rbenv init -)"
+fi
+
+# ndenv settings
+#
+if [ -d "$HOME/.ndenv" ]; then
+  export NDENV_HOME="$HOME/.ndenv"
+  export PATH="$NDENV_HOME/bin:$PATH"
+  eval "$(ndenv init -)"
+fi
+
+# jenv settings
+#
+if [ -f "$HOME/.jenv/bin/jenv-init.sh" ]; then
+  source $HOME/.jenv/bin/jenv-init.sh
+fi
+
+# pyenv settings
+#
+if [ -d "$HOME/.pyenv/bin" ]; then
+  export PATH="$HOME/.pyenv/bin:$PATH"
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
+
+# php settings
+#
+# composer - path
+if [ -d "$HOME/AppData/Roaming/Composer/vendor/bin" ]; then
+  export PATH="$HOME/AppData/Roaming/Composer/vendor/bin:$PATH"
+fi
+if [ -d "$HOME/.composer/vendor/bin" ]; then
+  export PATH="$HOME/.composer/vendor/bin:$PATH"
+fi
+
+# node-js settings
+#
+# Enable persistent REPL history for `node`.
+export NODE_REPL_HISTORY="~/.node_history"
+# Allow 32³ entries; the default is 1000.
+export NODE_REPL_HISTORY_SIZE="32768"
+# Use sloppy mode by default, matching web browsers.
+export NODE_REPL_MODE="sloppy"
+
+# python settings
+#
+# Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
+export PYTHONIOENCODING="UTF-8"
+
+
+#####################################################################################################################################
+# Custom exports
+#####################################################################################################################################
+
+# Export platform utils
+if [[ -d "/home/sergio/Projects/elhub/oci/platform-utils/scripts" ]]; then
+  export PATH="$PATH:/home/sergio/Projects/elhub/oci/platform-utils/scripts"
+fi
+
+# python virtualenvwrapper
+export WORKON_HOME=~/.virtualenvs
+
+# Oracle InstantClient and cx-Oracle
+_instant_client_path="/opt/oracle/instantclient_19_3"
+export LD_LIBRARY_PATH="$_instant_client_path:$LD_LIBRARY_PATH"
+export PATH="$_instant_client_path:$PATH"
+export ORACLE_HOME="$_instant_client_path"
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# GO
+export GOPATH="/home/sergio/go"
+export GOBIN="$GOPATH/bin"
+export PATH="/usr/local/go/bin:$GOBIN:$PATH"
+# elhub
+export GOPROXY="https://:@jfrog.elhub.cloud/artifactory/api/go/elhub-go"
+
+# elhub vault
+export VAULT_ADDR="https://vault.elhub.cloud:8200"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/sergio/.sdkman"
+[[ -s "/home/sergio/.sdkman/bin/sdkman-init.sh" ]] && source "/home/sergio/.sdkman/bin/sdkman-init.sh"
+
