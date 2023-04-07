@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export DOTFILESSRCDIR="/home/sergio/dotfiles/"
+export DOTFILESSRCDIR="$HOME/dotfiles/"
 
 GIT_AUTHOR_NAME="Serhii Prodan"
 # shellcheck disable=SC2034
@@ -108,13 +108,15 @@ alias kp='_f(){ kill -9 $(ps aux | grep "$1" | grep -v grep | awk '"'"'{print $2
 # shellcheck disable=SC2142
 alias bakf='_f() { cp $1{,.bak.$(date +%s%N)} ; unset -f _f }; _f'
 alias listening='lsof -Pi | grep LISTEN'
-alias lzd='docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v /home/sergio/.lazydocker/config:/.config/jesseduffield/lazydocker lazyteam/lazydocker'
+# shellcheck disable=SC2139
+alias lzd="docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/.lazydocker/config:/.config/jesseduffield/lazydocker lazyteam/lazydocker"
 alias citrix='docker run --dns 8.8.8.8 --rm -it --shm-size=512m -p 6901:6901 -e VNC_PW=password -e VNCOPTIONS="-publicIP 127.0.0.1" serpro69/kasm-citrix-workspace'
 # python venv
 # strangely there is a 'workon' function, but no opposite one
 alias workoff='deactivate'
 
 # nvim installed via appimage
+# shellcheck disable=SC2139
 alias nvim="$HOME/bin/nvim.appimage"
 
 # similar to 'lzd' alias, but uses a docker context to run against a remote host
@@ -129,7 +131,7 @@ function lzdc() {
     echo "Usage: lzdc <context-name>" >&2
     return 0
   fi
-  docker --context $1 run --rm -it \
+  docker --context "$1" run --rm -it \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v /home/sergeip/.lazydocker/config:/.config/jesseduffield/lazydocker \
     docker.jfrog.elhub.cloud/lazyteam/lazydocker
@@ -147,13 +149,11 @@ then
     VIRTUALENVWRAPPER_PYTHON="$(command \which python3)"
 fi
 
-. /home/sergio/.local/bin/virtualenvwrapper.sh
-source "$HOME/.autoenv/activate.sh"
+[ -f "$HOME/.local/bin/virtualenvwrapper.sh" ] && source "$HOME/.local/bin/virtualenvwrapper.sh"
+[ -f "$HOME/.autoenv/activate.sh" ] && source "$HOME/.autoenv/activate.sh"
 
 # run gitwatch for todoer
-if [ -f "/home/sergio/todoer/startup.sh" ]; then
-  /home/sergio/todoer/startup.sh
-fi
+[ -f "$HOME/todoer/startup.sh" ] && "$HOME/todoer/startup.sh"
 
 # FuzzyFinder
 [ -f ~/.fzf.zsh ] && source "$HOME/.fzf.zsh"
