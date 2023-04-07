@@ -1,0 +1,123 @@
+#!/bin/sh
+#
+# File: .functions
+# Description:
+#   contains all functions defined by the user. Separated from shell rc files
+#   for portability between different machines.
+#   Avoid syntax and commands not portable to other different setups,
+#   check out http://hyperpolyglot.org/unix-shells for more information.
+
+# required to check if a command exists
+command -v exists &>/dev/null || alias exists='command -v &>/dev/null'
+
+# run command in the background
+function background() {
+  [[ -z "$@" ]] && return 1
+  "$@" &
+}
+
+# show command help with less (if it's more than one page)
+function help() {
+  [[ -z "$@" ]] && return 1
+  "$@" --help >/dev/null 2>&1 && "$@" --help | less -FX
+}
+
+# syntax-highlighted cat
+exists highlight && {
+  exists ccat || function ccat() {
+    # --validate-input  remove BOM, don't parse binary files
+    # --t 2             replace tabs with 2 spaces
+    # -I                include css style in output file
+    # -O ansi           output to std output by default
+    # --failsafe        if no syntax definition, copy input to output (cat-like)
+    # --quiet           suppress "unknown source file extension" error
+    highlight --validate-input -t 2 -I -O ansi --failsafe --quiet "$@"
+  }
+
+  function cless() {
+    ccat "$@" | less -FX
+  }
+  alias lesh='cless -S sh'
+}
+
+# swaps two files
+function swap() {
+  # Check if specified 2 files
+  [[ "$#" != 2 ]] && echo "Syntax: $0 <file1> <file2> ($# files provided)" && return 1
+
+  # Check if files specified are different
+  [[ "$1" == "$2" ]] && echo "Error: files must be different" && return 1
+
+  # Check if files specified exist and are files
+  [[ -e "$1" || -e "$2" ]] || { echo "Error: at least one file must exist" && return 1 }
+
+  # If only one file exists, just rename it. Otherwise create a temp file and swap them
+  if [[ ! -e "$1" ]]; then
+    command mv "$2" "$1"
+  elif [[ ! -f "$2" ]]; then
+    command mv "$1" "$2"
+  else
+    # Create a temporary file
+    tmpfile=$(mktemp $(dirname "$1")/XXXXXX)
+    command mv "$1" "$tmpfile" && command mv "$2" "$1" && command mv "$tmpfile" "$2"
+  fi
+
+  local ret=$?
+  [ $ret -eq 0 ] && echo "$1 <-> $2"
+  return $ret
+}
+
+# opens zshall man page and looks for specified argument
+function zman() {
+  PAGER="less -g -s '+/^       "$1"'" man zshall
+}
+
+# Use:
+# apt install $(apt-depends <package> [<package> ...])
+function apt-depends() {
+  LANG= apt-cache depends "$@" | sed -n 's/.*Depends: //p'
+}
+
+## ZSH TESTING FUNCTIONS
+
+zsh_docker_versions() {
+  local image=${1:-zshusers/zsh}
+  wget -qO- https://registry.hub.docker.com/v1/repositories/${image}/tags \
+    | command sed 's/[^0-9.]*"name": "\([^"]*\)"[^0-9.]*/\n\1\n/g;s/^\n//'
+}
+
+zsh_refresh_docker() {
+  local version
+  local image=${1:-ohmyzsh/zsh}
+  zsh_docker_versions "$image" | while read version; do
+    docker pull "$image:$version"
+  done
+}
+
+zsh_test_versions() {
+  local -A opts
+  zparseopts -D -E -A opts - -image:=image -glob:=glob
+
+  local image=${opts[--image]:-ohmyzsh/zsh}
+  local glob=${opts[--glob]:-*}
+
+  local input
+  case "$1" in
+  -) input="$(</dev/stdin)" ;;
+  esac
+
+  local version
+  command docker images -f "reference=$image:$glob" --format='{{.Tag}}' \
+    | tail +1 | sort -V | while read version; do
+    if (( $#input )); then
+      printf '\e[1;34m%s\e[0m\n' "$version: "
+      command docker run -i "$image:$version" zsh -dfis <<< "$input"
+      printf '\r\e[2K' # clear last line of output (empty zsh prompt)
+    else
+      printf '\e[1;34m%s\e[0m' "$version: "
+      command docker run "$image:$version" zsh -c "$@"
+    fi
+
+    sleep 0.2
+  done
+}
