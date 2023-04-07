@@ -13,3 +13,6 @@
 [submodule "bluepill/plugins/zsh-syntax-highlighting"]
 	path = bluepill/plugins/zsh-syntax-highlighting
 	url = git@github.com:zsh-users/zsh-syntax-highlighting.git
+[submodule "bluepill/themes/spaceship-prompt"]
+	path = bluepill/themes/spaceship-prompt
+	url = git@github.com:spaceship-prompt/spaceship-prompt.git

@@ -2,6 +2,8 @@
 export ZSH="$HOME/.redpill/ohmyzsh"
 ZSH_CUSTOM="$HOME/.redpill/bluepill"
 
+ZSH_THEME="spaceship"
+
 # Auto update settings
 zstyle ':omz:update' mode auto
 zstyle ':omz:update' frequency 1
