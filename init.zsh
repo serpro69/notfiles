@@ -50,13 +50,13 @@ function symlink() {
   fi
 }
 
-local redpill=".redpill"
+local ZDOT=".redpill"
 
 # Files to be symlinked to home directory
 local -A dotfiles
 dotfiles=(
 # directories
-  bluepill            "${ZDOT}/ohmyzsh-custom"
+  bluepill            "${ZDOT}/bluepill"
   git                 ".config/git"
   ohmyzsh             "${ZDOT}/ohmyzsh"
   tmux                ".tmux"
@@ -77,7 +77,7 @@ dotfiles=(
   vimrc               ".vimrc"
   vimrc.bundles       ".vimrc.bundles"
   vrapperrc           ".vrapperrc"
-  zprofile            "${ZDOT}/.zprofile"
+#  zprofile            "${ZDOT}/.zprofile"
   zshenv              "${ZDOT}/.zshenv"
   zshrc               "${ZDOT}/.zshrc"
 )
@@ -155,4 +155,4 @@ fi
 EOF
 }
 
-mkdir -p "$HOME/.zsh/completions"
+mkdir -p "$HOME/.redpill/completions"

@@ -1,58 +1,141 @@
-# TAKE A LOOK AT THIS SOURCES:
-#
-# https://wiki.archlinux.org/index.php/Zsh
-# http://ohmyz.sh/
-#
+# Path to your oh-my-zsh configuration.
+export ZSH="$HOME/.redpill/ohmyzsh"
+ZSH_CUSTOM="$HOME/.redpill/bluepill"
 
-if [[ $- != *i* ]] || [ -z "$PS1" ]; then
-  return 0
+# Auto update settings
+zstyle ':omz:update' mode auto
+zstyle ':omz:update' frequency 1
+
+# Uncomment following line if you want red dots to be displayed while waiting for completion
+COMPLETION_WAITING_DOTS="true"
+
+# Don't resolve symbolic links in z
+_Z_NO_RESOLVE_SYMLINKS="true"
+
+# Colorize settings
+ZSH_COLORIZE_TOOL=chroma
+# Nice ones: arduino friendly paraiso-dark solarized-dark solarized-dark256 vim
+ZSH_COLORIZE_STYLE=vim
+
+# Add plugins from the command line
+[[ -z "$add_plugins" ]] || read -A add_plugins <<< "$add_plugins"
+# Which plugins would you like to load?
+plugins=(
+  git
+  git-extras
+  gh
+  gcloud
+  kubectl
+  gitignore
+  z
+  dircycle
+  web-search
+  sudo
+  extract
+  history-substring-search
+  npm
+  yarn
+  github
+  docker-compose
+  sublime
+  colorize
+  colored-man-pages
+  copybuffer
+  dotenv
+  grc
+  fnm
+  rust
+  # custom plugins go here
+  fast-syntax-highlighting
+  git-prompt
+  ragequit
+  # add_plugins from the command line
+  $add_plugins
+)
+unset add_plugins
+
+# Don't load Oh My Zsh on TTYs
+[[ -z "$OMZ_LOAD" && $TTY = /dev/tty* && $(uname -a) != ([Dd]arwin*|[Mm]icrosoft*) ]] \
+  || source "$ZSH/oh-my-zsh.sh"
+
+## User configuration
+
+ZSH_THEME_TERM_TAB_TITLE_IDLE="%~"
+
+# add shell level information to prompt for when dealing with nested zsh sessions
+RPROMPT+="${RPROMPT+ }%(2L.{%F{yellow}%L%f}.)"
+ZLE_RPROMPT_INDENT=$(( SHLVL > 1 ? 0 : ZLE_RPROMPT_INDENT ))
+
+# add color to correct prompt
+SPROMPT="Correct '%F{red}%R%f' to '%F{green}%r%f' [nyae]? "
+
+# enable color support
+if [ -x /usr/bin/dircolors ]; then
+  test -r ~/.redpill/dircolors && eval "$(dircolors -b ~/.redpill/dircolors)" || eval "$(dircolors -b)"
+
+  # ls completion dir_colors
+  zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 fi
 
-# try to load global-bashrc
-if [ -f /etc/zsh/zshrc ]; then
-  . /etc/zsh/zshrc
-fi
+# complete . and .. directories
+zstyle ':completion:*' special-dirs true
 
-source ~/.zprofile
-source ~/.shellrc
+# paginated completion
+zstyle ':completion:*' list-prompt   ''
+zstyle ':completion:*' select-prompt ''
 
-## time on the right side
-strlen() {
-  FOO=$1
-  local zero='%([BSUbfksu]|([FB]|){*})'
-  LEN=${#${(S%%)FOO//$~zero/}}
-  echo $LEN
-}
+# Docker completion option stacking
+zstyle ':completion:*:*:docker:*' option-stacking yes
+zstyle ':completion:*:*:docker-*:*' option-stacking yes
 
-# show right prompt with date ONLY when command is executed
-preexec() {
-  DATE=$( date +"[%H:%M:%S]" )
-  local len_right=$( strlen "$DATE" )
-  len_right=$(( $len_right+1 ))
-  local right_start=$(($COLUMNS - $len_right))
+# correct behaviour when specifying commit parent (commit^)
+alias git='noglob git'
 
-  local len_cmd=$( strlen "$@" )
-  local len_prompt=$(strlen "$PROMPT" )
-  local len_left=$(($len_cmd+$len_prompt))
+# prevent adding files as key strokes when using bindkey
+alias bindkey='noglob bindkey'
 
-  RDATE="\033[${right_start}C ${DATE}"
+## Key bindings
+bindkey '^U' kill-buffer        # delete whole buffer
+bindkey '^[i' undo              # ALT + i more accessible Undo
+bindkey '^[[3;3~' kill-word     # ALT + DEL deletes whole forward-word
+bindkey '^H' backward-kill-word # CTRL + BACKSPACE deletes whole backward-word
+bindkey '^[l' down-case-word    # ALT + L lowercases word
 
-  if [ $len_left -lt $right_start ]; then
-    # command does not overwrite right prompt
-    # ok to move up one line
-    echo -e "\033[1A${RDATE}"
-  else
-    echo -e "${RDATE}"
-  fi
-}
+# beginning history search
+bindkey '^P' up-line-or-beginning-search
+bindkey '^N' down-line-or-beginning-search
 
-# Custom settings
-unset zle_bracketed_paste
+# insert all matches
+zle -C all-matches complete-word _generic
+bindkey '^Xa' all-matches
+zstyle ':completion:all-matches:*' insert yes
+zstyle ':completion:all-matches::::' completer _all_matches _complete
 
-autoload -U +X bashcompinit && bashcompinit
+## More zsh options
+setopt correct        # correction of commands
+setopt extended_glob  # adds ^ and other symbols as wildcards
+setopt share_history  # i want all typed commands to be available everywhere
 
-complete -o nospace -C /usr/local/bin/terraform terraform
+# zmv (mass mv / cp / ln)
+autoload zmv
+alias mmv='noglob zmv -W -v'
 
-zstyle :omz:plugins:ssh-agent agent-forwarding on
+# zed (zsh editor)
+autoload -Uz zed
 
-complete -o nospace -C /home/sergio/.local/lib/vault/vault vault
+# make less more friendly for non-text input files, see lesspipe(1)
+[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
+
+## Sourcing external files
+[[ -f ~/.redpill/aliases    ]] && . ~/.redpill/aliases    # custom aliases
+[[ -f ~/.redpill/functions  ]] && . ~/.redpill/functions  # custom functions
+
+# Workaround for https://github.com/ohmyzsh/ohmyzsh/issues/10156
+autoload +X -Uz _git && _git &>/dev/null
+functions[_git-stash]=${functions[_git-stash]//\\_git-notes /}
+
+# add current directory to the end of PATH
+path+=(.)
+
+# Load per-host zshrc overriding files
+for file in "$ZDOTDIR"/.zshrc.^(bck|new)(N); do . "$file"; done; unset file
