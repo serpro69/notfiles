@@ -17,6 +17,7 @@ To build the image run: `docker build -f test/Dockerfile -t dotfiles-test:latest
 #### Requirements
 
 - `vagrant`
+  - `vagrant scp` plugin (install via: `vagrant plugin install vagrant-scp`)
 - `virtualbox`
 
 #### Building a VM
