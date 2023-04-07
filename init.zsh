@@ -60,6 +60,7 @@ dotfiles=(
   git                 ".config/git"
   ohmyzsh             "${ZDOT}/ohmyzsh"
   tmux                ".tmux"
+  tmux/.tmux.conf     ".tmux.conf"
   aliases             "${ZDOT}/aliases"
   arcrc               ".arcrc"
   dash_to_panel       ".dash_to_panel"
