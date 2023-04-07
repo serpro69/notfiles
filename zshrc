@@ -48,7 +48,6 @@ plugins=(
   # custom plugins go here
   fast-syntax-highlighting
   git-prompt
-  ragequit
   # add_plugins from the command line
   $add_plugins
 )
