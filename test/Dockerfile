@@ -19,6 +19,7 @@ RUN apt-get update && \
 RUN apt-get update && apt-get -y install \
     curl \
     git \
+    tmux \
     vim \
     zsh
 
@@ -29,5 +30,7 @@ COPY . .
 RUN chown -R $USERNAME:$USERNAME /home/$USERNAME/dotfiles
 
 USER $USERNAME
+
+RUN chmod +x ./init.zsh && ./init.zsh
 
 CMD /bin/bash

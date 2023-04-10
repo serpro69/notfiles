@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Runs the terminal multiplexer based on the configuration settings and SSH connection
+
 if [[ -n "$SSH_TTY" ]]; then
   _TERM=$CONFIG_TERM_SSH
 else
@@ -18,7 +20,7 @@ fi
 
 if [[ "$_TERM" == "tmux" ]] && [[ -z "$TMUX" ]]; then
   # get the id of a deattached session
-  TMUX_ID="`tmux ls 2> /dev/null | grep -v -m 1 attached | cut -d: -f 1`"
+  TMUX_ID="$(tmux ls 2> /dev/null | grep -v -m 1 attached | cut -d: -f 1)"
 
   if [[ -z "$TMUX_ID" ]]; then
     # if not available create a new one
@@ -28,4 +30,3 @@ if [[ "$_TERM" == "tmux" ]] && [[ -z "$TMUX" ]]; then
     tmux attach-session -t "$TMUX_ID"
   fi
 fi
-

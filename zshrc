@@ -1,8 +1,25 @@
-# Path to your oh-my-zsh configuration.
-export ZSH="$HOME/.redpill/ohmyzsh"
-ZSH_CUSTOM="$HOME/.redpill/bluepill"
+#!/bin/sh
+#
+# File: .zshrc
+# Description:
+#   Sets up interactive shell configuration, aliases, and functions.
+#   This file is loaded every time a new interactive shell is started, so it
+#   should be kept as lightweight as possible.
+#   To enable these modifications, source this file from .zshenv or .zprofile:
+#
+#     . ~/.zshrc
+#
+#   NOTE: avoid syntax and commands that are not necessary for interactive use.
+#   Refer to the 'STARTUP/SHUTDOWN FILES' section of zsh(1) manpage for more information.
 
-ZSH_THEME="spaceship"
+# Must be sourced first to make sure configuration can be used in other sourced files
+source ~/.dotfiles_config
+
+# Sets ZSH and ZSH_CUSTOM variables
+# Sources configuration variables
+# Sets zsh theme and plugins
+source ~/.redpill/.shellrc
+source ~/.redpill/.zprofile
 
 # Auto update settings
 zstyle ':omz:update' mode auto
@@ -18,42 +35,6 @@ _Z_NO_RESOLVE_SYMLINKS="true"
 ZSH_COLORIZE_TOOL=chroma
 # Nice ones: arduino friendly paraiso-dark solarized-dark solarized-dark256 vim
 ZSH_COLORIZE_STYLE=vim
-
-# Add plugins from the command line
-[[ -z "$add_plugins" ]] || read -A add_plugins <<< "$add_plugins"
-# Which plugins would you like to load?
-plugins=(
-  git
-  git-extras
-  gh
-  gcloud
-  kubectl
-  gitignore
-  z
-  dircycle
-  web-search
-  sudo
-  extract
-  history-substring-search
-  npm
-  yarn
-  github
-  docker-compose
-  sublime
-  colorize
-  colored-man-pages
-  copybuffer
-  dotenv
-  grc
-  fnm
-  rust
-  # custom plugins go here
-  fast-syntax-highlighting
-  git-prompt
-  # add_plugins from the command line
-  $add_plugins
-)
-unset add_plugins
 
 # Don't load Oh My Zsh on TTYs
 [[ -z "$OMZ_LOAD" && $TTY = /dev/tty* && $(uname -a) != ([Dd]arwin*|[Mm]icrosoft*) ]] \
@@ -128,8 +109,12 @@ autoload -Uz zed
 [[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
 
 ## Sourcing external files
-[[ -f ~/.redpill/aliases    ]] && . ~/.redpill/aliases    # custom aliases
-[[ -f ~/.redpill/functions  ]] && . ~/.redpill/functions  # custom functions
+# * ~/.extra can be used for other settings you don’t want to commit.
+#for file in ~/.{dotfiles_config,path,load,exports,colors,icons,aliases,functions,extra}; do
+for file in ~/.redpill/{aliases,extra,functions}; do
+  [ -r "$file" ] && [ -f "$file" ] && source "$file"
+done
+unset file
 
 # Workaround for https://github.com/ohmyzsh/ohmyzsh/issues/10156
 autoload +X -Uz _git && _git &>/dev/null

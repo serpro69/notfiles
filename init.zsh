@@ -1,6 +1,6 @@
 #!/usr/bin/env -S zsh -df
 #
-# Symlinks files in this directory into $HOME directory
+# Sets up dotfiles in $HOME directory
 
 zmodload zsh/stat
 
@@ -66,19 +66,20 @@ dotfiles=(
   dash_to_panel       ".dash_to_panel"
   dircolors           "${ZDOT}/dircolors"
   dotfiles_config     ".dotfiles_config"
-  exports             ".exports"
+  exports             ".exports" # TODO this should move to zdot? or merged with zshenv?
+#  extra               "${ZDOT}/extra" # TODO needs to be added first? The purpose is to actually not to commit this file, so maybe needs to be merged with smth?
   functions           "${ZDOT}/functions"
   fzf.zsh             ".fzf.zsh"
   ghtoken             ".ghtoken"
   git-clone-init      ".git-clone-init"
   guake               ".guake"
   ideavimrc           ".ideavimrc"
-  shellrc             ".shellrc"
+  shellrc             "${ZDOT}/.shellrc"
   tmux.conf.local     ".tmux.conf.local"
   vimrc               ".vimrc"
   vimrc.bundles       ".vimrc.bundles"
   vrapperrc           ".vrapperrc"
-#  zprofile            "${ZDOT}/.zprofile"
+  zprofile            "${ZDOT}/.zprofile"
   zshenv              "${ZDOT}/.zshenv"
   zshrc               "${ZDOT}/.zshrc"
 )
