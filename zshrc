@@ -21,6 +21,14 @@ source ~/.dotfiles_config
 source ~/.redpill/.shellrc
 source ~/.redpill/.zprofile
 
+# Theme settings
+[[ -z "$CONFIG_ZSH_THEME" ]] && CONFIG_ZSH_THEME="random"
+# Set name of the theme to load.
+# Look in ~/.redpill/ohmyzsh/themes
+# Custom themes are in ~/.redpill/bluepill/themes
+# Optionally, if you set this to "random", it'll load a random theme each time that you enter the matrix.
+ZSH_THEME="$CONFIG_ZSH_THEME"
+
 # Auto update settings
 zstyle ':omz:update' mode auto
 zstyle ':omz:update' frequency 1
@@ -35,6 +43,16 @@ _Z_NO_RESOLVE_SYMLINKS="true"
 ZSH_COLORIZE_TOOL=chroma
 # Nice ones: arduino friendly paraiso-dark solarized-dark solarized-dark256 vim
 ZSH_COLORIZE_STYLE=vim
+
+# Add plugins from the command line
+[[ -z "$add_plugins" ]] || read -A add_plugins <<< "$add_plugins"
+
+# Which plugins would you like to load? (plugins can be found in ~/.redpill/plugins/*)
+# Custom plugins may be added to ~/.redpill/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=($(echo $CONFIG_ZSH_PLUGINS | sed 's/(//g' | sed 's/)//g') ${add_plugins})
+unset add_plugins
 
 # Don't load Oh My Zsh on TTYs
 [[ -z "$OMZ_LOAD" && $TTY = /dev/tty* && $(uname -a) != ([Dd]arwin*|[Mm]icrosoft*) ]] \
