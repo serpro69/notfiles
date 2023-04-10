@@ -29,8 +29,10 @@ COPY . .
 
 RUN chown -R $USERNAME:$USERNAME /home/$USERNAME/dotfiles
 
+RUN sudo chsh -s $(which zsh) $USERNAME
+
 USER $USERNAME
 
 RUN chmod +x ./init.zsh && ./init.zsh
 
-CMD /bin/bash
+CMD ["/usr/bin/zsh", "--login", "-i"]
