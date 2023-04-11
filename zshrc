@@ -12,14 +12,9 @@
 #   NOTE: avoid syntax and commands that are not necessary for interactive use.
 #   Refer to the 'STARTUP/SHUTDOWN FILES' section of zsh(1) manpage for more information.
 
-# Must be sourced first to make sure configuration can be used in other sourced files
-source ~/.dotfiles_config
-
-# Sets ZSH and ZSH_CUSTOM variables
-# Sources configuration variables
-# Sets zsh theme and plugins
-source ~/.redpill/.shellrc
-source ~/.redpill/.zprofile
+# Path to oh-my-zsh configuration.
+export ZSH="$HOME/.redpill/ohmyzsh"
+ZSH_CUSTOM="$HOME/.redpill/bluepill"
 
 # Theme settings
 [[ -z "$CONFIG_ZSH_THEME" ]] && CONFIG_ZSH_THEME="random"

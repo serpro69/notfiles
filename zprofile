@@ -15,16 +15,11 @@
 #
 # NB! Configurable options are set via ~/.dotfiles_config
 
-if [ -d $HOME/.redpill ]; then
+# Source dotfiles configuration
+source ~/.dotfiles_config
 
-  # Path to oh-my-zsh configuration.
-  export ZSH="$HOME/.redpill/ohmyzsh"
-  ZSH_CUSTOM="$HOME/.redpill/bluepill"
+# Source shellrc which starts the terminal multiplexer
+source ~/.redpill/.shellrc
 
-  # TODO check and remove
-  # source $HOME/.redpill/redpill-init-zsh.sh
-fi
-
-# TODO this shouldn't be here
-# Added by Toolbox App
-export PATH="$PATH:/home/sergio/.local/share/JetBrains/Toolbox/scripts"
+# TODO check and remove
+# source $HOME/.redpill/redpill-init-zsh.sh
