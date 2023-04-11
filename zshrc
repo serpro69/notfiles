@@ -16,6 +16,9 @@
 export ZSH="$HOME/.redpill/ohmyzsh"
 ZSH_CUSTOM="$HOME/.redpill/bluepill"
 
+# Source the zprofile in case we want to update dotfiles configuration dynamically
+source ~/.redpill/.zprofile
+
 # Theme settings
 [[ -z "$CONFIG_ZSH_THEME" ]] && CONFIG_ZSH_THEME="random"
 # Set name of the theme to load.
