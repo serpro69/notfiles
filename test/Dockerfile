@@ -1,8 +1,7 @@
-ARG USERNAME=sergio
-
 FROM ubuntu:jammy
 
-ARG USERNAME
+ARG USERNAME=sergio
+ARG DEBUG=false
 
 RUN apt-get update && \
     apt-get -y install sudo && \
@@ -30,6 +29,8 @@ COPY . .
 RUN chown -R $USERNAME:$USERNAME /home/$USERNAME/dotfiles
 
 RUN sudo chsh -s $(which zsh) $USERNAME
+
+RUN if [ "$DEBUG" = "true" ]; then echo 'setopt SOURCE_TRACE' | sudo tee -a /etc/zsh/zshenv; fi
 
 USER $USERNAME
 
