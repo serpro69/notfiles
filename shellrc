@@ -2,27 +2,28 @@
 
 # Runs the terminal multiplexer based on the configuration settings and SSH connection
 
-if [[ -n "$SSH_TTY" ]]; then
+if [ -n "$SSH_TTY" ]; then
   _TERM=$CONFIG_TERM_SSH
 else
   _TERM=$CONFIG_TERM_LOCAL
 fi
 
-if [[ "$_TERM" == "screen" ]] && [[ ! "$TERMCAP" =~ .*screen.* ]]; then
+echo "$TERMCAP" | grep -Eq '.*screen.*'
+if [ "$_TERM" = 'screen' ] && [ $? -eq 1 ]; then
   screen -xR remote
   exit
 fi
 
-if [[ "$_TERM" == "byobu" ]] && [[ -z "$BYOBU_BACKEND" ]]; then
+if [ "$_TERM" = 'byobu' ] && [ -z "$BYOBU_BACKEND" ]; then
   byobu
   exit
 fi
 
-if [[ "$_TERM" == "tmux" ]] && [[ -z "$TMUX" ]]; then
+if [ "$_TERM" = 'tmux' ] && [ -z "$TMUX" ]; then
   # get the id of a deattached session
   TMUX_ID="$(tmux ls 2> /dev/null | grep -v -m 1 attached | cut -d: -f 1)"
 
-  if [[ -z "$TMUX_ID" ]]; then
+  if [ -z "$TMUX_ID" ]; then
     # if not available create a new one
     tmux new-session
   else
