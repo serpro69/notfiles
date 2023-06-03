@@ -99,6 +99,10 @@ test -d "$HOME/code/go" && {
   PATH="$PATH:$HOME/code/go/bin"
 }
 
+# TODO this shouldn't be here
+# Added by Toolbox App
+test -d "$HOME"/.local/share/JetBrains/Toolbox/scripts && PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
+
 # rust cargo
 test -f "$HOME/.cargo/env" && . "$HOME/.cargo/env"
 
@@ -143,7 +147,3 @@ find "$(dirname -- "$0")" -name '.zshenv.*' -print0 | while read -d $'\0' file; 
   source "$file"
 done
 unset file
-
-# TODO this shouldn't be here
-# Added by Toolbox App
-export PATH="$PATH:/home/sergio/.local/share/JetBrains/Toolbox/scripts"
