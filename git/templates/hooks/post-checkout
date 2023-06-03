@@ -26,6 +26,8 @@ if [[ -z $remote ]]; then
   exit 0
 fi
 
+# shellcheck disable=SC2034
+# used in the .git-clone-init file
 url="$(git config --local remote.${remote}.url)"
 
 if [[ ! -f ~/.git-clone-init ]]; then
@@ -40,7 +42,8 @@ INPUT
   warn "\nMissing file ~/.git-clone-init. Template created..."
   exit 0
 fi
-. ~/.git-clone-init
+
+source "$HOME"/.git-clone-init
 
 if [[ -z $name || -z $email ]]; then
   warn "Failed to detect identity using ~/.git-clone-init."
@@ -51,3 +54,5 @@ git config --local user.email "$email"
 git config --local user.name "$name"
 
 echo -e "\nIdentity set to $name <$email>"
+
+unset name email url

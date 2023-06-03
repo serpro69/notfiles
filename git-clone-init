@@ -1,10 +1,12 @@
 #!/bin/bash
 
+# shellcheck disable=SC2154
+# assigned in post-checkout hook
 case "$url" in
-  *@github.com:*                ) email="serpro@disroot.org"; name="Serhii Prodan";;
-  *//github.com/*               ) email="serpro@disroot.org"; name="Serhii Prodan";;
-  *@gitlab.com:*                ) email="serpro@disroot.org"; name="Serhii Prodan";;
-  *//gitlab.com/*               ) email="serpro@disroot.org"; name="Serhii Prodan";;
+  *@github.com:*                ) email="serpro@disroot.org";          name="Serhii Prodan";;
+  *//github.com/*               ) email="serpro@disroot.org";          name="Serhii Prodan";;
+  *@gitlab.com:*                ) email="serpro@disroot.org";          name="Serhii Prodan";;
+  *//gitlab.com/*               ) email="serpro@disroot.org";          name="Serhii Prodan";;
   *code.elhub.cloud*            ) email="sergei.prodanov@statnett.no"; name="Serhii Prodan";;
   *phabricator.elhub.cloud*     ) email="sergei.prodanov@statnett.no"; name="Serhii Prodan";;
 esac
