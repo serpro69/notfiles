@@ -56,8 +56,14 @@ fi
 
 # node, npm binaries and settings
 test -d "$HOME/.npm/bin" && PATH="$HOME/.npm/bin:$PATH"
-export NPM_CONFIG_PREFIX=~/.npm
+export NPM_CONFIG_PREFIX="$HOME/.npm"
 export NODE_REPL_HISTORY=
+
+# nvm
+test -d "$HOME/.nvm" && {
+  # nvm is not compatible with the "NPM_CONFIG_PREFIX" environment variable
+  unset NPM_CONFIG_PREFIX
+}
 
 # fnm (nvm alternative)
 test -d "$HOME/.fnm" && {
