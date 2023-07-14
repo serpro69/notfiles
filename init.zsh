@@ -66,7 +66,7 @@ dotfiles=(
   dash_to_panel       ".dash_to_panel"
   dircolors           "${ZDOT}/dircolors"
   dotfiles_config     ".dotfiles_config"
-#  exports             ".exports" # TODO this should move to zdot? or merged with zshenv? NB! Currently not sourced
+  exports             "${ZDOT}/exports" # TODO merge with zshenv? NB! Currently sourced via zshrc
 #  extra               "${ZDOT}/extra" # TODO needs to be added first? The purpose is to actually not to commit this file, so maybe needs to be merged with smth?
   functions           "${ZDOT}/functions"
   fzf.zsh             ".fzf.zsh"

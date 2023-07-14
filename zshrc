@@ -127,7 +127,7 @@ autoload -Uz zed
 ## Sourcing external files
 # * ~/.extra can be used for other settings you don’t want to commit.
 #for file in ~/.{dotfiles_config,path,load,exports,colors,icons,aliases,functions,extra}; do
-for file in ~/.redpill/{aliases,extra,functions}; do
+for file in ~/.redpill/{aliases,exports,extra,functions}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset file

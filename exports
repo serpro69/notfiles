@@ -2,7 +2,7 @@
 
 export DIR_DOTFILES=$(pwd);
 
-# make vim the default editor
+# make less the default pager
 export PAGER=${PAGER:-"less"}
 
 # use sublime text for local changes
@@ -85,7 +85,7 @@ GIT_PROMPT_SHOW_UNTRACKED_FILES=${GIT_PROMPT_SHOW_UNTRACKED_FILES:-"all"} # can 
 # GIT_PROMPT_START="..."    # uncomment for custom prompt start sequence
 # GIT_PROMPT_END="..."      # uncomment for custom prompt end sequence
 # GIT_PROMPT_THEME="Custom" # use custom .git-prompt-colors.sh
-GIT_PROMPT_THEME=${GIT_PROMPT_THEME:-"voku"} # use theme
+GIT_PROMPT_THEME=${GIT_PROMPT_THEME:-"spaceship"} # use theme
 
 # make the "sudo" prompt more useful, without requiring access to "visudo"
 export SUDO_PROMPT=${SUDO_PROMPT:-"[sudo] password for %u on %h: "}
@@ -391,12 +391,18 @@ export PYTHONIOENCODING="UTF-8"
 #####################################################################################################################################
 
 # Export platform utils
-if [[ -d "/home/sergio/Projects/elhub/oci/platform-utils/scripts" ]]; then
-  export PATH="$PATH:/home/sergio/Projects/elhub/oci/platform-utils/scripts"
+if [[ -d "$HOME/Projects/elhub/oci/platform-utils/scripts" ]]; then
+  export PATH="$PATH:$HOME/Projects/elhub/oci/platform-utils/scripts"
 fi
 
-# python virtualenvwrapper
-export WORKON_HOME=~/.virtualenvs
+# python virtualenv + virtualenvwrapper
+
+if virtualenv --help >/dev/null 2>&1 && [ -f $HOME/.local/bin/virtualenvwrapper.sh ]; then
+  export WORKON_HOME=~/.virtualenvs
+  export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+  export VIRTUALENVWRAPPER_VIRTUALENV=$(readlink -f $(which virtualenv))
+  source "$HOME/.local/bin/virtualenvwrapper.sh"
+fi
 
 # Oracle InstantClient and cx-Oracle
 _instant_client_path="/opt/oracle/instantclient_19_3"
@@ -410,7 +416,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # GO
-export GOPATH="/home/sergio/go"
+export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
 export PATH="/usr/local/go/bin:$GOBIN:$PATH"
 # elhub
@@ -420,6 +426,6 @@ export GOPROXY="https://:@jfrog.elhub.cloud/artifactory/api/go/elhub-go"
 export VAULT_ADDR="https://vault.elhub.cloud:8200"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/home/sergio/.sdkman"
-[[ -s "/home/sergio/.sdkman/bin/sdkman-init.sh" ]] && source "/home/sergio/.sdkman/bin/sdkman-init.sh"
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
