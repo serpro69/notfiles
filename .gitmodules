@@ -16,3 +16,6 @@
 [submodule "bluepill/themes/spaceship-prompt"]
 	path = bluepill/themes/spaceship-prompt
 	url = git@github.com:spaceship-prompt/spaceship-prompt.git
+[submodule "bluepill/plugins/zsh-vi-mode"]
+	path = bluepill/plugins/zsh-vi-mode
+	url = https://github.com/jeffreytse/zsh-vi-mode

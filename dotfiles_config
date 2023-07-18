@@ -3,7 +3,7 @@
 CONFIG_DEFAULT_USER="sergio"
 CONFIG_CHARSET_UTF8=true
 CONFIG_LANG="en_US"
-CONFIG_ZSH_PLUGINS="(git git-extras gh gcloud kubectl gitignore z dircycle web-search sudo extract history-substring-search npm yarn github docker-compose sublime colorize colored-man-pages copybuffer dotenv grc fnm rust fast-syntax-highlighting git-prompt)"
+CONFIG_ZSH_PLUGINS="(zsh-vi-mode git git-extras gh gcloud kubectl gitignore z dircycle web-search sudo extract history-substring-search npm yarn github docker-compose sublime colorize colored-man-pages copybuffer dotenv grc fnm rust fast-syntax-highlighting git-prompt)"
 CONFIG_ZSH_THEME="spaceship"
 CONFIG_TERM_LOCAL="tmux" # terminal multiplexer: screen byobu tmux
 CONFIG_TERM_SSH=""
