@@ -59,6 +59,7 @@ unset add_plugins
 ## User configuration
 
 ZSH_THEME_TERM_TAB_TITLE_IDLE="%~"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#767676,underline"
 
 # add shell level information to prompt for when dealing with nested zsh sessions
 RPROMPT+="${RPROMPT+ }%(2L.{%F{yellow}%L%f}.)"
