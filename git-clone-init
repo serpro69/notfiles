@@ -3,10 +3,8 @@
 # shellcheck disable=SC2154
 # assigned in post-checkout hook
 case "$url" in
-  *@github.com:*                ) email="serpro@disroot.org";          name="Serhii Prodan";;
-  *//github.com/*               ) email="serpro@disroot.org";          name="Serhii Prodan";;
-  *@gitlab.com:*                ) email="serpro@disroot.org";          name="Serhii Prodan";;
-  *//gitlab.com/*               ) email="serpro@disroot.org";          name="Serhii Prodan";;
-  *code.elhub.cloud*            ) email="sergei.prodanov@statnett.no"; name="Serhii Prodan";;
-  *phabricator.elhub.cloud*     ) email="sergei.prodanov@statnett.no"; name="Serhii Prodan";;
+  *@github.com:*                ) email="22973227+serpro69@users.noreply.github.com"; name="Serhii Prodan";;
+  *//github.com/*               ) email="22973227+serpro69@users.noreply.github.com"; name="Serhii Prodan";;
+  *@gitlab.com:*                ) email="237197-serpro69@users.noreply.gitlab.com"; name="Serhii Prodan";;
+  *//gitlab.com/*               ) email="237197-serpro69@users.noreply.gitlab.com"; name="Serhii Prodan";;
 esac
