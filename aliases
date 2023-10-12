@@ -22,6 +22,10 @@ alias ll='l -lF'
 alias la='l -A'
 alias lla='ll -AF'
 
+# exa
+alias ela='exa -laFh'
+alias el='exa -lFh --group-directories-first'
+
 # safe copy, move and delete
 alias cp='cp -i'
 alias mv='mv -i'
@@ -31,12 +35,23 @@ if is_darwin; then
     ! exists grm || alias rm='command grm -I'
 fi
 
+# backup a file
+alias bakf='_f() { cp $1{,.bak.$(date +%s%N)} ; unset -f _f }; _f'
+
+# safe chown
+alias chown='chown --preserve-root'
+alias chmod='chmod --preserve-root'
+alias chgrp='chgrp --preserve-root'
+
 # directories
 unalias mkdir 2>/dev/null
 alias md='mkdir -p'
 alias rd='rmdir'
 alias po='popd'
 alias pu='pushd'
+
+# create and move to a temp dir
+alias cdtemp='cd $(mktemp -d)'
 
 # hdd
 is_darwin && alias df='df -h' || alias df='df -h -x squashfs'
@@ -48,7 +63,13 @@ alias duss='dus | LANG=C sort -h'
 # disk space used by system folders
 alias dusss="LANG=C du -s /{{boot,lib*,opt,sbin,tmp,usr,var}/*(N),{bin,etc,root}} 2>/dev/null | grep -vE '^(0|[0-9.]+K)' | LANG=C sort -h"
 
+# shellcheck disable=SC2142
+alias dskoff='_f(){ udisksctl power-off -b "$1"; unset -f _f }; _f'
+
 alias diff='command diff -u --color'
+
+# kill processes by partial name match
+alias kp='_f(){ kill -9 $(ps aux | grep "$1" | grep -v grep | awk '"'"'{print $2}'"'"'); unset -f _f }; _f'
 
 # sudo aliases
 alias sudo='sudo '                      # expand aliases after sudo
@@ -56,6 +77,7 @@ alias usersu='sudo -E -s'               # preserve environment (-E option) when 
 alias sudoit='sudo env PATH="$PATH" '   # preserve user PATH
 
 ## git
+# NB! internal git aliases are in git/config
 
 alias gap='git add -p'
 alias gdw='git diff -w'
@@ -87,7 +109,36 @@ alias grhs='git reset --soft'
 alias 'grh!'="git reset --hard"
 unalias grhh 2>/dev/null
 
-## utilities
+## docker
+
+# lazy-docker
+alias lzd="docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/.lazydocker/config:/.config/jesseduffield/lazydocker lazyteam/lazydocker"
+
+# similar to 'lzd' alias, but uses a docker context to run against a remote host
+# used only against elhub contexts for now
+# shellcheck disable=SC2112
+lzdc() {
+  if [[ $# -eq 0 ]]; then
+    echo "\e[01;31mError: missing docker context name. Run with --help for usage details\e[0m" >&2
+    return 1
+  elif [[ "$*" == *"--help"* ]]; then
+    echo "Runs lazydocker on a docker context host"
+    echo "Usage: lzdc <context-name>" >&2
+    return 0
+  fi
+  docker --context "$1" run --rm -it \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v /home/sergeip/.lazydocker/config:/.config/jesseduffield/lazydocker \
+    docker.jfrog.elhub.cloud/lazyteam/lazydocker
+}
+
+## python
+
+# virtualenvwrapper
+# strangely there is a 'workon' function, but no opposite
+alias workoff='deactivate'
+
+## utilities / apps
 
 # open with system default application
 alias o='open_command'
@@ -111,9 +162,14 @@ is_zsh && {
     alias -g :NUL='&>/dev/null'
 }
 
+## networking
+
 # ip command
 alias ip='ip -color'
 alias ipb='ip -color -brief'
+
+# list all LISTEN ports
+alias listening='lsof -Pi | grep LISTEN'
 
 # Visual Studio Code
 alias vsc='code-insiders'
@@ -121,5 +177,41 @@ alias vsc.='code-insiders .'
 alias ohmyzsh='vsc "$ZSH"'
 alias zshrc='vsc "${ZDOTDIR:-$HOME}/.zshrc"'
 
+# citrix-in-docker with KASM
+alias citrix='docker run --dns 8.8.8.8 --rm -it --shm-size=512m -p 6901:6901 -e VNC_PW=password -e VNCOPTIONS="-publicIP 127.0.0.1" serpro69/kasm-citrix-workspace'
+
 # last exit status
 alias '?'='echo $?'
+
+# reminders via system notifications
+remind() {
+  local summary=$1
+  local body=$2
+  echo "notify-send -u critical -t 10 '${summary}' '${body}'" | at "${@:3}"
+}
+
+# fuzzy history
+fh() {
+  print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -r 's/ *[0-9]*\*? *//' | sed -r 's/\\/\\\\/g')
+}
+
+# hashicorp vault
+vl() {
+  if [[ $# -eq 0 ]]; then
+    echo "\e[01;31mError: missing username argument. Run with --help for usage details\e[0m" >&2
+    return 1
+  elif [[ "$*" == *"--help"* ]]; then
+    echo "Runs vault login with ldap method and a given username"
+    echo "Usage: vl <username>" >&2
+    return 0
+  fi
+  unset VAULT_TOKEN
+  vault login -method=ldap username="$1"
+  export VAULT_TOKEN=$(vault print token)
+}
+
+
+## clipboard
+alias clipcat='_f(){ cat "$1" | xclip -selection clipboard; unset -f _f }; _f'
+alias clippwd='_f(){ pwd | xclip -selection clipboard | trim; unset -f _f}; _f'
+
