@@ -390,11 +390,6 @@ export PYTHONIOENCODING="UTF-8"
 # Custom exports
 #####################################################################################################################################
 
-# Export platform utils
-if [[ -d "$HOME/Projects/elhub/oci/platform-utils/scripts" ]]; then
-  export PATH="$PATH:$HOME/Projects/elhub/oci/platform-utils/scripts"
-fi
-
 # python virtualenv + virtualenvwrapper
 
 if virtualenv --help >/dev/null 2>&1 && [ -f $HOME/.local/bin/virtualenvwrapper.sh ]; then
@@ -419,11 +414,6 @@ export NVM_DIR="$HOME/.nvm"
 export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
 export PATH="/usr/local/go/bin:$GOBIN:$PATH"
-# elhub
-export GOPROXY="https://:@jfrog.elhub.cloud/artifactory/api/go/elhub-go"
-
-# elhub vault
-export VAULT_ADDR="https://vault.elhub.cloud:8200"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
