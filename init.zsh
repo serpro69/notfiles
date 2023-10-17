@@ -67,7 +67,6 @@ dotfiles=(
   dircolors           "${ZDOT}/dircolors"
   dotfiles_config     ".dotfiles_config"
   exports             "${ZDOT}/exports" # TODO merge with zshenv? NB! Currently sourced via zshrc
-#  extra               "${ZDOT}/extra" # TODO needs to be added first? The purpose is to actually not to commit this file, so maybe needs to be merged with smth?
   functions           "${ZDOT}/functions"
   fzf.zsh             ".fzf.zsh"
   ghtoken             ".ghtoken"
@@ -95,6 +94,20 @@ for file (${(ko)dotfiles}); do
   echo -n "Linking $file... "
   symlink "$src" "$dest"
 done
+
+# additional stuff via 'extra'
+local extra_dest="${HOME}/${ZDOT}/extra"
+read "link_extra?Do you want to link the 'extra' utils file? (yes/no): "
+if [[ -e "$extra_dest" || -L "$extra_dest" ]]; then
+  echo -n "Linking extra to $extra_dest... "
+  msg SKIP "file or link already exists"
+elif [[ "$link_extra" == "yes" || "$link_extra" == "y" ]]; then
+  echo -n "Linking extra to $extra_dest... "
+  ln -s "$DIR/extra" "$extra_dest"
+  msg OK
+else
+  echo -n "Note: you can add '$extra_dest' to include extra shell functionality in your environment "
+fi
 
 # Files specific to the platform
 local system

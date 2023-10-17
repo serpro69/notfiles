@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# run google-cloud-cli via docker
+gcloud-init () {
+  if [ ! -d "$HOME/.config/gcloud" ]; then
+    mkdir -p "$HOME/.config/gcloud"
+  fi
+
+  if [[ "$*" == *"--help"* ]]; then
+    echo "Initialize gcloud to be used via docker"
+    return 0
+  fi
+  docker run --rm -ti -v $HOME/.config/gcloud:/root/.config/gcloud gcr.io/google.com/cloudsdktool/google-cloud-cli gcloud init
+}
+
+alias gcloud="docker run --rm -ti -v $HOME/.config/gcloud:/root/.config/gcloud gcr.io/google.com/cloudsdktool/google-cloud-cli gcloud"
