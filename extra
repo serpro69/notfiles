@@ -10,7 +10,7 @@ gcloud-init () {
     echo "Initialize gcloud to be used via docker"
     return 0
   fi
-  docker run --rm -ti -v $HOME/.config/gcloud:/root/.config/gcloud gcr.io/google.com/cloudsdktool/google-cloud-cli gcloud init
+  docker run --rm -ti -u $(id -u):$(id -g) -v /etc/passwd:/etc/passwd -v $HOME/.config/gcloud:$HOME/.config/gcloud gcr.io/google.com/cloudsdktool/google-cloud-cli gcloud init
 }
 
-alias gcloud="docker run --rm -ti -v $HOME/.config/gcloud:/root/.config/gcloud gcr.io/google.com/cloudsdktool/google-cloud-cli gcloud"
+alias gcloud="docker run --rm -ti -u `id -u`:`id -g` -v /etc/passwd:/etc/passwd -v $HOME/.config/gcloud:$HOME/.config/gcloud gcr.io/google.com/cloudsdktool/google-cloud-cli gcloud"
