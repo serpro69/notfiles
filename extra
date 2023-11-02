@@ -13,7 +13,7 @@ gcloud-init () {
   docker run --rm -ti -u $(id -u):$(id -g) -v /etc/passwd:/etc/passwd -v $HOME/.config/gcloud:$HOME/.config/gcloud gcr.io/google.com/cloudsdktool/google-cloud-cli gcloud init
 }
 
-alias gcloud="docker run --rm -ti -u `id -u`:`id -g` -v /etc/passwd:/etc/passwd -v $HOME/.config/gcloud:$HOME/.config/gcloud gcr.io/google.com/cloudsdktool/google-cloud-cli gcloud"
+alias gcloud="docker run --rm -ti -u `id -u`:`id -g` -v /etc/passwd:/etc/passwd -v $HOME/.config/gcloud:$HOME/.config/gcloud -v $HOME/.kube:$HOME/.kube gcr.io/google.com/cloudsdktool/google-cloud-cli gcloud"
 
 alias golangci-lint="docker run --rm -v $PWD:/app -w /app golangci/golangci-lint golangci-lint"
 
