@@ -24,6 +24,7 @@
   remove-all-refs = for-each-ref --format="%(refname)" refs/original/ | xargs -n 1 git update-ref -d
   fixup-head = commit --fixup=HEAD
   pull-and-rebase-master = !sh -c 'git pull && git rebase origin/master master'
+  pull-and-rebase-main = !sh -c 'git pull && git rebase origin/main main'
   #pull-all = "!_f() { find . -type d -mindepth 1 -maxdepth 1 -exec git --git-dir={}/.git --work-tree=$PWD/{} pull-and-rebase-master \; }; _f"
   run-all = "!f() { ls | xargs -I{} git -C {} $1; }; f"
   atag = "!f() { git tag -a $1 $2 -m \"Release $1\"; }; f"
