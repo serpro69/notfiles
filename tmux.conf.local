@@ -346,7 +346,7 @@ tmux_conf_battery_bar_length="auto"
 #   - "colour_full_fg,colour_empty_fg,colour_bg"
 tmux_conf_battery_bar_palette="gradient"
 #tmux_conf_battery_bar_palette="#d70000,#e4e4e4,#000000"   # red, white, black
-#tmux_conf_battery_bar_palette="$tmux_conf_theme_colour_11,$tmux_conf_theme_colour_16,$tmux_conf_theme_colour_1"   # red, white, black
+tmux_conf_battery_bar_palette="$tmux_conf_theme_colour_11,$tmux_conf_theme_colour_16,$tmux_conf_theme_colour_1"   # red, white, black
 
 # battery hbar palette, possible values are:
 #   - gradient (default)
