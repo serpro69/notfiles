@@ -74,6 +74,7 @@ dotfiles=(
   guake               ".guake"
   ideavimrc           ".ideavimrc"
   shellrc             "${ZDOT}/.shellrc"
+  spaceshiprc.zsh     ".spaceshiprc.zsh"
   tmux.conf.local     ".tmux.conf.local"
   vimrc               ".vimrc"
   vimrc.bundles       ".vimrc.bundles"
