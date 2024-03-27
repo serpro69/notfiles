@@ -5,6 +5,8 @@
 case "$url" in
   *@github.com:*                ) email="22973227+serpro69@users.noreply.github.com"; name="Serhii Prodan";;
   *//github.com/*               ) email="22973227+serpro69@users.noreply.github.com"; name="Serhii Prodan";;
-  *@gitlab.com:*                ) email="237197-serpro69@users.noreply.gitlab.com"; name="Serhii Prodan";;
-  *//gitlab.com/*               ) email="237197-serpro69@users.noreply.gitlab.com"; name="Serhii Prodan";;
+  *@gitlab.com:*                ) email="237197-serpro69@users.noreply.gitlab.com";   name="Serhii Prodan";;
+  *//gitlab.com/*               ) email="237197-serpro69@users.noreply.gitlab.com";   name="Serhii Prodan";;
+  # wlcmtech
+  *//*amazonaws.com/*           ) email="22973227+serpro69@users.noreply.github.com"; name="Sergio Pro";;
 esac

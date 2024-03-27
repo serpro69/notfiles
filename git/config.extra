@@ -67,6 +67,9 @@
   added = yellow
   changed = green
   untracked = cyan
+[credential]
+  helper = !aws --profile ww-cicd-developer codecommit credential-helper $@
+  UseHttpPath = true
 [interactive]
   diffFilter = diff-highlight
 #[pager]
