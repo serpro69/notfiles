@@ -67,7 +67,8 @@
   added = yellow
   changed = green
   untracked = cyan
-[credential]
+[credential "https://git-codecommit.eu-north-1.amazonaws.com"]
+  # credential helper for AWS CodeCommit
   helper = !aws --profile ww-cicd-developer codecommit credential-helper $@
   UseHttpPath = true
 [interactive]
