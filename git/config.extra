@@ -21,6 +21,7 @@
   sshow = !sh -c 'git stash show stash^{/$*} -p' -
   sapply = !sh -c 'git stash apply stash^{/$*}' -
   ssave = !sh -c 'git stash save "${1}"' -
+  stasha = stash --all
   remove-all-refs = for-each-ref --format="%(refname)" refs/original/ | xargs -n 1 git update-ref -d
   fixup-head = commit --fixup=HEAD
   pull-and-rebase-master = !sh -c 'git pull && git rebase origin/master master'
