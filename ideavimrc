@@ -21,14 +21,15 @@ nnoremap <leader>gf :action GotoFile<cr>
 nnoremap <leader>gc :action GotoClass<cr>
 nnoremap <leader>gd :action GotoDeclaration<cr>
 nnoremap <leader>gi :action GotoImplementation<cr>
-nnoremap <leader>gs :action GotoSuperMethod<CR>
+nnoremap <leader>gm :action GotoSuperMethod<CR>
 " same with auto-splits to right
 "nnoremap <leader>gD :action GotoDeclaration<CR>:action SplitVertically<CR>:action PrevSplitter<CR>:action PopupMenu-return<CR>:action NextSplitter<CR>
 "nnoremap <leader>gI :action GotoImplementation<CR>:action SplitVertically<CR>:action PrevSplitter<CR>:action PopupMenu-return<CR>:action NextSplitter<CR>
 "nnoremap <leader>gS :action GotoSuperMethod<CR>:action SplitVertically<CR>:action PrevSplitter<CR>:action PopupMenu-return<CR>:action NextSplitter<CR>
 nnoremap <leader>gD :action SplitVertically<CR>:action GotoDeclaration<CR>
 nnoremap <leader>gI :action SplitVertically<CR>:action GotoImplementation<CR>
-nnoremap <leader>gS :action SplitVertically<CR>:action GotoSuperMethod<CR>
+nnoremap <leader>gS :action SplitVertically<CR>:action GotoSymbol<CR>
+nnoremap <leader>gM :action SplitVertically<CR>:action GotoSuperMethod<CR>
 
 nnoremap <leader>ff :action FindInPath<cr>
 nnoremap <leader>fu :action FindUsages<cr>
