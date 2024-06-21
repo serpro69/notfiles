@@ -13,35 +13,115 @@ gcloud-init () {
   docker run --rm -ti -u $(id -u):$(id -g) -v /etc/passwd:/etc/passwd -v $HOME/.config/gcloud:$HOME/.config/gcloud serpro69/google-cloud-cli gcloud init
 }
 
-gcloud() {
-  # Define the base command for running the Google Cloud CLI Docker container
+gcloud_wrapper() {
+  # Run Google Cloud CLI commands inside a Docker container.
+  #
+  # Usage:
+  #   gcloud_wrapper [--bash-exec] [--mount-docker] [gcloud_command [args...]]
+  #
+  # Options:
+  #   --bash-exec    Start an interactive bash shell inside the Docker container.
+  #   --mount-docker Mount Docker configuration directory ($HOME/.docker) inside the container.
+  #
+  # Description:
+  #   This function facilitates running Google Cloud CLI commands inside a Docker container
+  #   using the 'serpro69/google-cloud-cli' image. It ensures necessary configurations
+  #   are mounted and sets a working directory inside the container. By default, it runs
+  #   'gcloud' commands; with '--bash-exec', it starts an interactive bash session inside
+  #   the container.
+  #
+  # Docker Mounts:
+  #   - /etc/passwd:/etc/passwd           Host's passwd file is mounted to the container.
+  #   - $HOME/.config/gcloud:$HOME/.config/gcloud   Mounts gcloud configuration directory.
+  #   - $HOME/.kube:$HOME/.kube           Mounts kube configuration directory.
+  #   - $(pwd):$HOME/workdir              Mounts current directory on host to container's workdir.
+  #
+  # Examples:
+  #   gcloud_wrapper --mount-docker auth configure-docker europe-north1-docker.pkg.dev
+  #     - configure docker authentication with gcloud helper
+  #       (see also: https://cloud.google.com/artifact-registry/docs/docker/authentication#gcloud-helper )
+  #
+  #   gcloud_wrapper --mount-docker compute instances list
+  #     - Runs 'gcloud compute instances list' inside the Docker container.
+  #
+  #   gcloud_wrapper --bash-exec
+  #     - Starts an interactive bash session inside the Docker container.
+
   local docker_cmd=("docker" "run" "--rm" "-ti" "-u" "$(id -u):$(id -g)"
                     "-v" "/etc/passwd:/etc/passwd"
                     "-v" "${HOME}/.config/gcloud:${HOME}/.config/gcloud" # mount gcloud configuration
                     "-v" "${HOME}/.kube:${HOME}/.kube" # mount kube configuration
                     "-v" "$(pwd):${HOME}/workdir" # mount PWD on the host to a working dir in container
-                    "-w" "${HOME}/workdir" # set working directory in the container
-                    "serpro69/google-cloud-cli")
+                    "-w" "${HOME}/workdir") # set working directory in the container
 
-  # Initialize a flag for debug mode
+  local image_name="serpro69/google-cloud-cli"
+
   local bash_mode=false
   local args=()
 
-  # Loop through the arguments
-  for arg in "$@"; do
-    if [[ "$arg" == "--bash-exec" ]]; then
-      bash_mode=true
-    else
-      args+=("$arg")
-    fi
+  # Function to print usage instructions
+  print_usage() {
+    echo "Usage: gcloud_wrapper [--bash-exec] [--mount-docker] [gcloud_command [args...]]"
+    echo ""
+    echo "Options:"
+    echo "  --bash-exec    Start an interactive bash shell inside the Docker container."
+    echo "  --mount-docker Mount Docker configuration directory (\$HOME/.docker) inside the container."
+    echo ""
+    echo "Description:"
+    echo "  This function facilitates running Google Cloud CLI commands inside a Docker container"
+    echo "  using the 'serpro69/google-cloud-cli' image. It ensures necessary configurations"
+    echo "  are mounted and sets a working directory inside the container. By default, it runs"
+    echo "  'gcloud' commands; with '--bash-exec', it starts an interactive bash session inside"
+    echo "  the container."
+    echo ""
+    echo "Docker Mounts:"
+    echo "  - /etc/passwd:/etc/passwd                       Host's passwd file is mounted to the container."
+    echo "  - \$HOME/.config/gcloud:\$HOME/.config/gcloud   Mounts gcloud configuration directory."
+    echo "  - \$HOME/.kube:\$HOME/.kube                     Mounts kube configuration directory."
+    echo "  - \$(pwd):\${HOME}/workdir                      Mounts current directory on host to container's workdir."
+    echo ""
+    echo "  - \$HOME/.docker:\${HOME}/.docker               Mounts docker configuration directory (requires '--mount-docker' option)."
+    echo ""
+    echo "Examples:"
+    echo "  gcloud_wrapper --mount-docker auth configure-docker europe-north1-docker.pkg.dev"
+    echo "    - configure docker authentication with gcloud helper"
+    echo "      (see also: https://cloud.google.com/artifact-registry/docs/docker/authentication#gcloud-helper )"
+    echo ""
+    echo "  gcloud_wrapper --mount-docker compute instances list"
+    echo "    - Runs 'gcloud compute instances list' inside the Docker container."
+    echo ""
+    echo "  gcloud_wrapper --bash-exec"
+    echo "    - Starts an interactive bash session inside the Docker container."
+    echo ""
+  }
+
+  # Process arguments
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --bash-exec)
+        bash_mode=true
+        shift
+        ;;
+      --mount-docker)
+        docker_cmd+=("-v" "${HOME}/.docker:${HOME}/.docker")
+        shift
+        ;;
+      -hh|--help-msg)
+        print_usage
+        return 0
+        ;;
+      *)
+        args+=("$1")
+        shift
+        ;;
+    esac
   done
 
-  # If debug mode is enabled, start a bash shell in the container
+  # Execute the command based on options
   if $bash_mode; then
-    "${docker_cmd[@]}" "/bin/bash"
+    "${docker_cmd[@]}" "${image_name}" "/bin/bash"
   else
-    # Otherwise, pass all provided arguments to the gcloud command in the container
-    "${docker_cmd[@]}" "gcloud" "${args[@]}"
+    "${docker_cmd[@]}" "${image_name}" "gcloud" "${args[@]}"
   fi
 }
 
