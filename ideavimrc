@@ -14,6 +14,9 @@ call ToggleNumber()
 call ToggleNumber()
 call ToggleNumber()
 
+noremap <Space> <Nop>
+map <Space> <leader>
+
 " IDEA
 nnoremap <leader>ga :action GotoAction<cr>
 nnoremap <leader>gs :action GotoSymbol<cr>

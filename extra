@@ -10,10 +10,40 @@ gcloud-init () {
     echo "Initialize gcloud to be used via docker"
     return 0
   fi
-  docker run --rm -ti -u $(id -u):$(id -g) -v /etc/passwd:/etc/passwd -v $HOME/.config/gcloud:$HOME/.config/gcloud gcr.io/google.com/cloudsdktool/google-cloud-cli gcloud init
+  docker run --rm -ti -u $(id -u):$(id -g) -v /etc/passwd:/etc/passwd -v $HOME/.config/gcloud:$HOME/.config/gcloud serpro69/google-cloud-cli gcloud init
 }
 
-alias gcloud="docker run --rm -ti -u `id -u`:`id -g` -v /etc/passwd:/etc/passwd -v $HOME/.config/gcloud:$HOME/.config/gcloud -v $HOME/.kube:$HOME/.kube gcr.io/google.com/cloudsdktool/google-cloud-cli gcloud"
+gcloud() {
+  # Define the base command for running the Google Cloud CLI Docker container
+  local docker_cmd=("docker" "run" "--rm" "-ti" "-u" "$(id -u):$(id -g)"
+                    "-v" "/etc/passwd:/etc/passwd"
+                    "-v" "${HOME}/.config/gcloud:${HOME}/.config/gcloud" # mount gcloud configuration
+                    "-v" "${HOME}/.kube:${HOME}/.kube" # mount kube configuration
+                    "-v" "$(pwd):${HOME}/workdir" # mount PWD on the host to a working dir in container
+                    "-w" "${HOME}/workdir" # set working directory in the container
+                    "serpro69/google-cloud-cli")
+
+  # Initialize a flag for debug mode
+  local bash_mode=false
+  local args=()
+
+  # Loop through the arguments
+  for arg in "$@"; do
+    if [[ "$arg" == "--bash-exec" ]]; then
+      bash_mode=true
+    else
+      args+=("$arg")
+    fi
+  done
+
+  # If debug mode is enabled, start a bash shell in the container
+  if $bash_mode; then
+    "${docker_cmd[@]}" "/bin/bash"
+  else
+    # Otherwise, pass all provided arguments to the gcloud command in the container
+    "${docker_cmd[@]}" "gcloud" "${args[@]}"
+  fi
+}
 
 golangci-lint () {
   docker run --rm -v "$(pwd)":/app -w /app golangci/golangci-lint golangci-lint "$@"
