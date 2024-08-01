@@ -132,3 +132,7 @@ golangci-lint () {
 mockery () {
   docker run --rm -v "$(pwd)":/src -w /src vektra/mockery "$@"
 }
+
+if $(which cmatrix > /dev/null); then cmatrix; fi
+#if $(which cmatrix > /dev/null) && [ "$(echo ${0//-/})" = "zsh" ]; then cmatrix; fi
+
