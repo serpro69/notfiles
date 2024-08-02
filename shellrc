@@ -31,3 +31,5 @@ if [ "$_TERM" = 'tmux' ] && [ -z "$TMUX" ]; then
     tmux attach-session -t "$TMUX_ID"
   fi
 fi
+
+if $(which cmatrix > /dev/null); then cmatrix; fi
