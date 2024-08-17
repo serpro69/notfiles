@@ -136,3 +136,8 @@ mockery () {
 #if $(which cmatrix > /dev/null); then cmatrix; fi
 #if $(which cmatrix > /dev/null) && [ "$(echo ${0//-/})" = "zsh" ]; then cmatrix; fi
 
+# add mason.nvim binaries to path to simplify nvim setup and be able to call a binary by name
+if [ -d "$HOME/.local/share/nvim/mason/bin" ]; then
+  # add it at the end of PATH so it has least precedence
+  export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
+fi
