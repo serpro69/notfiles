@@ -210,6 +210,10 @@ vl() {
   export VAULT_TOKEN=$(vault print token)
 }
 
+# hashicorp terraform
+# NB! a lot of aliases for terraform come from 'terraform' zsh plugin
+# Below are the ones that are missing (from my POV)
+alias tfw='terraform workspace'
 
 ## clipboard
 alias clipcat='_f(){ cat "$1" | xclip -selection clipboard; unset -f _f }; _f'
