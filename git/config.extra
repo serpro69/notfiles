@@ -84,7 +84,7 @@
   #last = false
   #br = false
 [user]
-  name = Serhii Prodan
+  name = serpro69
   email = serpro@disroot.org
   signingkey = 395A35D15482A7CE
 [push]

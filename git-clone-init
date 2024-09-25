@@ -3,10 +3,10 @@
 # shellcheck disable=SC2154
 # assigned in post-checkout hook
 case "$url" in
-  *@github.com:*                ) email="22973227+serpro69@users.noreply.github.com"; name="Serhii Prodan";;
-  *//github.com/*               ) email="22973227+serpro69@users.noreply.github.com"; name="Serhii Prodan";;
-  *@gitlab.com:*                ) email="237197-serpro69@users.noreply.gitlab.com";   name="Serhii Prodan";;
-  *//gitlab.com/*               ) email="237197-serpro69@users.noreply.gitlab.com";   name="Serhii Prodan";;
+  *@github.com:*                ) email="22973227+serpro69@users.noreply.github.com"; name="serpro69";;
+  *//github.com/*               ) email="22973227+serpro69@users.noreply.github.com"; name="serpro69";;
+  *@gitlab.com:*                ) email="237197-serpro69@users.noreply.gitlab.com";   name="serpro69";;
+  *//gitlab.com/*               ) email="237197-serpro69@users.noreply.gitlab.com";   name="serpro69";;
   # wlcmtech
-  *//*amazonaws.com/*           ) email="22973227+serpro69@users.noreply.github.com"; name="Sergio Pro";;
+  *//*amazonaws.com/*           ) email="22973227+serpro69@users.noreply.github.com"; name="serpro69";;
 esac

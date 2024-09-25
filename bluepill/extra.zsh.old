@@ -2,7 +2,7 @@
 
 export DOTFILESSRCDIR="$HOME/dotfiles/"
 
-GIT_AUTHOR_NAME="Serhii Prodan"
+GIT_AUTHOR_NAME="serpro69"
 # shellcheck disable=SC2034
 GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
 #git config --file="$HOME/.gitconfig.extra" user.name "$GIT_AUTHOR_NAME"
