@@ -142,3 +142,17 @@ path+=(.)
 
 # Load per-host zshrc overriding files
 for file in "$ZDOTDIR"/.zshrc.^(bck|new)(N); do . "$file"; done; unset file
+
+# Custom Hooks
+
+# creds: https://unix.stackexchange.com/a/553229
+# excludes certain commands from being added to history
+zshaddhistory() {
+  local cmd="${1%% *}"
+  cmd="${cmd#"${cmd%%[![:space:]]*}"}"  # Trim leading spaces
+  cmd="${cmd%"${cmd##*[![:space:]]}"}"  # Trim trailing spaces
+  case $cmd in
+    (vi|vim|nvim) return 1;;
+  esac
+  return 0
+}
