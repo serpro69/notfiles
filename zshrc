@@ -148,11 +148,18 @@ for file in "$ZDOTDIR"/.zshrc.^(bck|new)(N); do . "$file"; done; unset file
 # creds: https://unix.stackexchange.com/a/553229
 # excludes certain commands from being added to history
 zshaddhistory() {
+  local full_cmd=$1
+  full_cmd="${full_cmd#"${full_cmd%%[![:space:]]*}"}"  # Trim leading spaces
+  full_cmd="${full_cmd%"${full_cmd##*[![:space:]]}"}"  # Trim trailing spaces
   local cmd="${1%% *}"
   cmd="${cmd#"${cmd%%[![:space:]]*}"}"  # Trim leading spaces
   cmd="${cmd%"${cmd##*[![:space:]]}"}"  # Trim trailing spaces
-  case $cmd in
+  # notify-send "'${full_cmd}'" "'${cmd}'" # debugging
+  case ${cmd} in
     (vi|vim|nvim) return 1;;
+  esac
+  case ${full_cmd} in
+    (git st|git diff|git push|git lg) return 1;;
   esac
   return 0
 }
