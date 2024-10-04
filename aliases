@@ -114,24 +114,6 @@ unalias grhh 2>/dev/null
 # lazy-docker
 alias lzd="docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/.lazydocker/config:/.config/jesseduffield/lazydocker lazyteam/lazydocker"
 
-# similar to 'lzd' alias, but uses a docker context to run against a remote host
-# used only against elhub contexts for now
-# shellcheck disable=SC2112
-lzdc() {
-  if [[ $# -eq 0 ]]; then
-    echo "\e[01;31mError: missing docker context name. Run with --help for usage details\e[0m" >&2
-    return 1
-  elif [[ "$*" == *"--help"* ]]; then
-    echo "Runs lazydocker on a docker context host"
-    echo "Usage: lzdc <context-name>" >&2
-    return 0
-  fi
-  docker --context "$1" run --rm -it \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    -v /home/sergeip/.lazydocker/config:/.config/jesseduffield/lazydocker \
-    docker.jfrog.elhub.cloud/lazyteam/lazydocker
-}
-
 ## python
 
 # virtualenvwrapper
@@ -182,33 +164,6 @@ alias citrix='docker run --dns 8.8.8.8 --rm -it --shm-size=512m -p 6901:6901 -e 
 
 # last exit status
 alias '?'='echo $?'
-
-# reminders via system notifications
-remind() {
-  local summary=$1
-  local body=$2
-  echo "notify-send -u critical -t 10 '${summary}' '${body}'" | at "${@:3}"
-}
-
-# fuzzy history
-fh() {
-  print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -r 's/ *[0-9]*\*? *//' | sed -r 's/\\/\\\\/g')
-}
-
-# hashicorp vault
-vl() {
-  if [[ $# -eq 0 ]]; then
-    echo "\e[01;31mError: missing username argument. Run with --help for usage details\e[0m" >&2
-    return 1
-  elif [[ "$*" == *"--help"* ]]; then
-    echo "Runs vault login with ldap method and a given username"
-    echo "Usage: vl <username>" >&2
-    return 0
-  fi
-  unset VAULT_TOKEN
-  vault login -method=ldap username="$1"
-  export VAULT_TOKEN=$(vault print token)
-}
 
 # hashicorp terraform
 # NB! a lot of aliases for terraform come from 'terraform' zsh plugin
