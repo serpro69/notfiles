@@ -78,11 +78,84 @@ function apt-depends() {
   LANG= apt-cache depends "$@" | sed -n 's/.*Depends: //p'
 }
 
-# reminders via system notifications
+# Reminders via system notifications
+#
+# Usage: remind <summary> <body> [until] <timespec>
+#
+# Considerations:
+# - The reminder will be displayed as a system notification via notify-send program
+# - The reminder will be displayed only once, unless a [date] (in "yyyy-MM-DD" format) is specified as the 3rd argument
+# - If a [date] is specified, the reminder will be displayed daily at the specified [time] (in "HH:MM" format) until the [date]
 function remind() {
+
+  for arg in "$@"; do
+    if [[ "$arg" == "-h" || "$arg" == "--help" ]]; then
+      echo "Usage: remind <summary> <body> [until] <timespec>"
+      echo
+      echo "Arguments:"
+      echo "  <summary>    The title of the notification."
+      echo "  <body>       The body text of the notification."
+      echo "  [until]      (Optional) A date in YYYY-MM-DD format for setting up a recurring reminder."
+      echo "  <timespec>   The time specification for the reminder."
+      echo
+      echo "Considerations:"
+      echo " - The reminder will be displayed as a system notification via notify-send program"
+      echo " - The reminder will be displayed only once, unless a [until] (must be in 'yyyy-MM-DD' format) is specified as the 3rd argument"
+      echo " - If a [until] is specified, the reminder will be displayed daily at the specified <timespec> (must be in 'hh:mm' format) until the <until> date"
+      echo " - Single-time reminder accepts full range of <timespec> formats supported by 'at' command"
+      echo
+      echo "Examples:"
+      echo "  remind 'Meeting' 'Team meeting at 10 AM' 10:00"
+      echo "    - Sets a single reminder for today at 10:00 AM."
+      echo
+      echo "  remind 'Lunch Break' 'Take a break' 2024-12-31 12:30"
+      echo "    - Sets a recurring reminder every day at 12:30 until 31st Dec 2024."
+      echo
+      return 0
+    fi
+  done
+
   local summary=$1
   local body=$2
-  echo "notify-send -u critical -t 1000 '${summary}' '${body}'" | at "${@:3}"
+  local maybe_until=$3
+
+  # if the 3rd argument is a date in the format yyyy-MM-DD, then it's a recurring reminder
+  if [[ "$maybe_until" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+    local until=$maybe_until
+    local at_spec="${@:4}" # 4th and onward args act as the at specification
+
+    # convert the 'until' date to epoch format (to handle date comparison in cron)
+    until_timestamp=$(date -d "$until" +%s)
+
+    # extract HH:MM from at_spec (NB! only handles simple HH:MM format for cron jobs)
+    hour=$(echo "$at_spec" | cut -d: -f1)
+    minute=$(echo "$at_spec" | cut -d: -f2)
+
+    # validate extracted hour and minute
+    if [[ ! "$hour" =~ ^[0-9]{1,2}$ ]] || [[ ! "$minute" =~ ^[0-9]{1,2}$ ]] || (( hour > 23 )) || (( minute > 59 )); then
+        echo "Error: Time specification for recurring reminders must be in HH:MM format."
+        return 1
+    fi
+
+    local env_vars="DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${UID}/bus"
+
+    # add the cron job for daily reminders until the specified 'until' date
+    #cron_job="$minute $hour * * * if [ \$(date +\\%s) -lt $until_timestamp ]; then notify-send -u critical -t 10000 '$summary' '$body'; else crontab -l | grep -v '$summary' | crontab -; fi"
+    # * * * * * if [ $(date +'\%s') -lt 1728511200 ]; then DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus notify-send 'Cron Test' 'This is a test from cron'; else DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus notify-send 'Cron Test Else' 'This is a test from cron'; fi
+    # * * * * * if [ $(date +'\%s') -lt 1728511200 ]; then DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus notify-send 'Cron Test' 'This is a test from cron'; else DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus notify-send 'Cron Test Else' 'This is a test from cron'; fi
+    cron_job="${minute} ${hour} * * * if [ \$(date +'\\%s') -lt ${until_timestamp} ]; then DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus notify-send '${summary}' '${body}'; else crontab -l | grep -v \"notify-send '${summary}' '${body}'\" | crontab - && DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus notify-send 'removed cron reminder' '${summary} : ${body}'; fi"
+
+    # add the cron job to the user's crontab (preserve existing jobs)
+    (crontab -l 2>/dev/null; echo "$cron_job") | crontab -
+
+    echo "Daily reminder set at $hour:$minute until $until"
+  else
+    # if the 3rd argument is not a valid date, treat it as part of the at_spec
+    local at_spec="${@:3}"  # Use 3rd and onward arguments as the at specification
+    # use 'at' to schedule the notification at the specified time
+    echo "notify-send -u critical -t 10000 '$summary' '$body'" | at "$at_spec"
+    echo "One-time reminder set for: $at_spec"
+  fi
 }
 
 # fuzzy history
