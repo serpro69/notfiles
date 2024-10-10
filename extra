@@ -17,11 +17,13 @@ gcloud_wrapper() {
   # Run Google Cloud CLI commands inside a Docker container.
   #
   # Usage:
-  #   gcloud_wrapper [--bash-exec] [--mount-docker] [gcloud_command [args...]]
+  #   gcloud_wrapper [--bash-exec] [--mount-docker] [--mount-ssh] [gcloud_command [args...]]
+  #   gcloud_wrapper [gcloud_command [args...]] -- [--mount-docker] [--mount-ssh]
   #
   # Options:
   #   --bash-exec    Start an interactive bash shell inside the Docker container.
   #   --mount-docker Mount Docker configuration directory ($HOME/.docker) inside the container.
+  #   --mount-ssh    Mount glcoud SSH private/public keys ($HOME/.ssh/gcloud_compute_engine) inside the container.
   #
   # Description:
   #   This function facilitates running Google Cloud CLI commands inside a Docker container
@@ -61,11 +63,14 @@ gcloud_wrapper() {
 
   # Function to print usage instructions
   print_usage() {
-    echo "Usage: gcloud_wrapper [--bash-exec] [--mount-docker] [gcloud_command [args...]]"
+    echo "Usage:"
+    echo "  gcloud_wrapper [--bash-exec] [--mount-docker] [--mount-ssh] [gcloud_command [args...]]"
+    echo "  gcloud_wrapper [gcloud_command [args...]] -- [--bash-exec] [--mount-docker] [--mount-ssh]"
     echo ""
     echo "Options:"
     echo "  --bash-exec    Start an interactive bash shell inside the Docker container."
     echo "  --mount-docker Mount Docker configuration directory (\$HOME/.docker) inside the container."
+    echo "  --mount-ssh    Mount glcoud SSH private/public keys ($HOME/.ssh/gcloud_compute_engine) inside the container."
     echo ""
     echo "Description:"
     echo "  This function facilitates running Google Cloud CLI commands inside a Docker container"
@@ -104,6 +109,11 @@ gcloud_wrapper() {
         ;;
       --mount-docker)
         docker_cmd+=("-v" "${HOME}/.docker:${HOME}/.docker")
+        shift
+        ;;
+      --mount-ssh)
+        docker_cmd+=("-v" "${HOME}/.ssh/google_compute_engine:${HOME}/.ssh/google_compute_engine")
+        docker_cmd+=("-v" "${HOME}/.ssh/google_compute_engine.pub:${HOME}/.ssh/google_compute_engine.pub")
         shift
         ;;
       -hh|--help-msg)
