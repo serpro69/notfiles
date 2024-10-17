@@ -174,3 +174,7 @@ alias tfw='terraform workspace'
 alias clipcat='_f(){ cat "$1" | xclip -selection clipboard; unset -f _f }; _f'
 alias clippwd='_f(){ pwd | xclip -selection clipboard | trim; unset -f _f}; _f'
 
+## misc
+
+# update nvim plugins
+alias vimls='vim --headless "+Lazy! sync" +qa'
