@@ -17,7 +17,7 @@ gcloud_wrapper() {
   # Run Google Cloud CLI commands inside a Docker container.
   #
   # Usage:
-  #   gcloud_wrapper [--bash-exec] [--mount-docker] [--mount-ssh] [gcloud_command [args...]]
+  #   gcloud_wrapper [--bash-exec] [--mount-docker] [--mount-ssh] [--no-interactive] [--no-tty] [gcloud_command [args...]]
   #   gcloud_wrapper [gcloud_command [args...]] -- [--mount-docker] [--mount-ssh]
   #
   # Options:
@@ -33,10 +33,10 @@ gcloud_wrapper() {
   #   the container.
   #
   # Docker Mounts:
-  #   - /etc/passwd:/etc/passwd           Host's passwd file is mounted to the container.
+  #   - /etc/passwd:/etc/passwd                     Host's passwd file is mounted to the container.
   #   - $HOME/.config/gcloud:$HOME/.config/gcloud   Mounts gcloud configuration directory.
-  #   - $HOME/.kube:$HOME/.kube           Mounts kube configuration directory.
-  #   - $(pwd):$HOME/workdir              Mounts current directory on host to container's workdir.
+  #   - $HOME/.kube:$HOME/.kube                     Mounts kube configuration directory.
+  #   - $(pwd):$HOME/workdir                        Mounts current directory on host to container's workdir.
   #
   # Examples:
   #   gcloud_wrapper --mount-docker auth configure-docker europe-north1-docker.pkg.dev
@@ -49,12 +49,16 @@ gcloud_wrapper() {
   #   gcloud_wrapper --bash-exec
   #     - Starts an interactive bash session inside the Docker container.
 
-  local docker_cmd=("docker" "run" "--rm" "-ti" "-u" "$(id -u):$(id -g)"
+  local docker_cmd=("docker" "run" "--rm" "-u" "$(id -u):$(id -g)"
                     "-v" "/etc/passwd:/etc/passwd"
                     "-v" "${HOME}/.config/gcloud:${HOME}/.config/gcloud" # mount gcloud configuration
                     "-v" "${HOME}/.kube:${HOME}/.kube" # mount kube configuration
                     "-v" "$(pwd):${HOME}/workdir" # mount PWD on the host to a working dir in container
                     "-w" "${HOME}/workdir") # set working directory in the container
+
+  # by default use -ti options
+  local no_interactive=false
+  local no_tty=false
 
   local image_name="serpro69/google-cloud-cli"
 
@@ -64,7 +68,7 @@ gcloud_wrapper() {
   # Function to print usage instructions
   print_usage() {
     echo "Usage:"
-    echo "  gcloud_wrapper [--bash-exec] [--mount-docker] [--mount-ssh] [gcloud_command [args...]]"
+    echo "  gcloud_wrapper [--bash-exec] [--mount-docker] [--mount-ssh] [--no-interactive] [--no-tty] [gcloud_command [args...]]"
     echo "  gcloud_wrapper [gcloud_command [args...]] -- [--bash-exec] [--mount-docker] [--mount-ssh]"
     echo ""
     echo "Options:"
@@ -103,6 +107,14 @@ gcloud_wrapper() {
   # Process arguments
   while [[ $# -gt 0 ]]; do
     case "$1" in
+      --no-interactive)
+        no_interactive=true
+        shift
+        ;;
+      --no-tty)
+        no_tty=true
+        shift
+        ;;
       --bash-exec)
         bash_mode=true
         shift
@@ -126,6 +138,13 @@ gcloud_wrapper() {
         ;;
     esac
   done
+
+  if [ "$no_interactive" = false ]; then
+    docker_cmd+=("-i")
+  fi
+  if [ "$no_tty" = false ]; then
+    docker_cmd+=("-t")
+  fi
 
   # Execute the command based on options
   if $bash_mode; then
