@@ -69,6 +69,8 @@ dotfiles=(
   exports             "${ZDOT}/exports" # TODO merge with zshenv? NB! Currently sourced via zshrc
   functions           "${ZDOT}/functions"
   fzf.zsh             ".fzf.zsh"
+  # tools
+  mise.zsh            ".mise.zsh"
   ghtoken             ".ghtoken"
   git-clone-init      ".git-clone-init"
   guake               ".guake"
