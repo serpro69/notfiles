@@ -23,8 +23,8 @@ alias la='l -A'
 alias lla='ll -AF'
 
 # exa
-alias ela='eza -lah -F'
-alias el='eza -lh -F --group-directories-first'
+alias ela='eza -F always -lah'
+alias el='eza -F always -lh --group-directories-first'
 
 # safe copy, move and delete
 alias cp='cp -i'
