@@ -179,8 +179,12 @@ alias clippwd='_f(){ pwd | xclip -selection clipboard | trim; unset -f _f}; _f'
 
 ## misc
 
-alias vi='nvim'
-alias vim='nvim'
+# nvim is installed via brew on mac and we can't use something similar to 'alternatives' like we have on Ubuntu to
+# update global links and point vi(m) to nvim executable
+is_darwin && {
+  alias vi='nvim'
+  alias vim='nvim'
+}
 
 # update nvim plugins
 alias vimls='vim --headless "+Lazy! sync" +qa'
