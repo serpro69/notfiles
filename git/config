@@ -311,7 +311,7 @@
 
   # Default editor for commit messages and other inputs
   # Even when EDITOR is set to something else
-  editor=vim
+  editor=nvim
 
   # Global `.gitignore`
   excludesfile = ~/.gitignore_global
