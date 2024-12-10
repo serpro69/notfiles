@@ -23,8 +23,8 @@ alias la='l -A'
 alias lla='ll -AF'
 
 # exa
-alias ela='exa -laFh'
-alias el='exa -lFh --group-directories-first'
+alias ela='eza -lah -F'
+alias el='eza -lh -F --group-directories-first'
 
 # safe copy, move and delete
 alias cp='cp -i'
@@ -175,6 +175,9 @@ alias clipcat='_f(){ cat "$1" | xclip -selection clipboard; unset -f _f }; _f'
 alias clippwd='_f(){ pwd | xclip -selection clipboard | trim; unset -f _f}; _f'
 
 ## misc
+
+alias vi='nvim'
+alias vim='nvim'
 
 # update nvim plugins
 alias vimls='vim --headless "+Lazy! sync" +qa'
