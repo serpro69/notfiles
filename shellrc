@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# need to enable homebrew here in case we have tmux installed via brew
+if [ -f "/opt/homebrew/bin/brew" ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 # Runs the terminal multiplexer based on the configuration settings and SSH connection
 
 if [ -n "$SSH_TTY" ]; then
