@@ -116,6 +116,9 @@ alias lzd="docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $
 
 ## python
 
+alias python='python3'
+alias pip='pip3'
+
 # virtualenvwrapper
 # strangely there is a 'workon' function, but no opposite
 alias workoff='deactivate'

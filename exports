@@ -392,11 +392,15 @@ export PYTHONIOENCODING="UTF-8"
 
 # python virtualenv + virtualenvwrapper
 
-if virtualenv --help >/dev/null 2>&1 && [ -f $HOME/.local/bin/virtualenvwrapper.sh ]; then
+if virtualenv --help >/dev/null 2>&1; then
   export WORKON_HOME=~/.virtualenvs
   export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
   export VIRTUALENVWRAPPER_VIRTUALENV=$(readlink -f $(which virtualenv))
-  source "$HOME/.local/bin/virtualenvwrapper.sh"
+  if [ -f $HOME/.local/bin/virtualenvwrapper.sh ]; then
+    source "$HOME/.local/bin/virtualenvwrapper.sh"
+  elif [ -f "/opt/homebrew/bin/virtualenvwrapper.sh" ]; then
+    source "/opt/homebrew/bin/virtualenvwrapper.sh"
+  fi
 fi
 
 # Oracle InstantClient and cx-Oracle
