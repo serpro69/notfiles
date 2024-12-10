@@ -53,7 +53,7 @@ elif [[ "$(expr substr $(uname -s) 1 9)" == "CYGWIN_NT" ]]; then
   SYSTEM_TYPE="CYGWIN"
 fi
 
-if [[ -n "$(cat /proc/version | grep '(Microsoft@Microsoft.com)')" ]]; then
+if [[ -z $SYSTEM_TYPE ]] && [[ "$(< /proc/version)" == *"Microsoft"* ]]; then
   SYSTEM_TYPE="Win10_Linux"
 fi
 
