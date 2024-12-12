@@ -53,7 +53,7 @@ plugins=($(echo $CONFIG_ZSH_PLUGINS | sed 's/(//g' | sed 's/)//g') ${add_plugins
 unset add_plugins
 
 # source plugin settings before loading oh-my-zsh
-source ~/.redpill/plugins
+source "$ZDOTDIR/plugins"
 
 # Don't load Oh My Zsh on TTYs
 [[ -z "$OMZ_LOAD" && $TTY = /dev/tty* && $(uname -a) != ([Dd]arwin*|[Mm]icrosoft*) ]] \

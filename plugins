@@ -9,6 +9,14 @@
 
 ### https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ssh-agent
 
+# TODO: https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ssh-agent#macos-specific-settings
+
+# enable agent forwarding
+zstyle :omz:plugins:ssh-agent agent-forwarding yes
+
+# lazy-load ssh-keys so they're not prompted on startup
+# NB! this requires enabling AddKeysToAgent option
+# (see https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ssh-agent#lazy)
 zstyle :omz:plugins:ssh-agent lazy yes
 
 ### Aloxaf/fzf-tab
