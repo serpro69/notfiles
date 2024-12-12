@@ -7,6 +7,10 @@
 #   Avoid syntax and commands not portable to other different setups,
 #   check out http://hyperpolyglot.org/unix-shells for more information.
 
+### https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ssh-agent
+
+zstyle :omz:plugins:ssh-agent lazy yes
+
 ### Aloxaf/fzf-tab
 
 if [[ $CONFIG_ZSH_PLUGINS == *fzf-tab* ]]; then
@@ -41,10 +45,20 @@ fi
 
 ### jeffreytse/zsh-vi-mode
 
+# https://github.com/jeffreytse/zsh-vi-mode?tab=readme-ov-file#configuration-function
+# needs to be loaded before oh-my-zsh, or sourced again after setting the variables
+function zvm_config() {
+  ZVM_VI_INSERT_ESCAPE_BINDKEY='jj'
+  ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+}
+
 if [[ $CONFIG_ZSH_PLUGINS == *zsh-vi-mode* ]]; then
   # https://github.com/jeffreytse/zsh-vi-mode?tab=readme-ov-file#execute-extra-commands
   # zsh-vi-mode overrides some fzf bindkey settings, so we need to source fzf again if we want them back
   function zvm_after_init() {
+    # manual installation via gitrepo
     [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
+    # homebrew
+    [ -f "/opt/homebrew/opt/fzf/bin/fzf" ] && source <(fzf --zsh)
   }
 fi

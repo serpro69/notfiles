@@ -27,8 +27,11 @@ These are not the .files you're looking for
   - [`fzf`](https://github.com/junegunn/fzf)
 
     ```bash
+    # linux
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     ~/.fzf/install --xdg
+    # mac
+    brew intall fzf
     ```
 
   - [`bat`](https://github.com/sharkdp/bat)

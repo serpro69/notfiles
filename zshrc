@@ -52,12 +52,8 @@ ZSH_COLORIZE_STYLE=vim
 plugins=($(echo $CONFIG_ZSH_PLUGINS | sed 's/(//g' | sed 's/)//g') ${add_plugins})
 unset add_plugins
 
-# https://github.com/jeffreytse/zsh-vi-mode?tab=readme-ov-file#configuration-function
-# needs to be loaded before oh-my-zsh, or sourced again after setting the variables
-function zvm_config() {
-  ZVM_VI_INSERT_ESCAPE_BINDKEY='jj'
-  ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
-}
+# source plugin settings before loading oh-my-zsh
+source ~/.redpill/plugins
 
 # Don't load Oh My Zsh on TTYs
 [[ -z "$OMZ_LOAD" && $TTY = /dev/tty* && $(uname -a) != ([Dd]arwin*|[Mm]icrosoft*) ]] \
@@ -135,7 +131,7 @@ autoload -Uz zed
 ## Sourcing external files
 # * ~/.extra can be used for other settings you don’t want to commit.
 #for file in ~/.{dotfiles_config,path,load,exports,colors,icons,aliases,functions,extra}; do
-for file in ~/.redpill/{aliases,exports,extra,functions,plugins}; do
+for file in ~/.redpill/{aliases,exports,extra,functions}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset file
