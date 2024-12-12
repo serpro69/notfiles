@@ -22,3 +22,6 @@
 [submodule "bluepill/plugins/zsh-autosuggestions"]
 	path = bluepill/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
+[submodule "bluepill/plugins/fzf-tab"]
+	path = bluepill/plugins/fzf-tab
+	url = https://github.com/Aloxaf/fzf-tab

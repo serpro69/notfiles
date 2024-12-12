@@ -1,0 +1,50 @@
+#!/bin/sh
+#
+# File: .plugins
+# Description:
+#   contains configurations for custom zsh plugins defined by the user.
+#   Separated from shell rc files for portability between different machines.
+#   Avoid syntax and commands not portable to other different setups,
+#   check out http://hyperpolyglot.org/unix-shells for more information.
+
+### Aloxaf/fzf-tab
+
+if [[ $CONFIG_ZSH_PLUGINS == *fzf-tab* ]]; then
+  # https://github.com/Aloxaf/fzf-tab?tab=readme-ov-file#tmux
+  if [ "$CONFIG_TERM_LOCAL" = 'tmux' ]; then
+    zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+    # min size of the popup
+    # https://github.com/Aloxaf/fzf-tab/wiki/Configuration#popup-min-size
+    # apply to all command
+    zstyle ':fzf-tab:*' popup-min-size 80 16
+  fi
+
+  # Completions options (creds: https://github.com/syhol/dotfiles/blob/main/dot_config/zsh/conf.d/fzf-tab.zsh)
+
+  # disable sort when completing `git checkout`
+  zstyle ':completion:*:git-checkout:*' sort false
+  # set descriptions format to enable group support
+  # NOTE: don't use escape sequences here, fzf-tab will ignore them
+  zstyle ':completion:*:descriptions' format '[%d]'
+  # set list-colors to enable filename colorizing
+  zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+  # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
+  zstyle ':completion:*' menu no
+
+  # Fzf tab options
+
+  # preview directory's content with eza when completing cd
+  zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --icons --width=1 --color=always $realpath'
+  # switch group using `<` and `>`
+  zstyle ':fzf-tab:*' switch-group '<' '>'
+fi
+
+### jeffreytse/zsh-vi-mode
+
+if [[ $CONFIG_ZSH_PLUGINS == *zsh-vi-mode* ]]; then
+  # https://github.com/jeffreytse/zsh-vi-mode?tab=readme-ov-file#execute-extra-commands
+  # zsh-vi-mode overrides some fzf bindkey settings, so we need to source fzf again if we want them back
+  function zvm_after_init() {
+    [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
+  }
+fi
