@@ -1,4 +1,15 @@
-#!/usr/bin/env bash
+#!/bin/sh
+#
+# File: .exports
+# Description:
+#   contains exports defined by the user.
+#   Separated from shell rc files for portability between different machines.
+#   Avoid syntax and commands not portable to other different setups,
+#   check out http://hyperpolyglot.org/unix-shells for more information
+
+exists() { command -p -v &>/dev/null }
+is_zsh() { [ -n "$ZSH_VERSION" ] }
+is_darwin() { [ $(uname) = Darwin ] }
 
 export DIR_DOTFILES=$(pwd);
 
@@ -389,6 +400,17 @@ export PYTHONIOENCODING="UTF-8"
 #####################################################################################################################################
 # Custom exports
 #####################################################################################################################################
+
+is_darwin && is_zsh && {
+  if [ ! -f "${ZDOTDIR}/iterm2_shell_integration.zsh" ]; then
+    curl -L https://iterm2.com/shell_integration/zsh -o ${ZDOTDIR}/iterm2_shell_integration.zsh
+  fi
+  # see Limitations of https://iterm2.com/documentation-shell-integration.html
+  if [ "$CONFIG_TERM_LOCAL" = 'tmux' ]; then
+    export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=1
+  fi
+  source ${ZDOTDIR}/iterm2_shell_integration.zsh
+}
 
 # python virtualenv + virtualenvwrapper
 
