@@ -39,9 +39,11 @@ fi
 alias bakf='_f() { cp $1{,.bak.$(date +%s%N)} ; unset -f _f }; _f'
 
 # safe chown
-alias chown='chown --preserve-root'
-alias chmod='chmod --preserve-root'
-alias chgrp='chgrp --preserve-root'
+! is_darwin && {
+  alias chown='chown --preserve-root'
+  alias chmod='chmod --preserve-root'
+  alias chgrp='chgrp --preserve-root'
+}
 
 # directories
 unalias mkdir 2>/dev/null
