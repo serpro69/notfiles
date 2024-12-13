@@ -1,19 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # run google-cloud-cli via docker
-gcloud-init () {
-  if [ ! -d "$HOME/.config/gcloud" ]; then
-    mkdir -p "$HOME/.config/gcloud"
-  fi
-
-  if [[ "$*" == *"--help"* ]]; then
-    echo "Initialize gcloud to be used via docker"
-    return 0
-  fi
-  docker run --rm -ti -u $(id -u):$(id -g) -v /etc/passwd:/etc/passwd -v $HOME/.config/gcloud:$HOME/.config/gcloud serpro69/google-cloud-cli gcloud init
-}
-
-gcloud_wrapper() {
+function gcloud_wrapper() {
   # Run Google Cloud CLI commands inside a Docker container.
   #
   # Usage:
@@ -56,6 +44,17 @@ gcloud_wrapper() {
                     "-v" "$(pwd):${HOME}/workdir" # mount PWD on the host to a working dir in container
                     "-w" "${HOME}/workdir") # set working directory in the container
 
+  # Docker on MacOS works differently than on Linux and technically runs in a VM
+  # In addition, macos has different notion of user details, so mounting '/etc/passwd' makes little sense.
+  # So we run the container as root, and mount configs via named docker volumes instead of local dir volume mounts
+  if [ "$(uname)" = 'Darwin' ]; then
+    docker_cmd=("docker" "run" "--rm"
+                    "--mount" "type=volume,src=gcloud_config,dst=/root/.config" # mount gcloud configuration
+                    "--mount" "type=volume,src=gcloud_kube,dst=/root/.kube" # mount kube configuration
+                    "-v" "$(pwd):${HOME}/workdir" # mount PWD on the host to a working dir in container
+                    "-w" "${HOME}/workdir") # set working directory in the container
+  fi
+
   # by default use -ti options
   local no_interactive=false
   local no_tty=false
@@ -66,7 +65,7 @@ gcloud_wrapper() {
   local args=()
 
   # Function to print usage instructions
-  print_usage() {
+  function print_usage() {
     echo "Usage:"
     echo "  gcloud_wrapper [--bash-exec] [--mount-docker] [--mount-ssh] [--no-interactive] [--no-tty] [gcloud_command [args...]]"
     echo "  gcloud_wrapper [gcloud_command [args...]] -- [--bash-exec] [--mount-docker] [--mount-ssh]"
@@ -103,6 +102,12 @@ gcloud_wrapper() {
     echo "    - Starts an interactive bash session inside the Docker container."
     echo ""
   }
+
+  # Create dirs for local mounts on Linux
+  if [ ! "$(uname)" = 'Darwin' ] && [ ! -d "$HOME/.config/gcloud" ]; then
+    mkdir "$HOME/.config/gcloud"
+    mkdir "$HOME/.kube"
+  fi
 
   # Process arguments
   while [[ $# -gt 0 ]]; do
@@ -154,11 +159,11 @@ gcloud_wrapper() {
   fi
 }
 
-golangci-lint () {
+function golangci_lint() {
   docker run --rm -v "$(pwd)":/app -w /app golangci/golangci-lint golangci-lint "$@"
 }
 
-mockery () {
+function mockery() {
   docker run --rm -v "$(pwd)":/src -w /src vektra/mockery "$@"
 }
 
