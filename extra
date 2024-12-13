@@ -51,6 +51,7 @@ function gcloud_wrapper() {
     docker_cmd=("docker" "run" "--rm"
                     "--mount" "type=volume,src=gcloud_config,dst=/root/.config" # mount gcloud configuration
                     "--mount" "type=volume,src=gcloud_kube,dst=/root/.kube" # mount kube configuration
+                    "-v" "/${HOME}/.config/gcloud:/root/.config/gcloud" # mount gcloud configuration
                     "-v" "$(pwd):${HOME}/workdir" # mount PWD on the host to a working dir in container
                     "-w" "${HOME}/workdir") # set working directory in the container
   fi
