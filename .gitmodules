@@ -25,3 +25,6 @@
 [submodule "bluepill/plugins/fzf-tab"]
 	path = bluepill/plugins/fzf-tab
 	url = https://github.com/Aloxaf/fzf-tab
+[submodule "bluepill/plugins/zsh-nvm"]
+	path = bluepill/plugins/zsh-nvm
+	url = https://github.com/lukechilds/zsh-nvm.git

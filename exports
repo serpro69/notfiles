@@ -431,16 +431,6 @@ export LD_LIBRARY_PATH="$_instant_client_path:$LD_LIBRARY_PATH"
 export PATH="$_instant_client_path:$PATH"
 export ORACLE_HOME="$_instant_client_path"
 
-# NVM
-export NVM_DIR="$HOME/.nvm"
-if [ -d "/opt/homebrew/opt/nvm" ]; then
-  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-else
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-fi
-
 # GO
 export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
