@@ -1,3 +1,6 @@
 .idea/
 *.iml
 .vagrant
+
+# mac
+.DS_Store

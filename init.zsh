@@ -55,9 +55,12 @@ local ZDOT=".redpill"
 # Files to be symlinked to home directory
 local -A dotfiles
 dotfiles=(
-# directories
+  # directories
   bluepill            "${ZDOT}/bluepill"
+  # ~/.config
   git                 ".config/git"
+  karabiner           ".config/karabiner"
+  # dots
   ohmyzsh             "${ZDOT}/ohmyzsh"
   tmux                ".tmux"
   tmux/.tmux.conf     ".tmux.conf"
@@ -174,3 +177,7 @@ EOF
 }
 
 mkdir -p "$HOME/.redpill/completions"
+
+### ~/.config
+
+cp

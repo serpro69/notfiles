@@ -62,3 +62,13 @@ cd ~/dotfiles
 ```
 
 3. Restart the shell (or run `exec zsh`)
+
+## Post-install
+
+### MacOS
+
+- Update iterm2 settings
+  - Preferences -> General -> Settings -> Load preferences from a custom folder or URL
+    - Set the path to `~/dotfiles/config/iterm2`
+    - Enable "Save changes: When Quitting"
+  - Restart iterm2
