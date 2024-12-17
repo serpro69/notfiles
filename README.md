@@ -72,3 +72,8 @@ cd ~/dotfiles
     - Set the path to `~/dotfiles/config/iterm2`
     - Enable "Save changes: When Quitting"
   - Restart iterm2
+
+- Update keyboard shortcuts
+  - Preferences -> Keyboard -> Keyboard Shortcuts -> Input Sources
+    - Disable "Select the previous input source"
+      (it's mapped to `^space` which is used in a lot of other places, e.g. vim)
