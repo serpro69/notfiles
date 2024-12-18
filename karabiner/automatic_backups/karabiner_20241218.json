@@ -5,7 +5,6 @@
                 "rules": [
                     {
                         "description": "Mac OSX: disable cmd + h to prevent minimising an application window",
-                        "enabled": false,
                         "manipulators": [
                             {
                                 "conditions": [
