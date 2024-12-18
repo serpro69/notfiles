@@ -175,6 +175,17 @@ alias '?'='echo $?'
 # Below are the ones that are missing (from my POV)
 alias tfw='terraform workspace'
 
+## gnu findutils
+# https://www.gnu.org/software/findutils/
+
+is_darwin && [ -d "/opt/homebrew/opt/findutils/bin" ] && {
+  alias find=gfind
+  # TODO: not sure if these should be aliased (i.e. usable at all on a mac)
+  # alias locate=glocate
+  # alias updatedb=gupdatedb
+  alias xargs=gxargs
+}
+
 ## clipboard
 alias clipcat='_f(){ cat "$1" | xclip -selection clipboard; unset -f _f }; _f'
 alias clippwd='_f(){ pwd | xclip -selection clipboard | trim; unset -f _f}; _f'
