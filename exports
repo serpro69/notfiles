@@ -410,6 +410,12 @@ is_darwin && is_zsh && {
     export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=1
   fi
   source ${ZDOTDIR}/iterm2_shell_integration.zsh
+
+  # macports https://guide.macports.org/#installing.shell
+  if [ -d "/opt/local/bin" ]; then
+    export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+    export MANPATH=/opt/local/share/man:$MANPATH
+  fi
 }
 
 # python virtualenv + virtualenvwrapper
