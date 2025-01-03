@@ -184,6 +184,8 @@ is_darwin && [ -d "/opt/homebrew/opt/findutils/bin" ] && {
   # alias locate=glocate
   # alias updatedb=gupdatedb
   alias xargs=gxargs
+  # GNU date
+  alias date=gdate
 }
 
 ## clipboard
