@@ -32,7 +32,7 @@ spaceship_tfb() {
   # Show Terraform Backend when exists
   spaceship::upsearch .terraform/terraform.tfstate || return
 
-  local terraform_backend=$(cat .terraform/terraform.tfstate | jq '.backend.config.prefix' | tr -d '"')
+  local terraform_backend=$(cat .terraform/terraform.tfstate | jq -r '.backend.config.prefix')
   local tfb="${terraform_backend#${SPACESHIP_TFB_PARENT}}"
   [[ -z $terraform_backend ]] && return
   [[ $terraform_backend == "null" ]] && return

@@ -32,7 +32,7 @@ spaceship_plb() {
   # Show only when logged in to a backend
   if [ ! -f ${HOME}/.pulumi/credentials.json]; then return; fi
 
-  local pulumi_backend=$(cat $HOME/.pulumi/credentials.json | jq '.current' | tr -d '"')
+  local pulumi_backend=$(cat $HOME/.pulumi/credentials.json | jq -r '.current')
   local plb="${pulumi_backend##*/}"
   [[ -z $pulumi_backend ]] && return
   [[ $pulumi_backend == "null" ]] && return
