@@ -411,6 +411,11 @@ is_darwin && is_zsh && {
   fi
   source ${ZDOTDIR}/iterm2_shell_integration.zsh
 
+  # homebrew
+  if [ -d "/opt/homebrew/share/man" ]; then
+    export MANPATH=/opt/homebrew/share/man:$MANPATH
+  fi
+
   # macports https://guide.macports.org/#installing.shell
   if [ -d "/opt/local/bin" ]; then
     export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
