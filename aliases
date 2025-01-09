@@ -186,6 +186,9 @@ is_darwin && [ -d "/opt/homebrew/opt/findutils/bin" ] && {
   alias xargs=gxargs
   # GNU date
   alias date=gdate
+
+  # linking vim to nvim on macos is a pia...
+  alias sops='EDITOR=nvim sops'
 }
 
 ## clipboard
