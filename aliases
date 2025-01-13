@@ -8,9 +8,15 @@
 #   check out http://hyperpolyglot.org/unix-shells for more information
 
 # checks if argument exists in path
-exists() { command -p -v &>/dev/null }
-is_zsh() { [ -n "$ZSH_VERSION" ] }
-is_darwin() { [ $(uname) = Darwin ] }
+exists() {
+  command -p -v &>/dev/null
+}
+is_zsh() {
+  [ -n "$ZSH_VERSION" ]
+}
+is_darwin() {
+  [ "$(uname)" = 'Darwin' ]
+}
 
 # ls
 # order of output:
@@ -203,6 +209,9 @@ is_darwin && {
   alias vi='nvim'
   alias vim='nvim'
 }
+
+# edit a file with sops using nvim
+alias vims='EDITOR=nvim sops edit'
 
 # update nvim plugins
 alias vimls='vim --headless "+Lazy! sync" +qa'
