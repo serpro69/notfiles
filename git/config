@@ -373,6 +373,10 @@
   #tool = opendiff
   tool = vimdiff
 
+# https://github.com/getsops/sops?tab=readme-ov-file#48showing-diffs-in-cleartext-in-git
+[diff "sopsdiffer"]
+    textconv = "sops decrypt"
+
 [difftool]
   # Difftool will not prompt for every file.
   # Use --prompt to override.
