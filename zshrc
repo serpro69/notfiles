@@ -148,17 +148,6 @@ for file in "$ZDOTDIR"/.zshrc.^(bck|new)(N); do source "$file"; done; unset file
 
 # Custom Hooks
 
-# completions for tools installed via brew
-[ -n "$ZSH_VERSION" ] && type brew &>/dev/null && {
-  # case sensitive completions in omz
-  # https://github.com/ohmyzsh/ohmyzsh/blob/69a6359f7cf8978d464573fb7b023ee3cd00181a/lib/completion.zsh#L17-L19
-  export CASE_SENSITIVE="true"
-  fpath+=("$(brew --prefix)/share/zsh/site-functions")
-  typeset -U path
-  typeset -U fpath
-  autoload -Uz compinit && compinit
-}
-
 # creds: https://unix.stackexchange.com/a/553229
 # excludes certain commands from being added to history
 zshaddhistory() {
