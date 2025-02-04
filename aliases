@@ -193,6 +193,13 @@ is_darwin && [ -d "/opt/homebrew/opt/findutils/bin" ] && {
   # GNU date
   alias date=gdate
 
+  # GNU make
+  alias make=gmake
+
+  # GNU diffutils
+  alias diff='command gdiff -u --color'
+  alias diff3=gdiff3
+
   # linking vim to nvim on macos is a pia...
   alias sops='EDITOR=nvim sops'
 }
