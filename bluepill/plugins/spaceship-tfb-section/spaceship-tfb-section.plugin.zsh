@@ -45,7 +45,7 @@ spaceship_tfb() {
     SPACESHIP_TFB_SYMBOL="${SPACESHIP_TFB_SYMBOL_TEST}"
   fi
 
-  # Display ansible section
+  # Display tf backend section
   spaceship::section::v4 \
     --color "$SPACESHIP_TFB_COLOR" \
     --prefix "$SPACESHIP_TFB_PREFIX" \
