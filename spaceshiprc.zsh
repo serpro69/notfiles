@@ -6,6 +6,8 @@ SPACESHIP_TERRAFORM_ASYNC=true
 SPACESHIP_TERRAFORM_SYMBOL="󱁢 "
 SPACESHIP_PULUMI_ASYNC=true
 
+SPACESHIP_GCLOUD_SYMBOL="󰅟 "
+
 # custom sections
 # terraform/tofu backend
 SPACESHIP_TFB_ASYNC=true
@@ -22,6 +24,7 @@ SPACESHIP_PLB_SYMBOL_PROD="󱓞 "
 SPACESHIP_PLB_SYMBOL_TEST="󰙨 "
 # opentofu
 SPACESHIP_OPENTOFU_SUFFIX=" "
+SPACESHIP_OPENTOFU_SYMBOL="󱊹 "
 
 # custom spaceship sections are installed in $ZSH_CUSTOM/plugins
 # see https://spaceship-prompt.sh/advanced/creating-section/ for more details
