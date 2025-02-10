@@ -179,7 +179,7 @@ alias '?'='echo $?'
 # hashicorp terraform
 # NB! a lot of aliases for terraform come from 'terraform' zsh plugin
 # Below are the ones that are missing (from my POV)
-alias tfw='terraform workspace'
+# alias tfw='terraform workspace'
 
 ## gnu findutils
 # https://www.gnu.org/software/findutils/
