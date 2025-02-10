@@ -125,9 +125,11 @@ esac
 
 local -A platform
 platform=(
-  nano/darwin/nanorc  ".nanorc"
-  nano/termux/nanorc  ".nanorc"
-  nano/others/nanorc  ".config/nano/nanorc"
+  git/darwin/config.extra ".config/git/config.darwin.extra"
+  git/linux/config.extra  ".config/git/config.linux.extra"
+  nano/darwin/nanorc      ".nanorc"
+  nano/termux/nanorc      ".nanorc"
+  nano/others/nanorc      ".config/nano/nanorc"
 )
 
 local -aU areas files
@@ -148,7 +150,7 @@ for area (${(o)areas}); do
     src="$DIR/$file"
     dest="$HOME/${platform[$file]}"
 
-    echo -n "Linking $file... "
+    echo -n "Linking $file to $dest..."
     symlink "$src" "$dest"
   done
 done
@@ -177,7 +179,3 @@ EOF
 }
 
 mkdir -p "$HOME/.redpill/completions"
-
-### ~/.config
-
-cp

@@ -2,5 +2,7 @@
 *.iml
 .vagrant
 
+git/config.*.extra
+
 # mac
 .DS_Store

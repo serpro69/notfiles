@@ -496,5 +496,7 @@
 
 [include]
   path = ~/.config/git/config.extra # extra git configuration
+  path = ~/.config/git/config.darwin.extra # extra git configuration for macos
+  path = ~/.config/git/config.linux.extra # extra git configuration for linux
   path = ~/.config/git/config.delta # configuration for delta
 

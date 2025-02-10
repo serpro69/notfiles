@@ -1,0 +1,2 @@
+[alias]
+  clone-tmp = "!_f() { _dir="$(mktemp -u)"; git clone "$1" "$_dir"; echo "$_dir" | xclip -r -selection clipboard; unset -f _f; }; _f"
