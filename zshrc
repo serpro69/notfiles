@@ -136,6 +136,11 @@ for file in ~/.redpill/{aliases,exports,extra,functions}; do
 done
 unset file
 
+for file in ~/.redpill/*.sops; do
+  [ -r "$file" ] && [ -f "$file" ] && source "$file"
+done
+unset file
+
 # Workaround for https://github.com/ohmyzsh/ohmyzsh/issues/10156
 autoload +X -Uz _git && _git &>/dev/null
 functions[_git-stash]=${functions[_git-stash]//\\_git-notes /}

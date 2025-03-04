@@ -50,6 +50,21 @@ function symlink() {
   fi
 }
 
+function decrypt() {
+  local error
+  local src dest
+
+  src="$1"
+  dest="$2"
+
+  mkdir -p "${dest:h}"
+  if error="$(sops decrypt "$src" > "$dest" 2>&1)"; then
+    msg OK
+  else
+    msg ERROR "$error"
+  fi
+}
+
 local ZDOT=".redpill"
 
 # Files to be symlinked to home directory
@@ -99,6 +114,23 @@ for file (${(ko)dotfiles}); do
 
   echo -n "Linking $file... "
   symlink "$src" "$dest"
+done
+
+local -A sops_dotfiles
+sops_dotfiles=(
+  exports.sops        "${ZDOT}/exports.sops"
+)
+
+local file src dest
+# shellcheck disable=SC1073
+# shellcheck disable=SC1058
+# shellcheck disable=SC1072
+for file (${(ko)sops_dotfiles}); do
+  src="$DIR/$file"
+  dest="$HOME/${sops_dotfiles[$file]}"
+
+  echo -n "Decrypting $file... "
+  decrypt "$src" "$dest"
 done
 
 # additional stuff via 'extra'
