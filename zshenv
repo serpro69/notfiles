@@ -124,13 +124,16 @@ test -f "$HOME/.cargo/env" && . "$HOME/.cargo/env"
   # https://github.com/ohmyzsh/ohmyzsh/blob/69a6359f7cf8978d464573fb7b023ee3cd00181a/lib/completion.zsh#L17-L19
   export CASE_SENSITIVE="true"
 
-  typeset -U path
   fpath+=("$HOME/.redpill/completions")
 
   # completions for tools installed via brew
   type brew &>/dev/null && {
     fpath+=("$(brew --prefix)/share/zsh/site-functions")
   }
+
+  typeset -U PATH
+  typeset -U path
+  typeset -U fpath
 }
 
 # export PATH for other sessions

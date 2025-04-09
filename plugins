@@ -55,7 +55,7 @@ fi
 
 # https://github.com/jeffreytse/zsh-vi-mode?tab=readme-ov-file#configuration-function
 # needs to be loaded before oh-my-zsh, or sourced again after setting the variables
-function zvm_config() {
+zvm_config() {
   ZVM_VI_INSERT_ESCAPE_BINDKEY='jj'
   ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
 }
