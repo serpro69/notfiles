@@ -176,3 +176,8 @@ if [ -d "$HOME/.local/share/nvim/mason/bin" ]; then
   # add it at the end of PATH so it has least precedence
   export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
 fi
+
+# activate 'default' python virtual environment, if available, on darwin
+command -v workon >/dev/null && workon | grep -q '^default$' 2>/dev/null && {
+  workon default
+}
