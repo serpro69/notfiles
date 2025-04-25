@@ -18,11 +18,13 @@ These are not the .files you're looking for
 ## Prerequisites
 
 - `git`
+
 - `zsh`
   - install `zsh` (e.g. `sudo apt-get install zsh`)
   - set `zsh` as default shell: `chsh -s $(which zsh)`
     - restart user session to apply the change
     - _NB! `chsh` does not work on every system_
+
 - cli tools:
   - [`fzf`](https://github.com/junegunn/fzf)
 
@@ -45,6 +47,10 @@ These are not the .files you're looking for
   - [`ripgrep`](https://github.com/BurntSushi/ripgrep)
 
   - [`sd`](https://github.com/chmln/sd)
+
+- optional tools/apps:
+
+  - [alacritty](https://github.com/alacritty/alacritty)
 
 ## Installation
 
