@@ -181,3 +181,6 @@ fi
 command -v workon >/dev/null && workon | grep -q '^default$' 2>/dev/null && {
   workon default
 }
+
+alias vim-orig='NVIM_APPNAME="nvim-orig" nvim'
+alias nvim-orig='NVIM_APPNAME="nvim-orig" nvim'
