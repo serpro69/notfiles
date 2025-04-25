@@ -73,6 +73,7 @@ dotfiles=(
   # directories
   bluepill            "${ZDOT}/bluepill"
   # ~/.config
+  alacritty           ".config/alacritty"
   git                 ".config/git"
   karabiner           ".config/karabiner"
   # dots

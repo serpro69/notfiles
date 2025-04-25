@@ -28,3 +28,6 @@
 [submodule "bluepill/plugins/zsh-nvm"]
 	path = bluepill/plugins/zsh-nvm
 	url = https://github.com/lukechilds/zsh-nvm.git
+[submodule "alacritty/themes"]
+	path = alacritty/themes
+	url = https://github.com/alacritty/alacritty-theme
