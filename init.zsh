@@ -158,11 +158,13 @@ esac
 
 local -A platform
 platform=(
-  git/darwin/config.extra ".config/git/config.darwin.extra"
-  git/linux/config.extra  ".config/git/config.linux.extra"
-  nano/darwin/nanorc      ".nanorc"
-  nano/termux/nanorc      ".nanorc"
-  nano/others/nanorc      ".config/nano/nanorc"
+  alacritty/darwin/alacritty.toml ".config/alacritty/alacritty.darwin.toml"
+  alacritty/linux/alacritty.toml  ".config/alacritty/alacritty.linux.toml"
+  git/darwin/config.extra         ".config/git/config.darwin.extra"
+  git/linux/config.extra          ".config/git/config.linux.extra"
+  nano/darwin/nanorc              ".nanorc"
+  nano/termux/nanorc              ".nanorc"
+  nano/others/nanorc              ".config/nano/nanorc"
 )
 
 local -aU areas files

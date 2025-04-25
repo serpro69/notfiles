@@ -1,7 +1,10 @@
 [general]
 # see https://github.com/alacritty/alacritty-theme?tab=readme-ov-file#color-schemes for available themes
-import = ["themes/themes/catppuccin_mocha.toml"]
-working_directory = "$HOME/Projects/"
+import = [
+    "themes/themes/catppuccin_mocha.toml",
+    "alacritty.darwin.toml",
+    "alacritty.linux.toml",
+]
 
 [window]
 startup_mode = "SimpleFullscreen"
