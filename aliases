@@ -200,6 +200,8 @@ is_darwin && [ -d "/opt/homebrew/opt/findutils/bin" ] && {
   alias diff='command gdiff -u --color'
   alias diff3=gdiff3
 
+  alias sed=gsed
+
   # linking vim to nvim on macos is a pia...
   alias sops='EDITOR=nvim sops'
 }
