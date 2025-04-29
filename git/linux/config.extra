@@ -1,2 +1,3 @@
 [alias]
   clone-tmp = "!_f() { _dir="$(mktemp -u)"; git clone "$1" "$_dir"; echo "$_dir" | xclip -r -selection clipboard; unset -f _f; }; _f"
+  prune-delete = "!f() { origin="$1"; if [ -z "$origin" ]; then origin='origin'; fi; git remote prune "$origin" | grep pruned | gsed -E 's/.*origin\\/(.*)/\\1/' | xargs -I {} git branch -D '{}' 2> /dev/null; }; f"
