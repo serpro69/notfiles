@@ -8,6 +8,9 @@ SPACESHIP_PULUMI_ASYNC=true
 
 SPACESHIP_GCLOUD_SYMBOL="󰅟 "
 
+# anaconda
+SPACESHIP_VENV_SYMBOL="󱔎"
+
 # custom sections
 # terraform/tofu backend
 SPACESHIP_TFB_ASYNC=true
