@@ -202,6 +202,8 @@ is_darwin && [ -d "/opt/homebrew/opt/findutils/bin" ] && {
 
   alias sed=gsed
 
+  alias split=gsplit
+
   # linking vim to nvim on macos is a pia...
   alias sops='EDITOR=nvim sops'
 }
