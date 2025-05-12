@@ -184,3 +184,20 @@ command -v workon >/dev/null && workon | grep -q '^default$' 2>/dev/null && {
 
 alias vim-orig='NVIM_APPNAME="nvim-orig" nvim'
 alias nvim-orig='NVIM_APPNAME="nvim-orig" nvim'
+
+local _trim() {
+  local var="$*"
+  # remove leading whitespace characters
+  var="${var#"${var%%[![:space:]]*}"}"
+  # remove trailing whitespace characters
+  var="${var%"${var##*[![:space:]]}"}"
+  printf '%s' "$var"
+}
+
+if [ -d "/opt/local" ]; then
+  # flags to hint build systems to find things in macports
+  CFLAGS=$(_trim "$CFLAGS -I/opt/local/include")
+  CXXFLAGS=$(_trim "$CXXFLAGS -I/opt/local/include")
+  LDFLAGS=$(_trim "$LDFLAGS -L/opt/local/lib")
+  PKG_CONFIG_PATH='/opt/local/lib/pkgconfig'
+fi
