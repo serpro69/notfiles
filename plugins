@@ -11,6 +11,8 @@
 
 # TODO: https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ssh-agent#macos-specific-settings
 
+### ohmyzsh/ssh-agent (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ssh-agent)
+
 # enable agent forwarding
 zstyle :omz:plugins:ssh-agent agent-forwarding yes
 
@@ -18,6 +20,13 @@ zstyle :omz:plugins:ssh-agent agent-forwarding yes
 # NB! this requires enabling AddKeysToAgent option
 # (see https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ssh-agent#lazy)
 zstyle :omz:plugins:ssh-agent lazy yes
+
+### ohmyzsh/colorize (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/colorize)
+
+# see here for more styles https://github.com/alecthomas/chroma/blob/master/styles/catppuccin-frappe.xml
+ZSH_COLORIZE_STYLE="catppuccin-macchiato"
+# change the default chroma terminal output style from the standard 8 color output to 256 color
+ZSH_COLORIZE_CHROMA_FORMATTER=terminal256
 
 ### Aloxaf/fzf-tab
 
