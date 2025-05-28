@@ -31,3 +31,6 @@
 [submodule "alacritty/themes"]
 	path = alacritty/themes
 	url = https://github.com/alacritty/alacritty-theme
+[submodule "bluepill/plugins/nix-zsh-completions"]
+	path = bluepill/plugins/nix-zsh-completions
+	url = https://github.com/nix-community/nix-zsh-completions.git

@@ -201,3 +201,9 @@ if [ -d "/opt/local" ]; then
   LDFLAGS=$(_trim "$LDFLAGS -L/opt/local/lib")
   PKG_CONFIG_PATH='/opt/local/lib/pkgconfig'
 fi
+
+# workaround for https://github.com/nix-community/nix-zsh-completions/issues/56
+[ -d "/nix/var/nix/profiles/default/share/zsh/site-functions" ] && {
+  fpath+=(/nix/var/nix/profiles/default/share/zsh/site-functions)
+  autoload -U compinit && compinit
+}
