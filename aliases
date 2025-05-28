@@ -208,6 +208,19 @@ is_darwin && [ -d "/opt/homebrew/opt/findutils/bin" ] && {
   alias sops='EDITOR=nvim sops'
 }
 
+## nix
+
+alias nix-shell='nix-shell --run $SHELL'
+
+nix() {
+  if [[ $1 == "develop" ]]; then
+    shift
+    command nix develop -c $SHELL "$@"
+  else
+    command nix "$@"
+  fi
+}
+
 ## clipboard
 alias clipcat='_f(){ cat "$1" | xclip -selection clipboard; unset -f _f }; _f'
 alias clippwd='_f(){ pwd | xclip -selection clipboard | trim; unset -f _f}; _f'
