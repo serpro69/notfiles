@@ -206,6 +206,12 @@ is_darwin && [ -d "/opt/homebrew/opt/findutils/bin" ] && {
 
   # linking vim to nvim on macos is a pia...
   alias sops='EDITOR=nvim sops'
+
+  if [ -n "$IN_NIX_SHELL" ]; then
+    # make can be installed with 'gnumake' nixpkg, but the command itself is just 'make' in a nix shell
+    # so just unalias it
+    unalias make
+  fi
 }
 
 ## nix
