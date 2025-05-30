@@ -64,13 +64,21 @@ _prepend_path() {
     return 1
   fi
 
-  if [ -n "$IN_NIX_SHELL" ]; then
+  if [ -n "${IN_NIX_SHELL-}" ]; then
     PATH=$(_remove_path_entry "$target_path" "$PATH")
   else
-    # Check if target_path is a directory and not already in PATH
-    if [ -d "$target_path" ] && [[ ":$PATH:" != *":${target_path}:"* ]]; then
-      PATH="${target_path}:$PATH"
-    fi
+    # split target path into individual components
+    for entry in $(echo "$target_path" | tr ':' ' '); do
+      # remove leading/trailing whitespace from each entry
+      entry=$(echo "$entry" | xargs)
+      if [ -n "$entry" ] && [[ ":$PATH:" != *":${entry}:"* ]]; then
+        if [ -z "$PATH" ]; then
+          PATH="$entry"
+        else
+          PATH="${target_path}:$PATH"
+        fi
+      fi
+    done
   fi
   export PATH
 }
@@ -82,13 +90,21 @@ _append_path() {
     return 1
   fi
 
-  if [ -n "$IN_NIX_SHELL" ]; then
+  if [ -n "${IN_NIX_SHELL-}" ]; then
     PATH=$(_remove_path_entry "$target_path" "$PATH")
   else
-    # Check if target_path is a directory and not already in PATH
-    if [ -d "$target_path" ] && [[ ":$PATH:" != *":${target_path}:"* ]]; then
-      PATH="$PATH:${target_path}"
-    fi
+    # split target path into individual components
+    for entry in $(echo "$target_path" | tr ':' ' '); do
+      # remove leading/trailing whitespace from each entry
+      entry=$(echo "$entry" | xargs)
+      if [ -n "$entry" ] && [[ ":$PATH:" != *":${entry}:"* ]]; then
+        if [ -z "$PATH" ]; then
+          PATH="$entry"
+        else
+          PATH="$PATH:${target_path}"
+        fi
+      fi
+    done
   fi
   export PATH
 }
