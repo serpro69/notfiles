@@ -224,8 +224,8 @@ fi
 
 export MANPATH
 
-# larger bash history (allow 32³ entries; default is 500)
-export HISTSIZE=${HISTSIZE:-32768} # resize history size
+# larger bash history (allow 32³*3 entries; default is 500)
+export HISTSIZE=98304 # resize history size
 export HISTFILESIZE=$HISTSIZE
 
 # ignore duplicates commands in the historylog
