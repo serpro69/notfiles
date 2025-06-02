@@ -275,10 +275,12 @@ if [ -d "$HOME/.local/share/nvim/mason/bin" ]; then
   _append_path "$HOME/.local/share/nvim/mason/bin"
 fi
 
-# activate 'default' python virtual environment, if available, on darwin
-command -v workon >/dev/null && workon | grep -q '^default$' 2>/dev/null && {
-  workon default
-}
+# activate 'default' python virtual environment, if available
+if [ ! -n "${IN_NIX_SHELL}" ]; then
+  command -v workon >/dev/null && workon | grep -q '^default$' 2>/dev/null && {
+    workon default
+  }
+fi
 
 alias vim-orig='NVIM_APPNAME="nvim-orig" nvim'
 alias nvim-orig='NVIM_APPNAME="nvim-orig" nvim'
