@@ -224,9 +224,12 @@ fi
 
 export MANPATH
 
-# larger bash history (allow 32³*3 entries; default is 500)
-export HISTSIZE=98304 # resize history size
+# larger bash history (allow 2^32 entries)
+# see also https://unix.stackexchange.com/questions/273861/unlimited-history-in-zsh
+export HISTSIZE=4294967296 # resize history size
 export HISTFILESIZE=$HISTSIZE
+# larger bash history (allow 32^3*2 entries)
+export SAVEHIST=65536
 
 # ignore duplicates commands in the historylog
 export HISTCONTROL=$HISTCONTROL${HISTCONTROL+:}ignoredups
