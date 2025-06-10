@@ -233,6 +233,20 @@ alias clippwd='_f(){ pwd | xclip -selection clipboard | trim; unset -f _f}; _f'
 
 ## misc
 
+is_darwin && {
+  brew-upgrade() {
+    brew upgrade
+    # llm tools are removed on each upgrade, so need to reinstall them
+    which llm >/dev/null && {
+      # install plugins
+      llm install llm-jq
+      llm install llm-cmd
+      # install models
+      llm install llm-gemini
+    }
+  }
+}
+
 # nvim is installed via brew on mac and we can't use something similar to 'alternatives' like we have on Ubuntu to
 # update global links and point vi(m) to nvim executable
 is_darwin && {
