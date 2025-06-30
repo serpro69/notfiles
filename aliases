@@ -219,8 +219,11 @@ is_darwin && [ -d "/opt/homebrew/opt/findutils/bin" ] && {
 alias nix-shell='nix-shell --run $SHELL'
 
 nix() {
+  # deactivate any possibly-active virtualenv
+  command -v deactivate >/dev/null && deactivate
   if [[ $1 == "develop" ]]; then
     shift
+    [ -n "${IN_NIX_SHELL}" ] && return 0 # already in nix shell
     command nix develop -c $SHELL "$@"
   else
     command nix "$@"
