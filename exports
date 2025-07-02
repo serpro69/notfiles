@@ -1,5 +1,7 @@
 #!/bin/sh
 #
+# vim: set ft=sh:
+#
 # File: .exports
 # Description:
 #   contains exports defined by the user.
@@ -551,6 +553,10 @@ _prepend_path "/usr/local/go/bin:$GOBIN"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+if [ -d "${KREW_ROOT:-$HOME/.krew}" ]; then
+  export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+fi
 
 unset -f _remove_path_entry
 unset -f _append_path
