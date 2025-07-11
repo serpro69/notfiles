@@ -2,7 +2,7 @@
 
 # rebel-config
 
-These are not the .files you're looking for
+These are not the <s>droids</s> .files you're looking for
 
 > These are my dotfiles. There are many like them, but these ones are mine.
 >
