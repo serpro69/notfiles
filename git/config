@@ -377,6 +377,18 @@
 [diff "sopsdiffer"]
     textconv = "sops decrypt"
 
+[diff "sopsdiffer_json"]
+    textconv = "sops decrypt --input-type=json --output-type=json"
+
+[diff "sopsdiffer_yaml"]
+    textconv = "sops decrypt --input-type=yaml --output-type=yaml"
+
+[diff "sopsdiffer_dotenv"]
+    textconv = "sops decrypt --input-type=dotenv --output-type=dotenv"
+
+[diff "sopsdiffer_binary"]
+    textconv = "sops decrypt --input-type=binary --output-type=binary"
+
 [difftool]
   # Difftool will not prompt for every file.
   # Use --prompt to override.
