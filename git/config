@@ -266,6 +266,9 @@
   # automagically fix whitespace
   #whitespace = fix
 
+[checkout]
+  defaultRemote=origin
+
 [commit]
   template = ~/.gitmessage
 
