@@ -242,10 +242,23 @@ is_darwin && {
     # llm tools are removed on each upgrade, so need to reinstall them
     which llm >/dev/null && {
       # install plugins
-      llm install llm-jq
-      llm install llm-cmd
+      llm install -U llm-jq
+      llm install -U llm-cmd
       # install models
-      llm install llm-gemini
+      llm install -U llm-gemini
+    }
+    which llm >/dev/null || {
+      command -v workon >/dev/null && workon | grep -q '^default$' 2>/dev/null && {
+        # activate default virtualenv
+        workon default
+        # install plugins
+        llm install -U llm-jq
+        llm install -U llm-cmd
+        # install models
+        llm install -U llm-gemini
+        # deactivate virtualenv
+        workoff default
+      }
     }
   }
 }
