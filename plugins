@@ -79,3 +79,10 @@ if [[ $CONFIG_ZSH_PLUGINS == *zsh-vi-mode* ]]; then
     [ -f "/opt/homebrew/opt/fzf/bin/fzf" ] && source <(fzf --zsh)
   }
 fi
+
+### misc
+
+# make completions (https://unix.stackexchange.com/a/758032)
+
+zstyle ':completion:*:make:*:targets' call-command true
+zstyle ':completion:*:*:make:*' tag-order 'targets'
