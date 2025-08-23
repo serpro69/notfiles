@@ -1,4 +1,4 @@
 [alias]
   clone-tmp = "!_f() { _dir="$(mktemp -u)"; git clone "$1" "$_dir"; echo "$_dir" | pbcopy; unset -f _f; }; _f"
   prune-delete = "!f() { origin="$1"; if [ -z "$origin" ]; then origin='origin'; fi; git remote prune "$origin" | grep pruned | gsed -E 's/.*origin\\/(.*)/\\1/' | gxargs -I {} git branch -D '{}' 2> /dev/null; }; f"
-  wt = !bash -c "'f() { local dir=\"$(mktemp -u)\"; local br=\"$1\"; if [ -z \"$br\" ]; then br='master'; fi; git worktree add -b \"$0\" \"$dir\" \"$br\"; echo \"$dir\" | pbcopy; }; f'"
+  wt = "!f() { if [ -z \"$1\" ]; then printf '\\033[31merror: missing branch name\\033[0m\nusage: git wt <branch>\n'; exit 1; fi; local dir=\"$(mktemp -u)\"; local br=$(echo \"$2\" | xargs); if [ -z \"${br}\" ]; then br='master'; fi; git worktree add -b \"$1\" \"$dir\" \"$br\"; echo \"$dir\" | xargs | pbcopy; }; f"
