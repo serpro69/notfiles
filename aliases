@@ -234,11 +234,18 @@ nix() {
 alias clipcat='_f(){ cat "$1" | xclip -selection clipboard; unset -f _f }; _f'
 alias clippwd='_f(){ pwd | xclip -selection clipboard | trim; unset -f _f}; _f'
 
+is_darwin && {
+  alias clipcat='_f(){ cat "$1" | pbcopy; unset -f _f }; _f'
+  alias clippwd='_f(){ pwd | pbcopy | trim; unset -f _f}; _f'
+}
+
 ## misc
 
 is_darwin && {
   brew-upgrade() {
     brew upgrade
+    # reinstall librewolf without quarantine flag to avoid macos blocking it on each update
+    brew reinstall --cask librewolf --no-quarantine
     # llm tools are removed on each upgrade, so need to reinstall them
     which llm >/dev/null && {
       # install plugins
@@ -260,6 +267,10 @@ is_darwin && {
         workoff default
       }
     }
+  }
+
+  bu() {
+    brew-upgrade
   }
 }
 
