@@ -1,5 +1,7 @@
 #!/bin/sh
 #
+# vim: set ft=sh:
+#
 # File: .zshenv
 # Description:
 #   Dynamically sets the PATH at each shell startup, as well as other
@@ -33,29 +35,127 @@
   echo-off
 }
 
+# Helper function to remove one or more path components from a PATH string.
+_remove_path_entry() {
+  local entries_to_remove_str="$1"
+  local current_path_input="$2"
+  local new_path_intermediate="$current_path_input"
+
+  local single_entry_to_remove
+  # Append a colon to entries_to_remove_str if it's not empty, to simplify loop logic
+  local remaining_entries_to_remove="${entries_to_remove_str:+$entries_to_remove_str:}"
+
+  while [ -n "$remaining_entries_to_remove" ]; do
+    single_entry_to_remove="${remaining_entries_to_remove%%:*}" # Get part before first colon
+    remaining_entries_to_remove="${remaining_entries_to_remove#*:}" # Get part after first colon
+
+    if [ -z "$single_entry_to_remove" ]; then
+      continue
+    fi
+
+    local temp_path_after_single_removal=""
+    local current_path_segment=""
+    # Append a colon to new_path_intermediate if it's not empty, to simplify loop logic
+    local remaining_path_segments="${new_path_intermediate:+$new_path_intermediate:}"
+
+    while [ -n "$remaining_path_segments" ]; do
+      current_path_segment="${remaining_path_segments%%:*}"
+      remaining_path_segments="${remaining_path_segments#*:}"
+
+      if [ -n "$current_path_segment" ]; then # Process only non-empty segments
+        if [ "$current_path_segment" != "$single_entry_to_remove" ]; then
+          if [ -z "$temp_path_after_single_removal" ]; then
+            temp_path_after_single_removal="$current_path_segment"
+          else
+            temp_path_after_single_removal="$temp_path_after_single_removal:$current_path_segment"
+          fi
+        fi
+      elif [ -z "$temp_path_after_single_removal" ] && [ -z "$remaining_path_segments" ]; then
+         # Path was/became empty, keeping result empty.
+         : # No-op, temp_path_after_single_removal remains empty
+      fi
+    done
+    new_path_intermediate="$temp_path_after_single_removal"
+  done
+
+  echo "$new_path_intermediate" # This is the ONLY echo to stdout, sending the new PATH back
+}
+
+_prepend_path() {
+  local target_path="$1"
+
+  if [ -z "$target_path" ]; then
+    return 1
+  fi
+
+  if [ -n "${IN_NIX_SHELL-}" ]; then
+    PATH=$(_remove_path_entry "$target_path" "$PATH")
+  else
+    # split target path into individual components
+    for entry in $(echo "$target_path" | tr ':' ' '); do
+      # remove leading/trailing whitespace from each entry
+      entry=$(echo "$entry" | xargs)
+      if [ -n "$entry" ] && [[ ":$PATH:" != *":${entry}:"* ]]; then
+        if [ -z "$PATH" ]; then
+          PATH="$entry"
+        else
+          PATH="${target_path}:$PATH"
+        fi
+      fi
+    done
+  fi
+  export PATH
+}
+
+_append_path() {
+  local target_path="$1"
+
+  if [ -z "$target_path" ]; then
+    return 1
+  fi
+
+  if [ -n "${IN_NIX_SHELL-}" ]; then
+    PATH=$(_remove_path_entry "$target_path" "$PATH")
+  else
+    # split target path into individual components
+    for entry in $(echo "$target_path" | tr ':' ' '); do
+      # remove leading/trailing whitespace from each entry
+      entry=$(echo "$entry" | xargs)
+      if [ -n "$entry" ] && [[ ":$PATH:" != *":${entry}:"* ]]; then
+        if [ -z "$PATH" ]; then
+          PATH="$entry"
+        else
+          _prepend_path "${target_path}"
+        fi
+      fi
+    done
+  fi
+  export PATH
+}
+
 # bin folders
 if [ -d "$HOME"/bin ]; then
-  PATH="$HOME/bin:$PATH"
+  _append_path "$HOME/bin"
   for DIR in "$(find "$HOME/bin" -mindepth 1 -maxdepth 1 -print)"; do
-    test -d "$DIR" && PATH="$DIR:$PATH"
+    test -d "$DIR" && _append_path "$DIR"
   done > /dev/null 2>&1
 fi
 
 if [ -d "$HOME/.local/bin" ]; then
-  PATH="$HOME/.local/bin:$PATH"
+  _append_path "$HOME/.local/bin"
 fi
 
 # opt folder
 if [ -d "$HOME"/opt ]; then
   for DIR in "$(find "$HOME/opt/" -mindepth 1 -maxdepth 1 -print)"; do
-    test -d "$DIR/bin" && PATH="$PATH:$DIR/bin"
+    test -d "$DIR/bin" && _prepend_path "$DIR/bin"
   done > /dev/null 2>&1
 fi
 
 ### NODE
 
 # node, npm binaries and settings
-test -d "$HOME/.npm/bin" && PATH="$HOME/.npm/bin:$PATH"
+test -d "$HOME/.npm/bin" && _append_path "$HOME/.npm/bin"
 export NPM_CONFIG_PREFIX="$HOME/.npm"
 export NODE_REPL_HISTORY=
 
@@ -67,47 +167,47 @@ test -d "$HOME/.nvm" && {
 
 # fnm (nvm alternative)
 test -d "$HOME/.fnm" && {
-  export PATH="$PATH:$HOME/.fnm"
+  _prepend_path "$HOME/.fnm"
   [[ -z "${ZSH_VERSION}" ]] && eval "$(fnm env --shell bash)" || eval "$(fnm env --shell zsh)"
   test -f "$HOME/.redpill/completions/_fnm" \
   || fnm completions --shell zsh > "$HOME/.redpill/completions/_fnm"
 }
 
 # deno
-test -d "$HOME/.deno/bin" && PATH="$PATH:$HOME/.deno/bin"
+test -d "$HOME/.deno/bin" && _prepend_path "$HOME/.deno/bin"
 
 ### RUBY
 
 # ruby gems
 if command -v ruby >/dev/null 2>&1 && command -v gem >/dev/null 2>&1; then
   DIR="$(gem environment gempath 2>/dev/null | cut -d: -f1)"
-  test -d "$DIR/bin" && PATH="$PATH:$DIR/bin"
+  test -d "$DIR/bin" && _prepend_path "$DIR/bin"
 fi
 
 unset DIR
 
 # rvm
-[[ -d "$HOME/.rvm" ]] && PATH="$PATH:$HOME/.rvm/bin"
+[[ -d "$HOME/.rvm" ]] && _prepend_path "$HOME/.rvm/bin"
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
 ### OTHERS
 
 # android
-test -d /opt/android && PATH="$PATH:/opt/android/platform-tools:/opt/android/tools"
+test -d /opt/android && _prepend_path "/opt/android/platform-tools:/opt/android/tools"
 
 # composer binaries
-test -d "$HOME"/.composer/vendor/bin && PATH="$PATH:$HOME/.composer/vendor/bin"
+test -d "$HOME"/.composer/vendor/bin && _prepend_path "$HOME/.composer/vendor/bin"
 
 # go binaries and workspace
-test -d /usr/local/go && PATH="$PATH:/usr/local/go/bin"
+test -d /usr/local/go && _prepend_path "/usr/local/go/bin"
 test -d "$HOME/code/go" && {
   export GOPATH="$HOME/code/go"
-  PATH="$PATH:$HOME/code/go/bin"
+  _prepend_path "$HOME/code/go/bin"
 }
 
 # TODO this shouldn't be here
 # Added by Toolbox App
-test -d "$HOME"/.local/share/JetBrains/Toolbox/scripts && PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
+test -d "$HOME"/.local/share/JetBrains/Toolbox/scripts && _prepend_path "$HOME/.local/share/JetBrains/Toolbox/scripts"
 
 # rust cargo
 test -f "$HOME/.cargo/env" && . "$HOME/.cargo/env"
