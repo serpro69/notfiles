@@ -1,2 +1,8 @@
 [general]
 working_directory = "/Users/sergio/Projects/wlcm"
+
+[window]
+startup_mode = "SimpleFullscreen"
+
+[font]
+size = 18.0

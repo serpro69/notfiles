@@ -1,1 +1,8 @@
+[general]
 working_directory = "/home/sergio/Projects"
+
+[window]
+startup_mode = "Fullscreen"
+
+[font]
+size = 14.0
