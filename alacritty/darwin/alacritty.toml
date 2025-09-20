@@ -2,6 +2,7 @@
 working_directory = "/Users/sergio/Projects/wlcm"
 
 [window]
+opacity = 0.69
 startup_mode = "SimpleFullscreen"
 
 [font]

@@ -8,7 +8,6 @@ import = [
 
 [window]
 blur = true
-opacity = 0.69
 padding = { x = 9, y = 3 }
 
 [font]
