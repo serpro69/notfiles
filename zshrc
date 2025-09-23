@@ -165,6 +165,7 @@ zshaddhistory() {
   # notify-send "'${full_cmd}'" "'${cmd}'" # debugging
   case ${cmd} in
     (vi|vim|nvim) return 1;;
+    (claude|llm) return 1;;
   esac
   case ${full_cmd} in
     (git st|git diff|git push|git lg) return 1;;
