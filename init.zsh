@@ -76,6 +76,7 @@ dotfiles=(
   alacritty           ".config/alacritty"
   git                 ".config/git"
   karabiner           ".config/karabiner"
+  navi                ".config/navi"
   # dots
   ohmyzsh             "${ZDOT}/ohmyzsh"
   tmux                ".tmux"

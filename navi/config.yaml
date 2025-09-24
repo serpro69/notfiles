@@ -1,0 +1,5 @@
+---
+cheats:
+  paths:
+    - ~/.local/share/navi/cheats/ # default location for cheats
+    - ~/Projects/personal/navi-cheats
