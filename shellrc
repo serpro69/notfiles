@@ -1,8 +1,19 @@
 #!/bin/sh
+#
+# vim: set ft=sh:
+#
+# File: .shellrc
+# Description:
+#   Contains base shell configuration and runs the terminal multiplexer
 
 # need to enable homebrew here in case we have tmux installed via brew
 if [ -f "/opt/homebrew/bin/brew" ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+# other shell integrations
+if command -v navi > /dev/null; then
+  eval "$(navi widget zsh)"
 fi
 
 # Runs the terminal multiplexer based on the configuration settings and SSH connection
