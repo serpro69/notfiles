@@ -26,8 +26,10 @@ SPACESHIP_TFB_PARENT="terraform/state/"
 spaceship_tfb() {
   [[ $SPACESHIP_TFB_SHOW == false ]] && return
 
-  # Check if terraform is installed
-  spaceship::exists terraform || return
+  # Check if terraform or opentofu is installed
+  spaceship::exists terraform || {
+    spaceship::exists tofu || return
+  }
 
   # Show Terraform Backend when exists
   spaceship::upsearch .terraform/terraform.tfstate || return
