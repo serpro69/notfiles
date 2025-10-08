@@ -230,6 +230,9 @@ nix() {
   fi
 }
 
+alias nix-search='nix run github:peterldowns/nix-search-cli --'
+alias nix-prefetch-github='nix run github:seppeljordan/nix-prefetch-github --'
+
 ## clipboard
 alias clipcat='_f(){ cat "$1" | xclip -selection clipboard; unset -f _f }; _f'
 alias clippwd='_f(){ pwd | xclip -selection clipboard | trim; unset -f _f}; _f'
