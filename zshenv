@@ -35,15 +35,22 @@
   echo-off
 }
 
+_RED='\033[31m'
+_GREEN='\033[32m'
+_YELLOW='\033[33m'
+_BLUE='\033[34m'
+_BOLD='\033[1m'
+_RESET='\033[0m'
+
 # Helper function to remove one or more path components from a PATH string.
 _remove_path_entry() {
-  local entries_to_remove_str="$1"
-  local current_path_input="$2"
-  local new_path_intermediate="$current_path_input"
+  entries_to_remove_str="$1"
+  current_path_input="$2"
+  new_path_intermediate="$current_path_input"
 
-  local single_entry_to_remove
+  single_entry_to_remove
   # Append a colon to entries_to_remove_str if it's not empty, to simplify loop logic
-  local remaining_entries_to_remove="${entries_to_remove_str:+$entries_to_remove_str:}"
+  remaining_entries_to_remove="${entries_to_remove_str:+$entries_to_remove_str:}"
 
   while [ -n "$remaining_entries_to_remove" ]; do
     single_entry_to_remove="${remaining_entries_to_remove%%:*}" # Get part before first colon
@@ -53,10 +60,10 @@ _remove_path_entry() {
       continue
     fi
 
-    local temp_path_after_single_removal=""
-    local current_path_segment=""
+    temp_path_after_single_removal=""
+    current_path_segment=""
     # Append a colon to new_path_intermediate if it's not empty, to simplify loop logic
-    local remaining_path_segments="${new_path_intermediate:+$new_path_intermediate:}"
+    remaining_path_segments="${new_path_intermediate:+$new_path_intermediate:}"
 
     while [ -n "$remaining_path_segments" ]; do
       current_path_segment="${remaining_path_segments%%:*}"
@@ -82,7 +89,7 @@ _remove_path_entry() {
 }
 
 _prepend_path() {
-  local target_path="$1"
+  target_path="$1"
 
   if [ -z "$target_path" ]; then
     return 1
@@ -90,25 +97,28 @@ _prepend_path() {
 
   if [ -n "${IN_NIX_SHELL-}" ]; then
     PATH=$(_remove_path_entry "$target_path" "$PATH")
+    export PATH
   else
     # split target path into individual components
     for entry in $(echo "$target_path" | tr ':' ' '); do
       # remove leading/trailing whitespace from each entry
       entry=$(echo "$entry" | xargs)
-      if [ -n "$entry" ] && [[ ":$PATH:" != *":${entry}:"* ]]; then
+      if [ ! -d "$entry" ]; then
+        printf "${_YELLOW}warning: non-existing directory %s${_RESET}\n" "$entry"
+      elif [ -n "$entry" ] && [[ ":$PATH:" != *":${entry}:"* ]]; then
         if [ -z "$PATH" ]; then
-          PATH="$entry"
+          printf "${_RED}warning: empty PATH, adding first entry %s${_RESET}" "$entry"
+          export PATH="$entry"
         else
-          PATH="${target_path}:$PATH"
+          export PATH="${entry}:$PATH"
         fi
       fi
     done
   fi
-  export PATH
 }
 
 _append_path() {
-  local target_path="$1"
+  target_path="$1"
 
   if [ -z "$target_path" ]; then
     return 1
@@ -116,21 +126,24 @@ _append_path() {
 
   if [ -n "${IN_NIX_SHELL-}" ]; then
     PATH=$(_remove_path_entry "$target_path" "$PATH")
+    export PATH
   else
     # split target path into individual components
     for entry in $(echo "$target_path" | tr ':' ' '); do
       # remove leading/trailing whitespace from each entry
       entry=$(echo "$entry" | xargs)
-      if [ -n "$entry" ] && [[ ":$PATH:" != *":${entry}:"* ]]; then
+      if [ ! -d "$entry" ]; then
+        printf "${_YELLOW}warning: non-existing directory %s${_RESET}\n" "$entry"
+      elif [ -n "$entry" ] && [[ ":$PATH:" != *":${entry}:"* ]]; then
         if [ -z "$PATH" ]; then
-          PATH="$entry"
+          printf "${_RED}warning: empty PATH, adding first entry %s${_RESET}" "$entry"
+          export PATH="$entry"
         else
-          _prepend_path "${target_path}"
+          export PATH="${PATH}:${entry}"
         fi
       fi
     done
   fi
-  export PATH
 }
 
 # bin folders

@@ -214,7 +214,7 @@ fi
 }
 
 # remove some extra stuff from the PATH in nix shell
-if [ -n "$IN_NIX_SHELL" ]; then
+if [ -n "${IN_NIX_SHELL-}" ]; then
   PATH=$(_remove_path_entry "/opt/homebrew/share/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin" "$PATH")
   PATH=$(_remove_path_entry "/Users/sergio/.virtualenvs/default/bin" "$PATH")
   # some default macos binaries may conflict with Nix-installed ones
