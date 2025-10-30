@@ -452,10 +452,11 @@ export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
 _prepend_path "/usr/local/go/bin:$GOBIN"
 
+# K8s
+if [ -d "${KREW_ROOT:-$HOME/.krew}" ]; then
+  _prepend_path "${KREW_ROOT:-$HOME/.krew}/bin"
+fi
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-if [ -d "${KREW_ROOT:-$HOME/.krew}" ]; then
-  export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-fi
