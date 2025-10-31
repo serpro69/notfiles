@@ -110,7 +110,12 @@ _prepend_path() {
           printf "${_RED}warning: empty PATH, adding first entry %s${_RESET}" "$entry"
           export PATH="$entry"
         else
-          export PATH="${entry}:$PATH"
+          # Use path array in zsh to avoid sync issues
+          if [ -n "$ZSH_VERSION" ]; then
+            path=("$entry" $path[@])
+          else
+            export PATH="${entry}:$PATH"
+          fi
         fi
       fi
     done
@@ -139,7 +144,12 @@ _append_path() {
           printf "${_RED}warning: empty PATH, adding first entry %s${_RESET}" "$entry"
           export PATH="$entry"
         else
-          export PATH="${PATH}:${entry}"
+          # Use path array in zsh to avoid sync issues
+          if [ -n "$ZSH_VERSION" ]; then
+            path+=("$entry")
+          else
+            export PATH="${PATH}:${entry}"
+          fi
         fi
       fi
     done
