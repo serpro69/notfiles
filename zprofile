@@ -18,6 +18,10 @@
 # Source dotfiles configuration
 source ~/.dotfiles_config
 
+# Enable source tracing at TRACE and INFO logging levels
+[ "${CONFIG_LOGGING:-OFF}" = "TRACE" ] && [ -n "$ZSH_VERSION" ] && setopt XTRACE
+[ "${CONFIG_LOGGING:-OFF}" = "INFO" ] && [ -n "$ZSH_VERSION" ] && setopt SOURCE_TRACE
+
 # Source shellrc which starts the terminal multiplexer
 source ~/.redpill/.shellrc
 

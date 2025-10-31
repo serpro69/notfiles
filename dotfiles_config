@@ -8,3 +8,4 @@ CONFIG_ZSH_PLUGINS="(zsh-nvm colored-man-pages colorize copybuffer dircycle dock
 CONFIG_ZSH_THEME="spaceship"
 CONFIG_TERM_LOCAL="tmux" # terminal multiplexer: screen byobu tmux
 CONFIG_TERM_SSH=""
+CONFIG_LOGGING="ERROR" # Options: OFF, ERROR, WARN, INFO, TRACE

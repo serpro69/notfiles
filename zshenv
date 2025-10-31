@@ -42,6 +42,54 @@ _BLUE='\033[34m'
 _BOLD='\033[1m'
 _RESET='\033[0m'
 
+# Logging helper function - prints based on CONFIG_LOGGING level in dotfiles_config
+# Usage: _log LEVEL "format string" args...
+# Levels: TRACE (blue), INFO (green), WARN (yellow), ERROR (red)
+# CONFIG_LOGGING can be: OFF, ERROR, WARN, INFO, TRACE
+_log() {
+  local level="$1"
+  shift
+
+  local config_level="${CONFIG_LOGGING:-OFF}"
+
+  # Define log level priorities (lower = more verbose)
+  local level_priority=0
+  local config_priority=0
+
+  case "$level" in
+    TRACE) level_priority=0 ;;
+    INFO)  level_priority=1 ;;
+    WARN)  level_priority=2 ;;
+    ERROR) level_priority=3 ;;
+  esac
+
+  case "$config_level" in
+    TRACE) config_priority=0 ;;
+    INFO)  config_priority=1 ;;
+    WARN)  config_priority=2 ;;
+    ERROR) config_priority=3 ;;
+    OFF)   config_priority=99 ;;
+  esac
+
+  # Only print if level priority >= config priority
+  [ $level_priority -ge $config_priority ] || return
+
+  case "$level" in
+    TRACE)
+      printf "${_BLUE}[TRACE]${_RESET} $@"
+      ;;
+    INFO)
+      printf "${_GREEN}[INFO]${_RESET} $@"
+      ;;
+    WARN)
+      printf "${_YELLOW}[WARN]${_RESET} $@"
+      ;;
+    ERROR)
+      printf "${_RED}[ERROR]${_RESET} $@"
+      ;;
+  esac
+}
+
 # Helper function to remove one or more path components from a PATH string.
 _remove_path_entry() {
   entries_to_remove_str="$1"
@@ -104,10 +152,10 @@ _prepend_path() {
       # remove leading/trailing whitespace from each entry
       entry=$(echo "$entry" | xargs)
       if [ ! -d "$entry" ]; then
-        printf "${_YELLOW}warning: non-existing directory %s${_RESET}\n" "$entry"
+        _log WARN "non-existing directory %s\n" "$entry"
       elif [ -n "$entry" ] && [[ ":$PATH:" != *":${entry}:"* ]]; then
         if [ -z "$PATH" ]; then
-          printf "${_RED}warning: empty PATH, adding first entry %s${_RESET}" "$entry"
+          _log ERROR "empty PATH, adding first entry %s\n" "$entry"
           export PATH="$entry"
         else
           # Use path array in zsh to avoid sync issues
@@ -138,10 +186,10 @@ _append_path() {
       # remove leading/trailing whitespace from each entry
       entry=$(echo "$entry" | xargs)
       if [ ! -d "$entry" ]; then
-        printf "${_YELLOW}warning: non-existing directory %s${_RESET}\n" "$entry"
+        _log WARN "non-existing directory %s\n" "$entry"
       elif [ -n "$entry" ] && [[ ":$PATH:" != *":${entry}:"* ]]; then
         if [ -z "$PATH" ]; then
-          printf "${_RED}warning: empty PATH, adding first entry %s${_RESET}" "$entry"
+          _log ERROR "empty PATH, adding first entry %s\n" "$entry"
           export PATH="$entry"
         else
           # Use path array in zsh to avoid sync issues
