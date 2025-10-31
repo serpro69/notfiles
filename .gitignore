@@ -1,6 +1,25 @@
+# ignore all hidden
+.*
+# except
+!.gitattributes
+!.gitignore
+!.gitmodules
+!*lint*
+!.yamlfmt.yaml
+!.github
+!.github/**
+!.sops.yaml
+# sops-encrypted files
+!*.sops
+
 .idea/
 *.iml
 .vagrant
 
 # mac
 .DS_Store
+
+# AI tools
+!.serena
+!.claude
+!.taskmaster

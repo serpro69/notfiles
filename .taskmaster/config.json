@@ -1,0 +1,42 @@
+{
+    "models": {
+        "main": {
+            "provider": "claude-code",
+            "modelId": "sonnet",
+            "maxTokens": 120000,
+            "temperature": 0.2
+        },
+        "research": {
+            "provider": "claude-code",
+            "modelId": "opus",
+            "maxTokens": 64000,
+            "temperature": 0.1
+        },
+        "fallback": {
+            "provider": "claude-code",
+            "modelId": "sonnet",
+            "maxTokens": 120000,
+            "temperature": 0.2
+        }
+    },
+    "global": {
+        "logLevel": "info",
+        "debug": false,
+        "defaultNumTasks": 10,
+        "defaultSubtasks": 5,
+        "defaultPriority": "medium",
+        "projectName": "dotfiles",
+        "ollamaBaseURL": "",
+        "bedrockBaseURL": "",
+        "responseLanguage": "English",
+        "enableCodebaseAnalysis": true,
+        "defaultTag": "master",
+        "azureOpenaiBaseURL": "",
+        "userId": "42"
+    },
+    "claudeCode": {
+        "customSystemPrompt": "You are a bash and zsh expert with experience in creating and customizing personal development dotfiles configurations.",
+        "appendSystemPrompt": "Always follow bash ans zsh coding best practices, clean architecture, dotfiles design with Zsh idioms. Use context7 MCP to lookup documentation for dependencies, libraries, SDKs, APIs and other external frameworks and tools, whenever necessary.",
+        "permissionMode": "default"
+    }
+}
