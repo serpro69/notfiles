@@ -177,7 +177,7 @@ function mockery() {
 # add mason.nvim binaries to path to simplify nvim setup and be able to call a binary by name
 if [ -d "$HOME/.local/share/nvim/mason/bin" ]; then
   # add it at the end of PATH so it has least precedence
-  _prepend_path "$HOME/.local/share/nvim/mason/bin"
+  _append_path "$HOME/.local/share/nvim/mason/bin"
 fi
 
 # activate 'default' python virtual environment, if available
