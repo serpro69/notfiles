@@ -18,6 +18,7 @@ export DIR_DOTFILES=$(pwd);
 # make less the default pager
 export PAGER=${PAGER:-"less"}
 
+is_darwin && EDITOR="nvim"
 # use sublime text for local changes
 if [[ -n $SSH_CONNECTION ]]; then
   EDITOR=${EDITOR:-"vim"}
