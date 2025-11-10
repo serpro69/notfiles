@@ -96,7 +96,7 @@ _remove_path_entry() {
   current_path_input="$2"
   new_path_intermediate="$current_path_input"
 
-  single_entry_to_remove
+  local single_entry_to_remove
   # Append a colon to entries_to_remove_str if it's not empty, to simplify loop logic
   remaining_entries_to_remove="${entries_to_remove_str:+$entries_to_remove_str:}"
 
