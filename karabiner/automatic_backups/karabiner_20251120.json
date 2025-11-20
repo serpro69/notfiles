@@ -191,7 +191,6 @@
                         "product_id": 50504,
                         "vendor_id": 1133
                     },
-                    "ignore_vendor_events": true,
                     "simple_modifications": [
                         {
                             "from": { "key_code": "left_command" },
@@ -210,15 +209,6 @@
                             "to": [{ "key_code": "right_command" }]
                         }
                     ]
-                },
-                {
-                    "identifiers": {
-                        "is_pointing_device": true,
-                        "product_id": 50504,
-                        "vendor_id": 1133
-                    },
-                    "ignore": false,
-                    "ignore_vendor_events": true
                 }
             ],
             "name": "Default profile",
