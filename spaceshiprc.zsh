@@ -8,8 +8,20 @@ SPACESHIP_PULUMI_ASYNC=true
 
 SPACESHIP_GCLOUD_SYMBOL="󰅟 "
 
+# async section (sections that are loading)
+# ref: https://spaceship-prompt.sh/sections/async/
+# add a space after async symbol … for the custom sections that are added at the end
+SPACESHIP_ASYNC_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
 # anaconda
 SPACESHIP_VENV_SYMBOL="󱔎 "
+# kubernetes
+SPACESHIP_KUBECTL_SHOW=true
+# https://spaceship-prompt.sh/sections/kubectl/#Kubernetes-context-kubectl_context
+SPACESHIP_KUBECTL_CONTEXT_COLOR_GROUPS=(
+  red 'system'
+  yellow '^\(wlcm-.*\)$'
+  green 'dev|test'
+)
 
 # custom sections
 # terraform/tofu backend
