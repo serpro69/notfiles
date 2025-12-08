@@ -74,6 +74,7 @@ dotfiles=(
   bluepill            "${ZDOT}/bluepill"
   # ~/.config
   alacritty           ".config/alacritty"
+  kitty               ".config/kitty"
   git                 ".config/git"
   karabiner           ".config/karabiner"
   navi                ".config/navi"
