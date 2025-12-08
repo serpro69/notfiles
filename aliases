@@ -289,3 +289,9 @@ alias vims='EDITOR=nvim sops edit'
 
 # update nvim plugins
 alias vimls='vim --headless "+Lazy! sync" +qa'
+
+# editor shortcuts
+alias e='$EDITOR'
+alias se='sudoedit'
+alias es='EDITOR=nvim sops edit'
+alias ec='nvim --cmd ":lua vim.g.noplugins=1"' #nvim --clean
