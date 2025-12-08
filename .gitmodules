@@ -34,3 +34,9 @@
 [submodule "bluepill/plugins/nix-zsh-completions"]
 	path = bluepill/plugins/nix-zsh-completions
 	url = https://github.com/nix-community/nix-zsh-completions.git
+[submodule "kitty/themes/catppuccin"]
+	path = kitty/themes/catppuccin
+	url = https://github.com/catppuccin/kitty.git
+[submodule "kitty/themes/kitty-themes"]
+	path = kitty/themes/kitty-themes
+	url = https://github.com/dexpota/kitty-themes.git
