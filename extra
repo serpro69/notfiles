@@ -227,3 +227,6 @@ if [ -n "${IN_NIX_SHELL-}" ]; then
   # is_darwin && PATH=$(_remove_path_entry "/usr/bin" "$PATH")
   export PATH
 fi
+
+# TODO: temp
+alias e='NVIM_APPNAME="nvim-lazy" nvim'
