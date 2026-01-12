@@ -164,6 +164,8 @@ platform=(
   alacritty/linux/alacritty.toml  ".config/alacritty/alacritty.linux.toml"
   git/darwin/config.extra         ".config/git/config.darwin.extra"
   git/linux/config.extra          ".config/git/config.linux.extra"
+  kitty/darwin/kitty.conf         ".config/kitty/kitty.darwin.conf"
+  kitty/linux/kitty.conf          ".config/kitty/kitty.linux.conf"
   nano/darwin/nanorc              ".nanorc"
   nano/termux/nanorc              ".nanorc"
   nano/others/nanorc              ".config/nano/nanorc"
