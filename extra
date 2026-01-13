@@ -192,8 +192,8 @@ is_darwin && [ -d "/opt/homebrew/opt/ruby/bin" ] && _prepend_path "/opt/homebrew
 
 alias vim-orig='NVIM_APPNAME="nvim-orig" nvim'
 alias nvim-orig='NVIM_APPNAME="nvim-orig" nvim'
-alias vim-lazy='NVIM_APPNAME="nvim-lazy" nvim'
-alias nvim-lazy='NVIM_APPNAME="nvim-lazy" nvim'
+alias vim-old='NVIM_APPNAME="nvim-old" nvim'
+alias nvim-old='NVIM_APPNAME="nvim-old" nvim'
 
 _trim() {
   local var="$*"
@@ -227,6 +227,3 @@ if [ -n "${IN_NIX_SHELL-}" ]; then
   # is_darwin && PATH=$(_remove_path_entry "/usr/bin" "$PATH")
   export PATH
 fi
-
-# TODO: temp
-alias e='NVIM_APPNAME="nvim-lazy" nvim'
