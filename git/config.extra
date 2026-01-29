@@ -67,10 +67,12 @@
   added = yellow
   changed = green
   untracked = cyan
-[credential "https://git-codecommit.eu-north-1.amazonaws.com"]
-  # credential helper for AWS CodeCommit
-  helper = !aws --profile ww-cicd-developer codecommit credential-helper $@
-  UseHttpPath = true
+[commit]
+  gpgsign = true
+#[credential "https://git-codecommit.eu-north-1.amazonaws.com"]
+#  # credential helper for AWS CodeCommit
+#  helper = !aws --profile ww-cicd-developer codecommit credential-helper $@
+#  UseHttpPath = true
 [interactive]
   diffFilter = diff-highlight
 #[pager]
@@ -90,4 +92,3 @@
   default = simple
 [pull]
   rebase = true
-
