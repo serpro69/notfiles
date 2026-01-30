@@ -87,7 +87,7 @@
 [user]
   name = serpro69
   email = 22973227+serpro69@users.noreply.github.com
-  signingkey = 395A35D15482A7CE
+  signingkey = AD115866C0FAFE04
 [push]
   default = simple
 [pull]
