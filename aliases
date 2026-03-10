@@ -192,6 +192,7 @@ is_darwin && [ -d "/opt/homebrew/opt/findutils/bin" ] && {
   alias xargs=gxargs
   # GNU date
   alias date=gdate
+  alias du=gdu
 
   # GNU make
   alias make=gmake
