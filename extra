@@ -227,3 +227,7 @@ if [ -n "${IN_NIX_SHELL-}" ]; then
   # is_darwin && PATH=$(_remove_path_entry "/usr/bin" "$PATH")
   export PATH
 fi
+
+if [ -d "/Applications/Obsidian.app/Contents/MacOS" ]; then
+    _append_path "/Applications/Obsidian.app/Contents/MacOS"
+fi
