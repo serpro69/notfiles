@@ -296,3 +296,6 @@ alias e='$EDITOR'
 alias se='sudoedit'
 alias es='EDITOR=nvim sops edit'
 alias ec='nvim --cmd ":lua vim.g.noplugins=1"' #nvim --clean
+
+# AI
+alias c="claude"
