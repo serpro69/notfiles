@@ -248,8 +248,6 @@ is_darwin && {
 is_darwin && {
   brew-upgrade() {
     brew upgrade
-    # reinstall librewolf without quarantine flag to avoid macos blocking it on each update
-    brew reinstall --cask librewolf --no-quarantine
     # llm tools are removed on each upgrade, so need to reinstall them
     which llm >/dev/null && {
       # install plugins
