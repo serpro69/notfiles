@@ -197,6 +197,21 @@ lzdc() {
 }
 
 
+# kubectx/kubens interactive selection — workaround for the broken built-in
+# fzf integration in kubectx v0.11.0 (interactive mode exec's fzf without
+# piping the context/namespace list, leaving fzf stuck on its loading spinner).
+function kctx() {
+  local choice
+  choice=$(KUBECTX_IGNORE_FZF=1 kubectx | fzf --ansi --no-preview --prompt='context> ') || return
+  [[ -n $choice ]] && kubectx "$choice"
+}
+
+function kns() {
+  local choice
+  choice=$(KUBECTX_IGNORE_FZF=1 kubens | fzf --ansi --no-preview --prompt='namespace> ') || return
+  [[ -n $choice ]] && kubens "$choice"
+}
+
 ## ZSH TESTING FUNCTIONS
 
 zsh_docker_versions() {
