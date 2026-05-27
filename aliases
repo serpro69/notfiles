@@ -197,6 +197,8 @@ is_darwin && [ -d "/opt/homebrew/opt/findutils/bin" ] && {
   # GNU make
   alias make=gmake
 
+  alias mktemp=gmktemp
+
   # GNU diffutils
   alias diff='command gdiff -u --color'
   alias diff3=gdiff3
