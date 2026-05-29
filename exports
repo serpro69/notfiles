@@ -429,6 +429,16 @@ is_darwin && is_zsh && {
   fi
 }
 
+# Export GNU tools alternatives via homebrew
+# credits: https://gist.github.com/skyzyx/3438280b18e4f7c490db8a2a2ca0b9da?permalink_comment_id=3049694#gistcomment-3049694
+if type brew &>/dev/null; then
+  HOMEBREW_PREFIX=$(brew --prefix)
+  # gnubin; gnuman
+  for d in ${HOMEBREW_PREFIX}/opt/*/libexec/gnubin; do export PATH=$d:$PATH; done
+  # Comment next line if you want man grep giving the BSD grep man page
+  for d in ${HOMEBREW_PREFIX}/opt/*/libexec/gnuman; do export MANPATH=$d:$MANPATH; done
+fi
+
 # python virtualenv + virtualenvwrapper
 
 if virtualenv --help >/dev/null 2>&1; then

@@ -181,32 +181,7 @@ alias '?'='echo $?'
 # Below are the ones that are missing (from my POV)
 # alias tfw='terraform workspace'
 
-## gnu findutils
-# https://www.gnu.org/software/findutils/
-
-is_darwin && [ -d "/opt/homebrew/opt/findutils/bin" ] && {
-  alias find=gfind
-  # TODO: not sure if these should be aliased (i.e. usable at all on a mac)
-  # alias locate=glocate
-  # alias updatedb=gupdatedb
-  alias xargs=gxargs
-  # GNU date
-  alias date=gdate
-  alias du=gdu
-
-  # GNU make
-  alias make=gmake
-
-  alias mktemp=gmktemp
-
-  # GNU diffutils
-  alias diff='command gdiff -u --color'
-  alias diff3=gdiff3
-
-  alias sed=gsed
-
-  alias split=gsplit
-
+is_darwin && {
   # linking vim to nvim on macos is a pia...
   alias sops='EDITOR=nvim sops'
 

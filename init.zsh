@@ -218,3 +218,13 @@ EOF
 }
 
 mkdir -p "$HOME/.redpill/completions"
+
+# Homebrew GNU tools installation
+if [ -f "/opt/homebrew/bin/brew" ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+  # install gnu-based stuff
+  brew install autoconf bash binutils coreutils diffutils ed findutils flex gawk \
+    gnu-indent gnu-sed gnu-tar gnu-which gpatch grep gzip less m4 make nano \
+    screen watch wdiff wget zip
+fi
+
