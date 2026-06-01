@@ -277,5 +277,7 @@ alias ec='nvim --cmd ":lua vim.g.noplugins=1"' #nvim --clean
 #       ref: https://platform.claude.com/docs/en/about-claude/models/migration-guide#choosing-an-effort-level
 # max: Max effort can deliver performance gains in some use cases, but may show diminishing returns from increased token usage. This setting can also sometimes be prone to overthinking. Test max effort for intelligence-demanding tasks.
 # xhigh (new): Extra high effort is the best setting for most coding and agentic use cases.
-alias c="$(which claude) --effort=xhigh"
-alias claude="$(which claude) --effort=xhigh"
+alias c="$(whence claude) --effort=xhigh"
+alias claude="$(whence claude) --effort=xhigh"
+alias c46="$(whence claude) --model='claude-opus-4-6[1m]' --effort=max"
+alias claude46="$(whence claude) --model='claude-opus-4-6[1m]' --effort=max"
