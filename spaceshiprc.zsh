@@ -16,11 +16,19 @@ SPACESHIP_ASYNC_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
 SPACESHIP_VENV_SYMBOL="󱔎 "
 # kubernetes
 SPACESHIP_KUBECTL_SHOW=true
+SPACESHIP_KUBECTL_SYMBOL="󰠳 "
 # https://spaceship-prompt.sh/sections/kubectl/#Kubernetes-context-kubectl_context
 SPACESHIP_KUBECTL_CONTEXT_COLOR_GROUPS=(
-  red 'system'
-  yellow '^\(wlcm-.*\)$'
-  green 'dev|test'
+  # red if namespace is "kube-system"
+  red    '\(kube-system)$'
+  # else, red if "prod" is anywhere in the context or namespace
+  red    'prod'
+  # else, red if context name ends with ".k8s.local" _and_ namespace is "system"
+  red    '\.k8s\.local \(system)$'
+  # else, yellow if the entire content is "test-" followed by digits, and no namespace is displayed
+  yellow '^test-[0-9]+$'
+  # else, green if "test" is anywhere in the context or namespace
+  green  'test'
 )
 
 # custom sections
