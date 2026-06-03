@@ -17,6 +17,8 @@ SPACESHIP_VENV_SYMBOL="󱔎 "
 # kubernetes
 SPACESHIP_KUBECTL_SHOW=true
 SPACESHIP_KUBECTL_SYMBOL="󰠳 "
+SPACESHIP_KUBECTL_COLOR="0066cd"
+SPACESHIP_KUBECTL_VERSION_COLOR="0066cd"
 # https://spaceship-prompt.sh/sections/kubectl/#Kubernetes-context-kubectl_context
 SPACESHIP_KUBECTL_CONTEXT_COLOR_GROUPS=(
   # red if namespace is "kube-system"
