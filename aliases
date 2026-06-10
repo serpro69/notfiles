@@ -272,6 +272,10 @@ alias se='sudoedit'
 alias es='EDITOR=nvim sops edit'
 alias ec='nvim --cmd ":lua vim.g.noplugins=1"' #nvim --clean
 
+# k8s with contexts
+alias kwp='kubectl --context wlcm-prod'
+alias kwt='kubectl --context wlcm-test'
+
 # AI
 # NOTE: claude-code effort level
 #       ref: https://platform.claude.com/docs/en/about-claude/models/migration-guide#choosing-an-effort-level
