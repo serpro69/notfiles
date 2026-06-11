@@ -171,6 +171,19 @@ function mockery() {
   docker run --rm -v "$(pwd)":/src -w /src vektra/mockery "$@"
 }
 
+# vpn
+
+function tscale() {
+  local domain="$1"
+  if [ -z "$1" ]; then
+    domain="dev"
+  fi
+  tailscale up --login-server "https://headscale.welcomeworkdays.${domain}" --accept-routes --force-reauth && {
+    sudo resolvectl dns tailscale0 100.100.100.100
+    sudo resolvectl domain tailscale0 '~welcomeworkdays.dev' '~welcomeworkdays.com' '~tailnet.internal'
+  }
+}
+
 #if $(which cmatrix > /dev/null); then cmatrix; fi
 #if $(which cmatrix > /dev/null) && [ "$(echo ${0//-/})" = "zsh" ]; then cmatrix; fi
 
