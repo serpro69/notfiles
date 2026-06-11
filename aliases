@@ -290,3 +290,5 @@ alias claude46="$(whence claude) --model='claude-opus-4-6[1m]' --effort=max"
 # fable-5
 alias cf5="$(whence claude) --model='claude-fable-5' --effort=xhigh"
 alias claudef5="$(whence claude) --model='claude-fable-5' --effort=xhigh"
+alias cf5u="$(whence claude) --model='claude-fable-5' --effort=ultracode"
+alias claudef5u="$(whence claude) --model='claude-fable-5' --effort=ultracode"
