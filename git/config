@@ -259,6 +259,9 @@
   # show verbose output about tags
   tags = tag -l
 
+  # worktree
+  wtr = worktree remove
+
 [apply]
   # detect whitespace errors when applying a patch
   whitespace = warn
