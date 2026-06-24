@@ -179,10 +179,11 @@ function tscale() {
     domain="dev"
   fi
   tailscale status | grep -q stopped || tailscale down
-  tailscale up --login-server "https://headscale.welcomeworkdays.${domain}" --accept-routes --force-reauth && {
+  tailscale up --login-server "https://headscale.welcomeworkdays.${domain}" --accept-routes --force-reauth
+  if ! is_darwin; then
     sudo resolvectl dns tailscale0 100.100.100.100
     sudo resolvectl domain tailscale0 '~welcomeworkdays.dev' '~welcomeworkdays.com' '~tailnet.internal'
-  }
+  fi
 }
 
 #if $(which cmatrix > /dev/null); then cmatrix; fi
