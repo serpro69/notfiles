@@ -282,13 +282,46 @@ alias kwt='kubectl --context wlcm-test'
 # max: Max effort can deliver performance gains in some use cases, but may show diminishing returns from increased token usage. This setting can also sometimes be prone to overthinking. Test max effort for intelligence-demanding tasks.
 # xhigh (new): Extra high effort is the best setting for most coding and agentic use cases.
 # default model per project-/user-settings
-alias c="$(whence claude) --effort=xhigh"
-alias claude="$(whence claude) --effort=xhigh"
-# opus-4-6
-alias c46="$(whence claude) --model='claude-opus-4-6[1m]' --effort=max"
-alias claude46="$(whence claude) --model='claude-opus-4-6[1m]' --effort=max"
+#
+# default model
+alias c="$(whence claude) --effort=high"
+alias claude="$(whence claude) --effort=high"
+# max
+alias cm="$(whence claude) --effort=max"
+alias claudem="$(whence claude) --effort=max"
+# xhigh
+alias cx="$(whence claude) --effort=xhigh"
+alias claudex="$(whence claude) --effort=xhigh"
+# ultracode
+alias cu="$(whence claude) --effort=ultracode"
+alias claudeu="$(whence claude) --effort=ultracode"
+# opus
+alias co="$(whence claude) --model='claude-opus-5' --effort=high"
+alias co5="$(whence claude) --model='claude-opus-5' --effort=high"
+alias claudeo5="$(whence claude) --model='claude-opus-5' --effort=high"
+alias co5m="$(whence claude) --model='claude-opus-5' --effort=max"
+alias claudeo5m="$(whence claude) --model='claude-opus-5' --effort=max"
+alias co5x="$(whence claude) --model='claude-opus-5' --effort=xhigh"
+alias claudeo5x="$(whence claude) --model='claude-opus-5' --effort=xhigh"
+alias co5u="$(whence claude) --model='claude-opus-5' --effort=ultracode"
+alias claudeo5u="$(whence claude) --model='claude-opus-5' --effort=ultracode"
+# sonnet
+alias cs="$(whence claude) --model='claude-sonnet-5' --effort=high"
+alias cs5="$(whence claude) --model='claude-sonnet-5' --effort=high"
+alias claudes5="$(whence claude) --model='claude-sonnet-5' --effort=high"
+alias cs5m="$(whence claude) --model='claude-sonnet-5' --effort=max"
+alias claudes5m="$(whence claude) --model='claude-sonnet-5' --effort=max"
+alias cs5x="$(whence claude) --model='claude-sonnet-5' --effort=xhigh"
+alias claudes5x="$(whence claude) --model='claude-sonnet-5' --effort=xhigh"
+alias cs5u="$(whence claude) --model='claude-sonnet-5' --effort=ultracode"
+alias claudes5u="$(whence claude) --model='claude-sonnet-5' --effort=ultracode"
 # fable-5
-alias cf5="$(whence claude) --model='claude-fable-5' --effort=xhigh"
-alias claudef5="$(whence claude) --model='claude-fable-5' --effort=xhigh"
+alias cf="$(whence claude) --model='claude-fable-5' --effort=high"
+alias cf5="$(whence claude) --model='claude-fable-5' --effort=high"
+alias claudef5="$(whence claude) --model='claude-fable-5' --effort=high"
+alias cf5m="$(whence claude) --model='claude-fable-5' --effort=max"
+alias claudef5m="$(whence claude) --model='claude-fable-5' --effort=max"
+alias cf5x="$(whence claude) --model='claude-fable-5' --effort=xhigh"
+alias claudef5x="$(whence claude) --model='claude-fable-5' --effort=xhigh"
 alias cf5u="$(whence claude) --model='claude-fable-5' --effort=ultracode"
 alias claudef5u="$(whence claude) --model='claude-fable-5' --effort=ultracode"
