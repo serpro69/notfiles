@@ -285,7 +285,7 @@ alias kwt='kubectl --context wlcm-test'
 #
 # default model (currently 4-8 because opus-5 is SHIT!)
 alias c="$(whence claude) --model='claude-opus-4-8[1m]' --effort=high"
-alias claude="$(whence claude) --model='claude-opus-4-8[1m]' --effort=high"
+#alias claude="$(whence claude) --model='claude-opus-4-8[1m]' --effort=high"
 # max
 alias cm="$(whence claude) --model='claude-opus-4-8[1m]' --effort=max"
 alias claudem="$(whence claude) --model='claude-opus-4-8[1m]' --effort=max"
