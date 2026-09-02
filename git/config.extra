@@ -92,3 +92,16 @@
   default = simple
 [pull]
   rebase = true
+# set a credential helper for github https urls
+# among other things, fixes my now-randomly-appeared (first discovered in https://github.com/opentofu/opentofu/issues/4548)
+# prompts for username/password when cloning public repos... ¯\_(ツ)_/¯
+[credential "https://github.com/"]
+  # NB! Blank line is intentional to break the chain of previously configured global helpers
+  # when handling authentication for these hosts.
+  # Otherwise, git would have used a whole stack of each configured credential helper,
+  # copying the tokens between them
+  helper =
+  helper = !gh auth git-credential
+[credential "https://gist.github.com/"]
+  helper =
+  helper = !gh auth git-credential
