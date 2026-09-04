@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Codex and other AI agents when working with code in this repository.
 
 ## Repository Overview
 
@@ -176,11 +176,3 @@ When modifying dotfiles:
 2. Test changes in current shell or restart with `exec zsh`
 3. Commit changes to git
 4. Changes automatically apply on any system that has these dotfiles installed
-
-# capy — context-window routing
-
-@.capy/AGENTS.md
-
-# Extra Instructions
-
-@.claude/CLAUDE.extra.md

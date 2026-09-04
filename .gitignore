@@ -22,4 +22,7 @@
 # AI tools
 !.serena
 !.claude
+!.codex
 !.taskmaster
+.capy/**
+!.capy/AGENTS.md
