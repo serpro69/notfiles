@@ -134,6 +134,7 @@ for file (${(ko)sops_dotfiles}); do
 
   echo -n "Decrypting $file... "
   decrypt "$src" "$dest"
+  chmod 0600 "$dest"
 done
 
 # additional stuff via 'extra'
