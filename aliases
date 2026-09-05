@@ -325,3 +325,35 @@ alias cf5="$(whence claude) --model='claude-fable-5' --effort=high"
 alias cf5m="$(whence claude) --model='claude-fable-5' --effort=max"
 alias cf5x="$(whence claude) --model='claude-fable-5' --effort=xhigh"
 alias cf5u="$(whence claude) --model='claude-fable-5' --effort=ultracode"
+
+toolbox_update() {
+  pwd=$(pwd)
+  if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+    printf "toolbox_update: updates claude-toolbox plugin in all child projects\n"
+    printf "                can only be executed from ~/[Pp]rojects (including sub-dirs)\n"
+    printf "\n"
+    printf "usage: toolbox_update\n"
+    return
+  fi
+  if [[ ! "$pwd" =~ "^$HOME/[Pp]rojects" ]]; then
+    printf "\\033[31merror: Can't run toolbox_update from %s\\033[0m\n" "$pwd"
+    printf "toolbox_update: updates claude-toolbox plugin in all child projects\n"
+    printf "                can only be executed from ~/[Pp]rojects (including sub-dirs)\n"
+    printf "\n"
+    printf "usage: toolbox_update\n"
+    return
+  fi
+  find . -type d -path '.*/.claude/toolbox' -print0 | while read -d $'\0' repo; do
+    dir="${repo/.claude\/toolbox/}"
+    cd "$dir" || {
+      printf "\\033[31merror: failed to cd into %s\\033[0m\n" "$dir"
+      continue
+    }
+    printf "updating claude-toolbox plugin in %s\n" "$dir"
+    c plugin update kk@claude-toolbox --scope project || true
+    cd "$pwd" || {
+      printf "\\033[31merror: failed cd into %s\\033[0m\n" "$pwd"
+      return
+    }
+  done
+}
