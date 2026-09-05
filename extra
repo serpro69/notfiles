@@ -246,3 +246,7 @@ fi
 if [ -d "/Applications/Obsidian.app/Contents/MacOS" ]; then
     _append_path "/Applications/Obsidian.app/Contents/MacOS"
 fi
+
+# nvm's startup auto-use fails under zsh's extended_glob (set by oh-my-zsh);
+# activate the default node version with the option locally disabled
+(( $+functions[nvm] )) && () { emulate -L zsh; nvm use default --silent } 2>/dev/null
