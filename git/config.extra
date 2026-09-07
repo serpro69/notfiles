@@ -29,6 +29,7 @@
   #pull-all = "!_f() { find . -type d -mindepth 1 -maxdepth 1 -exec git --git-dir={}/.git --work-tree=$PWD/{} pull-and-rebase-master \; }; _f"
   run-all = "!f() { ls | xargs -I{} git -C {} $1; }; f"
   atag = "!f() { git tag -a $1 $2 -m \"Release $1\"; }; f"
+  capy = "!f() { if [ -z \"$1\" ]; then printf 'usage: git capy <command> [<args>]\nexamples:\n  git capy status\n  git capy commit -m \"...\"\n'; exit 0; fi; git -C ~/Projects/personal/capy-knowledge-db \"$@\"; }; f"
 [core]
   # Use custom `.gitignore`
   excludesfile = ~/.gitignore
