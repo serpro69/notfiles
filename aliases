@@ -316,15 +316,15 @@ alias cs5m="$(whence claude) --model='claude-sonnet-5' --effort=max"
 alias cs5x="$(whence claude) --model='claude-sonnet-5' --effort=xhigh"
 alias cs5u="$(whence claude) --model='claude-sonnet-5' --effort=ultracode"
 # default fable
-alias cf="$(whence claude) --model='claude-fable-5' --effort=high"
-alias cfm="$(whence claude) --model='claude-fable-5' --effort=max"
-alias cfx="$(whence claude) --model='claude-fable-5' --effort=xhigh"
-alias cfu="$(whence claude) --model='claude-fable-5' --effort=ultracode"
+alias cf="$(whence claude) --model='claude-fable-5-1' --effort=high"
+alias cfm="$(whence claude) --model='claude-fable-5-1' --effort=max"
+alias cfx="$(whence claude) --model='claude-fable-5-1' --effort=xhigh"
+alias cfu="$(whence claude) --model='claude-fable-5-1' --effort=ultracode"
 # fable-5
-alias cf5="$(whence claude) --model='claude-fable-5' --effort=high"
-alias cf5m="$(whence claude) --model='claude-fable-5' --effort=max"
-alias cf5x="$(whence claude) --model='claude-fable-5' --effort=xhigh"
-alias cf5u="$(whence claude) --model='claude-fable-5' --effort=ultracode"
+alias cf5="$(whence claude) --model='claude-fable-5-1' --effort=high"
+alias cf5m="$(whence claude) --model='claude-fable-5-1' --effort=max"
+alias cf5x="$(whence claude) --model='claude-fable-5-1' --effort=xhigh"
+alias cf5u="$(whence claude) --model='claude-fable-5-1' --effort=ultracode"
 
 toolbox_update() {
   pwd=$(pwd)
