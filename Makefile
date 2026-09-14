@@ -11,11 +11,11 @@ help: ## Print this help message
 	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 configure: ## Set default repo configuration after cloning it
-    @chmod 0600 exports.sops
-    chmod 0400 elifyek
+	@chmod 0600 exports.sops
+	chmod 0400 elifyek
 
 init: ## Initialize dotfiles
-    @./init.zsh
+	@./init.zsh
 
 fix-spaceship-async: ## Add sleep 0.1 to spaceship-prompt async.zsh
 	@# only a problem on linux
