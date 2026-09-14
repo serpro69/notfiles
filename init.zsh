@@ -58,6 +58,7 @@ function decrypt() {
   dest="$2"
 
   mkdir -p "${dest:h}"
+  [ -f "$dest" ] && rm "$dest"
   if error="$(sops decrypt "$src" > "$dest" 2>&1)"; then
     msg OK
   else
@@ -122,6 +123,7 @@ done
 local -A sops_dotfiles
 sops_dotfiles=(
   exports.sops        "${ZDOT}/exports.sops"
+  elifyek             "${ZDOT}/elifyek"
 )
 
 local file src dest
@@ -134,7 +136,6 @@ for file (${(ko)sops_dotfiles}); do
 
   echo -n "Decrypting $file... "
   decrypt "$src" "$dest"
-  chmod 0600 "$dest"
 done
 
 # additional stuff via 'extra'
