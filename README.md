@@ -20,37 +20,36 @@ These are not the <s>droids</s> .files you're looking for
 - `git`
 
 - `zsh`
-  - install `zsh` (e.g. `sudo apt-get install zsh`)
-  - set `zsh` as default shell: `chsh -s $(which zsh)`
-    - restart user session to apply the change
-    - _NB! `chsh` does not work on every system_
+    - install `zsh` (e.g. `sudo apt-get install zsh`)
+    - set `zsh` as default shell: `chsh -s $(which zsh)`
+        - restart user session to apply the change
+        - _NB! `chsh` does not work on every system_
 
 - cli tools:
-  - [`fzf`](https://github.com/junegunn/fzf)
+    - [`fzf`](https://github.com/junegunn/fzf)
 
-    ```bash
-    # linux
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-    ~/.fzf/install --xdg
-    # mac
-    brew intall fzf
-    ```
+        ```bash
+        # linux
+        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+        ~/.fzf/install --xdg
+        # mac
+        brew intall fzf
+        ```
 
-  - [`bat`](https://github.com/sharkdp/bat)
+    - [`bat`](https://github.com/sharkdp/bat)
 
-  - [`delta`](https://github.com/dandavison/delta)
+    - [`delta`](https://github.com/dandavison/delta)
 
-  - [`eza`](https://github.com/eza-community/eza)
+    - [`eza`](https://github.com/eza-community/eza)
 
-  - [`fd`](https://github.com/sharkdp/fd)
+    - [`fd`](https://github.com/sharkdp/fd)
 
-  - [`ripgrep`](https://github.com/BurntSushi/ripgrep)
+    - [`ripgrep`](https://github.com/BurntSushi/ripgrep)
 
-  - [`sd`](https://github.com/chmln/sd)
+    - [`sd`](https://github.com/chmln/sd)
 
 - optional tools/apps:
-
-  - [alacritty](https://github.com/alacritty/alacritty)
+    - [alacritty](https://github.com/alacritty/alacritty)
 
 ## Installation
 
@@ -58,6 +57,10 @@ These are not the <s>droids</s> .files you're looking for
 
 ```shell
 git clone --recurse-submodules git@github.com:serpro69/dotfiles.git ~/dotfiles
+
+cd ~/dotfiles
+
+make configure
 ```
 
 2. Run the init script
@@ -67,6 +70,12 @@ cd ~/dotfiles
 ./init.zsh
 ```
 
+or:
+
+```bash
+make init
+```
+
 3. Restart the shell (or run `exec zsh`)
 
 ## Post-install
@@ -74,12 +83,12 @@ cd ~/dotfiles
 ### MacOS
 
 - Update iterm2 settings
-  - Preferences -> General -> Settings -> Load preferences from a custom folder or URL
-    - Set the path to `~/dotfiles/config/iterm2`
-    - Enable "Save changes: When Quitting"
-  - Restart iterm2
+    - Preferences -> General -> Settings -> Load preferences from a custom folder or URL
+        - Set the path to `~/dotfiles/config/iterm2`
+        - Enable "Save changes: When Quitting"
+    - Restart iterm2
 
 - Update keyboard shortcuts
-  - Preferences -> Keyboard -> Keyboard Shortcuts -> Input Sources
-    - Disable "Select the previous input source"
-      (it's mapped to `^space` which is used in a lot of other places, e.g. vim)
+    - Preferences -> Keyboard -> Keyboard Shortcuts -> Input Sources
+        - Disable "Select the previous input source"
+          (it's mapped to `^space` which is used in a lot of other places, e.g. vim)
