@@ -283,7 +283,7 @@ alias kwt='kubectl --context wlcm-test'
 # xhigh (new): Extra high effort is the best setting for most coding and agentic use cases.
 # default model per project-/user-settings
 #
-# default model (currently 4-8 because opus-5 is SHIT!)
+# default model (currently 4-8 because opus-5 is SHIT! and opus-5-5 is unverified by me yet)
 alias c="$(whence claude) --model='claude-opus-4-8[1m]' --effort=high"
 #alias claude="$(whence claude) --model='claude-opus-4-8[1m]' --effort=high"
 # max
@@ -295,16 +295,16 @@ alias claudex="$(whence claude) --model='claude-opus-4-8[1m]' --effort=xhigh"
 # ultracode
 alias cu="$(whence claude) --model='claude-opus-4-8[1m]' --effort=ultracode"
 alias claudeu="$(whence claude) --model='claude-opus-4-8[1m]' --effort=ultracode"
-# default opus (currently 4-8 because opus-5 is SHIT!)
+# default opus (currently 4-8 because opus-5 was SHIT! and opus-5-5 is unverified by me yet)
 alias co="$(whence claude) --model='claude-opus-4-8[1m]' --effort=high"
 alias com="$(whence claude) --model='claude-opus-4-8[1m]' --effort=max"
 alias cox="$(whence claude) --model='claude-opus-4-8[1m]' --effort=xhigh"
 alias cou="$(whence claude) --model='claude-opus-4-8[1m]' --effort=ultracode"
 # opus-5
-alias co5="$(whence claude) --model='claude-opus-5' --effort=high"
-alias co5m="$(whence claude) --model='claude-opus-5' --effort=max"
-alias co5x="$(whence claude) --model='claude-opus-5' --effort=xhigh"
-alias co5u="$(whence claude) --model='claude-opus-5' --effort=ultracode"
+alias co5="$(whence claude) --model='claude-opus-5-5' --effort=high"
+alias co5m="$(whence claude) --model='claude-opus-5-5' --effort=max"
+alias co5x="$(whence claude) --model='claude-opus-5-5' --effort=xhigh"
+alias co5u="$(whence claude) --model='claude-opus-5-5' --effort=ultracode"
 # default sonnet
 alias cs="$(whence claude) --model='claude-sonnet-5' --effort=high"
 alias csm="$(whence claude) --model='claude-sonnet-5' --effort=max"
