@@ -1,8 +1,8 @@
 {
   "schema_version": "1",
   "upstream_repo": "serpro69/claude-toolbox",
-  "template_version": "v0.20.0",
-  "synced_at": "2026-09-04T20:42:25Z",
+  "template_version": "a6bab7f326369b70e462d58a5a1a500ff219e939",
+  "synced_at": "2026-09-25T07:40:35Z",
   "variables": {
     "PROJECT_NAME": "notfiles",
     "LANGUAGES": "bash,sh,zsh",
