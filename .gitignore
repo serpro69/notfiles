@@ -11,6 +11,7 @@
 !.sops.yaml
 # sops-encrypted files
 !*.sops
+!.capy.toml
 
 .idea/
 *.iml
