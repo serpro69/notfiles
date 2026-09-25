@@ -83,7 +83,8 @@ function apt-depends() {
 # Usage: remind <summary> <body> [until] <timespec>
 #
 # Considerations:
-# - The reminder will be displayed as a system notification via notify-send program
+# - Notifications use osascript on macOS and notify-send on Linux
+# - One-time reminders require at; macOS also requires atrun to be enabled (see man atrun)
 # - The reminder will be displayed only once, unless a [date] (in "yyyy-MM-DD" format) is specified as the 3rd argument
 # - If a [date] is specified, the reminder will be displayed daily at the specified [time] (in "HH:MM" format) until the [date]
 function remind() {
@@ -99,10 +100,11 @@ function remind() {
       echo "  <timespec>   The time specification for the reminder."
       echo
       echo "Considerations:"
-      echo " - The reminder will be displayed as a system notification via notify-send program"
+      echo " - Notifications use osascript on macOS and notify-send on Linux"
       echo " - The reminder will be displayed only once, unless a [until] (must be in 'yyyy-MM-DD' format) is specified as the 3rd argument"
       echo " - If a [until] is specified, the reminder will be displayed daily at the specified <timespec> (must be in 'hh:mm' format) until the <until> date"
       echo " - Single-time reminder accepts full range of <timespec> formats supported by 'at' command"
+      echo " - Single-time reminders require 'at'; on macOS, enable atrun (see 'man atrun')"
       echo
       echo "Examples:"
       echo "  remind 'Meeting' 'Team meeting at 10 AM' 10:00"
@@ -118,6 +120,18 @@ function remind() {
   local summary=$1
   local body=$2
   local maybe_until=$3
+  local notify_command
+  if is_darwin; then
+    # Pass text as arguments so quotes in reminders are not interpreted as AppleScript.
+    notify_command="/usr/bin/osascript -e 'on run argv' -e 'display notification (item 2 of argv) with title (item 1 of argv) sound name \"Pop\"' -e 'end run' --"
+  else
+    notify_command="notify-send -u critical -t 10000 --"
+  fi
+  # Jobs run in a separate shell; quote their arguments before serializing them.
+  local shell_quote="'\\''"
+  local quoted_summary="'${summary//\'/$shell_quote}'"
+  local quoted_body="'${body//\'/$shell_quote}'"
+  local notification="$notify_command $quoted_summary $quoted_body"
 
   # if the 3rd argument is a date in the format yyyy-MM-DD, then it's a recurring reminder
   if [[ "$maybe_until" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
@@ -125,7 +139,12 @@ function remind() {
     local at_spec="${@:4}" # 4th and onward args act as the at specification
 
     # convert the 'until' date to epoch format (to handle date comparison in cron)
-    until_timestamp=$(date -d "$until" +%s)
+    local until_timestamp
+    if is_darwin; then
+      until_timestamp=$(/bin/date -j -f "%Y-%m-%d %H:%M:%S" "$until 00:00:00" +%s) || return 1
+    else
+      until_timestamp=$(date -d "$until" +%s) || return 1
+    fi
 
     # extract HH:MM from at_spec (NB! only handles simple HH:MM format for cron jobs)
     hour=$(echo "$at_spec" | cut -d: -f1)
@@ -137,23 +156,33 @@ function remind() {
         return 1
     fi
 
-    local env_vars="DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${UID}/bus"
+    local env_vars=""
+    if ! is_darwin; then
+      env_vars="DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${UID}/bus "
+    fi
+    local notification_pattern="'${notification//\'/$shell_quote}'"
 
     # add the cron job for daily reminders until the specified 'until' date
     #cron_job="$minute $hour * * * if [ \$(date +\\%s) -lt $until_timestamp ]; then notify-send -u critical -t 10000 '$summary' '$body'; else crontab -l | grep -v '$summary' | crontab -; fi"
     # * * * * * if [ $(date +'\%s') -lt 1728511200 ]; then DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus notify-send 'Cron Test' 'This is a test from cron'; else DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus notify-send 'Cron Test Else' 'This is a test from cron'; fi
     # * * * * * if [ $(date +'\%s') -lt 1728511200 ]; then DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus notify-send 'Cron Test' 'This is a test from cron'; else DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus notify-send 'Cron Test Else' 'This is a test from cron'; fi
-    cron_job="${minute} ${hour} * * * if [ \$(date +'\\%s') -lt ${until_timestamp} ]; then DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus notify-send '${summary}' '${body}'; else crontab -l | grep -v \"notify-send '${summary}' '${body}'\" | crontab - && DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus notify-send 'removed cron reminder' '${summary} : ${body}'; fi"
+    # TODO: Escape cron metacharacters in reminder text before serializing this line.
+    # Percent signs and newlines were already unsupported; keep this fix focused on macOS support.
+    local cron_job="${minute} ${hour} * * * if [ \$(date +'\\%s') -lt ${until_timestamp} ]; then ${env_vars}${notification}; else crontab -l | grep -F -v -- ${notification_pattern} | crontab - && ${env_vars}${notify_command} 'removed cron reminder' ${quoted_summary}' : '${quoted_body}; fi"
 
     # add the cron job to the user's crontab (preserve existing jobs)
-    (crontab -l 2>/dev/null; echo "$cron_job") | crontab -
+    (crontab -l 2>/dev/null; printf '%s\n' "$cron_job") | crontab - || return 1
 
     echo "Daily reminder set at $hour:$minute until $until"
   else
+    if ! command -v at >/dev/null 2>&1; then
+      echo "Error: 'at' is required for one-time reminders. Install it and try again." >&2
+      return 1
+    fi
     # if the 3rd argument is not a valid date, treat it as part of the at_spec
     local at_spec="${@:3}"  # Use 3rd and onward arguments as the at specification
     # use 'at' to schedule the notification at the specified time
-    echo "notify-send -u critical -t 10000 '$summary' '$body'" | at "$at_spec"
+    printf '%s\n' "$notification" | at "$at_spec" || return 1
     echo "One-time reminder set for: $at_spec"
   fi
 }
