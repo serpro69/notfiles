@@ -1,5 +1,7 @@
 [core]
   pager = delta
+[delta]
+  max-line-length = 0
 [delta "decorations"]
   commit-decoration-style = bold yellow box ul
   file-style = bold 19 ul "#dddddd"
