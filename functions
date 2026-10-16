@@ -241,6 +241,115 @@ function kns() {
   [[ -n $choice ]] && kubens "$choice"
 }
 
+# Run a command in every project that has the claude-toolbox (kk) plugin installed.
+#
+# Usage: kkx [-l] [-n] [-k] [-x <substr>]... [--] <command> [args...]
+#
+# Options:
+#   -l, --list             only list matching repos, don't run anything
+#   -n, --dry-run          print what would run without executing
+#   -k, --keep-going       continue with the next repo if the command fails (default: stop)
+#   -x, --exclude <substr> skip repos whose path contains <substr> (repeatable)
+#
+# The command runs with the repo as the working directory, so 'git st' works
+# without '-C'. A single argument is passed through 'eval', so shell operators
+# work: kkx 'git add -A && git ci -am "msg" && git push'. Multiple arguments
+# are executed verbatim ("$@"), which preserves quoting of args with spaces.
+# $KK_REPO holds the current repo path inside the command.
+function kkx() {
+  local -a excludes
+  local list_only=0 dry_run=0 keep_going=0
+  while (( $# )); do
+    case "$1" in
+      -l|--list) list_only=1; shift ;;
+      -n|--dry-run) dry_run=1; shift ;;
+      -k|--keep-going) keep_going=1; shift ;;
+      -x|--exclude)
+        [[ -z "$2" ]] && { echo "\e[01;31mError: -x requires an argument\e[0m" >&2; return 1; }
+        excludes+=("$2"); shift 2 ;;
+      -h|--help)
+        cat <<'EOF'
+Runs a command in every project with the claude-toolbox (kk) plugin installed.
+Repos are discovered via 'claude plugin list --json'; the command runs with
+the repo as the working directory.
+
+Usage: kkx [options] [--] <command> [args...]
+
+Options:
+  -l, --list             only list matching repos, don't run anything
+  -n, --dry-run          print what would run without executing
+  -k, --keep-going       continue with the next repo if the command fails
+                         (default: stop at the first failure)
+  -x, --exclude <substr> skip repos whose path contains <substr> (repeatable)
+  -h, --help             show this help
+
+Command forms:
+  A single argument is passed through 'eval', so shell operators (&&, |, ;)
+  work. Multiple arguments run verbatim ("$@"), preserving quoting of args
+  with spaces. $KK_REPO holds the current repo path inside the command.
+
+Examples:
+  kkx -l                                    list all toolbox repos
+  kkx -l -x claude-toolbox -x capy          list, excluding some repos
+  kkx git st                                git status in every repo
+  kkx -n git st                             dry run, show what would run
+  kkx git diff                              review pending changes
+  kkx -k git pull                           pull everywhere, don't stop on failures
+  kkx ./.claude/toolbox/scripts/template-sync.sh --local --version master
+  kkx capy setup --local
+  kkx git ci -am "Update claude-toolbox to e2f868ec"
+  kkx 'git add -A && git ci -am "Re-run capy setup with --local" && git push'
+  kkx -x claude-toolbox -x capy 'git diff --quiet || git push'
+  kkx 'echo "$KK_REPO: $(git rev-parse --abbrev-ref HEAD)"'
+EOF
+        return 0 ;;
+      --) shift; break ;;
+      -*) echo "\e[01;31mError: unknown option '$1'. Run with --help for usage details\e[0m" >&2; return 1 ;;
+      *) break ;;
+    esac
+  done
+  if (( ! list_only )) && (( $# == 0 )); then
+    echo "\e[01;31mError: missing command. Run with --help for usage details\e[0m" >&2
+    return 1
+  fi
+
+  local -a repos
+  repos=("${(@f)$(command claude plugin list --json \
+    | jq -r '.[] | select(.id=="kk@claude-toolbox") | .projectPath')}") || return 1
+
+  local repo ex rc failed=0
+  for repo in "${repos[@]}"; do
+    [[ -z "$repo" ]] && continue
+    for ex in "${excludes[@]}"; do
+      [[ "$repo" == *"$ex"* ]] && continue 2
+    done
+    if (( list_only )); then
+      echo "$repo"
+      continue
+    fi
+    printf '\e[1;34m==> %s\e[0m\n' "$repo"
+    if [[ ! -d "$repo" ]]; then
+      echo "\e[01;31mError: directory does not exist\e[0m" >&2
+      failed=1; (( keep_going )) && continue || return 1
+    fi
+    if (( dry_run )); then
+      echo "  $*"
+      continue
+    fi
+    if (( $# == 1 )); then
+      ( cd "$repo" && export KK_REPO="$repo" && eval "$1" )
+    else
+      ( cd "$repo" && export KK_REPO="$repo" && "$@" )
+    fi
+    rc=$?
+    if (( rc != 0 )); then
+      echo "\e[01;31mError: command failed in $repo (exit $rc)\e[0m" >&2
+      failed=1; (( keep_going )) || return $rc
+    fi
+  done
+  return $failed
+}
+
 ## ZSH TESTING FUNCTIONS
 
 zsh_docker_versions() {
