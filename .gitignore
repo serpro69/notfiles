@@ -26,4 +26,5 @@
 !.codex
 !.taskmaster
 .capy/**
+!.capy
 !.capy/AGENTS.md
