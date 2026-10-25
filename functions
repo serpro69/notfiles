@@ -315,7 +315,7 @@ EOF
 
   local -a repos
   repos=("${(@f)$(command claude plugin list --json \
-    | jq -r '.[] | select(.id=="kk@claude-toolbox") | .projectPath')}") || return 1
+    | jq -r '.[] | select(.id=="kk@claude-toolbox") | select(.scope=="project" or .scope=="local") | .projectPath')}") || return 1
 
   local repo ex rc failed=0
   for repo in "${repos[@]}"; do
@@ -329,8 +329,8 @@ EOF
     fi
     printf '\e[1;34m==> %s\e[0m\n' "$repo"
     if [[ ! -d "$repo" ]]; then
-      echo "\e[01;31mError: directory does not exist\e[0m" >&2
-      failed=1; (( keep_going )) && continue || return 1
+      echo "\e[01;33mWarning: directory does not exist\e[0m" >&2
+      continue
     fi
     if (( dry_run )); then
       echo "  $*"
