@@ -276,6 +276,9 @@ alias ec='nvim --cmd ":lua vim.g.noplugins=1"' #nvim --clean
 alias kwp='kubectl --context wlcm-prod'
 alias kwt='kubectl --context wlcm-test'
 
+alias kkx-sync="kkx -x claude-toolbox -x evergreen-dissemination-light './.claude/toolbox/scripts/template-sync.sh --local --version master'"
+alias kkx-update="kkx 'c plugin update kk@claude-toolbox --scope project'"
+
 # AI
 # NOTE: claude-code effort level
 #       ref: https://platform.claude.com/docs/en/about-claude/models/migration-guide#choosing-an-effort-level
