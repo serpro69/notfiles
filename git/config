@@ -338,7 +338,8 @@
   #  - spaces before tabs,
   #  - all kinds of trailing whitespace
   # as an error.
-  whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+  # whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+  whitespace = trailing-space
 
   # Make `git rebase` safer on macOS
   # More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
