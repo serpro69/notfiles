@@ -277,7 +277,9 @@ alias kwp='kubectl --context wlcm-prod'
 alias kwt='kubectl --context wlcm-test'
 
 alias kkx-sync="kkx -x claude-toolbox -x evergreen-dissemination-light './.claude/toolbox/scripts/template-sync.sh --local --version master'"
-alias kkx-update="kkx 'c plugin update kk@claude-toolbox --scope project'"
+alias kkx-update="codex plugin marketplace upgrade claude-toolbox && \
+claude plugin marketplace update claude-toolbox && \
+kkx 'c plugin update kk@claude-toolbox --scope project'"
 
 # AI
 # NOTE: claude-code effort level
