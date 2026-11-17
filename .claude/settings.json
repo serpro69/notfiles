@@ -18,7 +18,6 @@
       "Read(~/.claude/plugins/cache/claude-toolbox/*)",
       "WebSearch",
       "Read(//tmp/**)",
-      "Read(${TMPDIR}/**)",
       "Read(//var/folders/vv/**/T/**)"
     ],
     "deny": [
