@@ -276,11 +276,6 @@ alias ec='nvim --cmd ":lua vim.g.noplugins=1"' #nvim --clean
 alias kwp='kubectl --context wlcm-prod'
 alias kwt='kubectl --context wlcm-test'
 
-alias kkx-sync="kkx -x claude-toolbox -x evergreen-dissemination-light './.claude/toolbox/scripts/template-sync.sh --local --version master'"
-alias kkx-update="codex plugin marketplace upgrade claude-toolbox && \
-claude plugin marketplace update claude-toolbox && \
-kkx 'c plugin update kk@claude-toolbox --scope project'"
-
 # AI
 # NOTE: claude-code effort level
 #       ref: https://platform.claude.com/docs/en/about-claude/models/migration-guide#choosing-an-effort-level
@@ -289,76 +284,43 @@ kkx 'c plugin update kk@claude-toolbox --scope project'"
 # default model per project-/user-settings
 #
 # default model
-alias c="$(whence claude) --model='claude-opus-5-5[1m]' --effort=high"
-#alias claude="$(whence claude) --model='claude-opus-5-5[1m]' --effort=high"
+alias cc="kk claude --model='claude-opus-5-5[1m]' --effort=high"
 # max
-alias cm="$(whence claude) --model='claude-opus-5-5[1m]' --effort=max"
-alias claudem="$(whence claude) --model='claude-opus-5-5[1m]' --effort=max"
+alias ccm="kk claude --model='claude-opus-5-5[1m]' --effort=max"
+alias claudem="kk claude --model='claude-opus-5-5[1m]' --effort=max"
 # xhigh
-alias cx="$(whence claude) --model='claude-opus-5-5[1m]' --effort=xhigh"
-alias claudex="$(whence claude) --model='claude-opus-5-5[1m]' --effort=xhigh"
+alias ccx="kk claude --model='claude-opus-5-5[1m]' --effort=xhigh"
+alias claudex="kk claude --model='claude-opus-5-5[1m]' --effort=xhigh"
 # ultracode
-alias cu="$(whence claude) --model='claude-opus-5-5[1m]' --effort=ultracode"
-alias claudeu="$(whence claude) --model='claude-opus-5-5[1m]' --effort=ultracode"
+alias cu="kk claude --model='claude-opus-5-5[1m]' --effort=ultracode"
+alias claudeu="kk claude --model='claude-opus-5-5[1m]' --effort=ultracode"
 # default opus
-alias co="$(whence claude) --model='claude-opus-5-5[1m]' --effort=high"
-alias com="$(whence claude) --model='claude-opus-5-5[1m]' --effort=max"
-alias cox="$(whence claude) --model='claude-opus-5-5[1m]' --effort=xhigh"
-alias cou="$(whence claude) --model='claude-opus-5-5[1m]' --effort=ultracode"
+alias cco="kk claude --model='claude-opus-5-5[1m]' --effort=high"
+alias ccom="kk claude --model='claude-opus-5-5[1m]' --effort=max"
+alias ccox="kk claude --model='claude-opus-5-5[1m]' --effort=xhigh"
+alias ccou="kk claude --model='claude-opus-5-5[1m]' --effort=ultracode"
 # opus-5
-alias co5="$(whence claude) --model='claude-opus-5-5' --effort=high"
-alias co5m="$(whence claude) --model='claude-opus-5-5' --effort=max"
-alias co5x="$(whence claude) --model='claude-opus-5-5' --effort=xhigh"
-alias co5u="$(whence claude) --model='claude-opus-5-5' --effort=ultracode"
+alias cco5="kk claude --model='claude-opus-5-5' --effort=high"
+alias cco5m="kk claude --model='claude-opus-5-5' --effort=max"
+alias cco5x="kk claude --model='claude-opus-5-5' --effort=xhigh"
+alias cco5u="kk claude --model='claude-opus-5-5' --effort=ultracode"
 # default sonnet
-alias cs="$(whence claude) --model='claude-sonnet-5-5[1m]' --effort=high"
-alias csm="$(whence claude) --model='claude-sonnet-5-5[1m]' --effort=max"
-alias csx="$(whence claude) --model='claude-sonnet-5-5[1m]' --effort=xhigh"
-alias csu="$(whence claude) --model='claude-sonnet-5-5[1m]' --effort=ultracode"
+alias ccs="kk claude --model='claude-sonnet-5-5[1m]' --effort=high"
+alias ccsm="kk claude --model='claude-sonnet-5-5[1m]' --effort=max"
+alias ccsx="kk claude --model='claude-sonnet-5-5[1m]' --effort=xhigh"
+alias ccsu="kk claude --model='claude-sonnet-5-5[1m]' --effort=ultracode"
 # sonnet-5
-alias cs5="$(whence claude) --model='claude-sonnet-5-5[1m]' --effort=high"
-alias cs5m="$(whence claude) --model='claude-sonnet-5-5[1m]' --effort=max"
-alias cs5x="$(whence claude) --model='claude-sonnet-5-5[1m]' --effort=xhigh"
-alias cs5u="$(whence claude) --model='claude-sonnet-5-5[1m]' --effort=ultracode"
+alias ccs5="kk claude --model='claude-sonnet-5-5[1m]' --effort=high"
+alias ccs5m="kk claude --model='claude-sonnet-5-5[1m]' --effort=max"
+alias ccs5x="kk claude --model='claude-sonnet-5-5[1m]' --effort=xhigh"
+alias ccs5u="kk claude --model='claude-sonnet-5-5[1m]' --effort=ultracode"
 # default fable
-alias cf="$(whence claude) --model='claude-fable-5-2[1m]' --effort=high"
-alias cfm="$(whence claude) --model='claude-fable-5-2[1m]' --effort=max"
-alias cfx="$(whence claude) --model='claude-fable-5-2[1m]' --effort=xhigh"
-alias cfu="$(whence claude) --model='claude-fable-5-2[1m]' --effort=ultracode"
+alias ccf="kk claude --model='claude-fable-5-2[1m]' --effort=high"
+alias ccfm="kk claude --model='claude-fable-5-2[1m]' --effort=max"
+alias ccfx="kk claude --model='claude-fable-5-2[1m]' --effort=xhigh"
+alias ccfu="kk claude --model='claude-fable-5-2[1m]' --effort=ultracode"
 # fable-5
-alias cf5="$(whence claude) --model='claude-fable-5-2[1m]' --effort=high"
-alias cf5m="$(whence claude) --model='claude-fable-5-2[1m]' --effort=max"
-alias cf5x="$(whence claude) --model='claude-fable-5-2[1m]' --effort=xhigh"
-alias cf5u="$(whence claude) --model='claude-fable-5-2[1m]' --effort=ultracode"
-
-toolbox_update() {
-  pwd=$(pwd)
-  if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
-    printf "toolbox_update: updates claude-toolbox plugin in all child projects\n"
-    printf "                can only be executed from ~/[Pp]rojects (including sub-dirs)\n"
-    printf "\n"
-    printf "usage: toolbox_update\n"
-    return
-  fi
-  if [[ ! "$pwd" =~ "^$HOME/[Pp]rojects" ]]; then
-    printf "\\033[31merror: Can't run toolbox_update from %s\\033[0m\n" "$pwd"
-    printf "toolbox_update: updates claude-toolbox plugin in all child projects\n"
-    printf "                can only be executed from ~/[Pp]rojects (including sub-dirs)\n"
-    printf "\n"
-    printf "usage: toolbox_update\n"
-    return
-  fi
-  find . -type d -path '.*/.claude/toolbox' -print0 | while read -d $'\0' repo; do
-    dir="${repo/.claude\/toolbox/}"
-    cd "$dir" || {
-      printf "\\033[31merror: failed to cd into %s\\033[0m\n" "$dir"
-      continue
-    }
-    printf "updating claude-toolbox plugin in %s\n" "$dir"
-    c plugin update kk@claude-toolbox --scope project || true
-    cd "$pwd" || {
-      printf "\\033[31merror: failed cd into %s\\033[0m\n" "$pwd"
-      return
-    }
-  done
-}
+alias ccf5="kk claude --model='claude-fable-5-2[1m]' --effort=high"
+alias ccf5m="kk claude --model='claude-fable-5-2[1m]' --effort=max"
+alias ccf5x="kk claude --model='claude-fable-5-2[1m]' --effort=xhigh"
+alias ccf5u="kk claude --model='claude-fable-5-2[1m]' --effort=ultracode"

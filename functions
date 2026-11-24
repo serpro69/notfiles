@@ -257,6 +257,9 @@ function kns() {
 # are executed verbatim ("$@"), which preserves quoting of args with spaces.
 # $KK_REPO holds the current repo path inside the command.
 function kkx() {
+  echo "\e[01;31mError: This function is deprecated after claude-toolbox retirement and does not currently support agentstakk\e[0m" >&2
+  return 1
+
   local -a excludes
   local list_only=0 dry_run=0 keep_going=0
   while (( $# )); do
