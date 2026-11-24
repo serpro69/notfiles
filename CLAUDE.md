@@ -183,5 +183,3 @@ When modifying dotfiles:
 
 
 
-@.claude/CLAUDE.extra.md
-@.claude/toolbox/CLAUDE.md
