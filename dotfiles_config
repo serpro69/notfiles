@@ -8,4 +8,14 @@ CONFIG_ZSH_PLUGINS="(zsh-nvm colored-man-pages colorize copybuffer dircycle dock
 CONFIG_ZSH_THEME="spaceship"
 CONFIG_TERM_LOCAL="tmux" # terminal multiplexer: screen byobu tmux
 CONFIG_TERM_SSH=""
+# dirs for the capy window that shellrc opens first in the first tmux session
+# (left pane: knowledge-db repo, right pane: capy data dir)
+if [ "$(uname)" = "Darwin" ]; then
+  CONFIG_CAPY_KB_DIR="$HOME/Projects/personal/capy-knowledge-db"
+  CONFIG_CAPY_DATA_DIR="$HOME/.local/share/capy"
+else
+  # TODO: unconfirmed linux locations; adjust to the actual paths
+  CONFIG_CAPY_KB_DIR="$HOME/Projects/personal/capy-knowledge-db"
+  CONFIG_CAPY_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/capy"
+fi
 CONFIG_LOGGING="ERROR" # Options: OFF, ERROR, WARN, INFO, TRACE

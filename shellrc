@@ -41,7 +41,26 @@ if [ "$_TERM" = 'tmux' ] && [ -z "$TMUX" ]; then
 
   if [ -z "$TMUX_ID" ]; then
     # if not available create a new one
-    tmux new-session
+    if ! tmux has-session 2> /dev/null \
+      && [ -d "$CONFIG_CAPY_KB_DIR" ] && [ -d "$CONFIG_CAPY_DATA_DIR" ]; then
+      # first session on the server only: its first window is the capy split
+      # (kb left, data dir right), focused on the left pane;
+      # a regular shell window goes after it
+      # TODO: the has-session check means killing session 0 while other sessions
+      #   still run leaves no capy window until the server restarts. To recreate it
+      #   "whenever no session has the capy window" instead: name the window
+      #   (`new-session -n capy`) and replace `! tmux has-session` with
+      #   `! tmux list-windows -a -F '#{window_name}' 2> /dev/null | grep -qx capy`.
+      #   Downside: a session's auto-renamed window could also end up named "capy".
+      _capy_win="$(tmux new-session -d -P -F '#{window_id}' -c "$CONFIG_CAPY_KB_DIR")"
+      tmux split-window -h -t "$_capy_win" -c "$CONFIG_CAPY_DATA_DIR"
+      tmux select-pane -L -t "$_capy_win"
+      tmux new-window -d -a -t "$_capy_win" -c "$PWD"
+      tmux attach-session -t "$_capy_win"
+      unset _capy_win
+    else
+      tmux new-session
+    fi
   else
     # if available attach to it
     tmux attach-session -t "$TMUX_ID"
